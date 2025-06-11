@@ -9,10 +9,10 @@ const mysql = require("mysql2/promise");
   database: "railway",
 };*/
 const dbConfig = {
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "project_ifb",
+  host: "auth-db1687.hstgr.io",
+  user: "project_ifb",
+  password: "projectIfb.118259",
+  database: "u643198768_project_ifb",
 };
 // دالة للحصول على اتصال بقاعدة البيانات
 async function getConnection() {
