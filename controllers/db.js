@@ -10,7 +10,7 @@ const mysql = require("mysql2/promise");
 };*/
 const dbConfig = {
   host: "auth-db1687.hstgr.io",
-  user: "project_ifb",
+  user: "u643198768_project_ifb",
   password: "projectIfb.118259",
   database: "u643198768_project_ifb",
 };
