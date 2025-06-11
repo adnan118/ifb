@@ -9,7 +9,7 @@ const mysql = require("mysql2/promise");
   database: "railway",
 };*/
 const dbConfig = {
-  host: "dreamtsv.com",
+  host: "pos-mng",
   user: "u643198768_project_ifb",
   password: "projectIfb.118259",
   database: "u643198768_project_ifb",
