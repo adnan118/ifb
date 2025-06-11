@@ -91,7 +91,7 @@ app.get("/", async (req, res) => {
     res.json({ message: "Connected to the database successfully!" });
   } catch (error) {
     console.error("خطأ في الاتصال:", error);
-    res.status(500).json({ message: "Database connection failed." });
+    res.status(500).json({ message: "Database connection failed..." });
   }
 });
 
