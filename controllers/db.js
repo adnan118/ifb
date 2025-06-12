@@ -1,28 +1,15 @@
-// controllers/database.js
 const mysql = require("mysql2/promise");
 
-// إعداد اتصال قاعدة البيانات
-/*const dbConfig = {
-  host: "mysql.railway.internal",
-  user: "root",
-  password: "oufXwWgHaDJpOinwoEefEmTRoGuyWobZ",
-  database: "railway",
-};*/
 const dbConfig = {
-  host: "dreamtsv.com",
-  user: "u643198768_project_ifb",
-  password: "CHKX2JYOL7^a",
-  database: "u643198768_project_ifb",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 };
-// دالة للحصول على اتصال بقاعدة البيانات
+
 async function getConnection() {
-  
   return await mysql.createConnection(dbConfig);
 }
 
-
-
-// تصدير الدالة
 module.exports = { getConnection };
 
- 
