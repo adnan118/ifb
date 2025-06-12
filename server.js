@@ -6,11 +6,30 @@ const app = express();
 const PORT = process.env.PORT || 3118;
 const path = require("path");
 
-// Serve static files from the images directory
-app.use(
+// Serve static files for all image and video directories
+const staticDirs = [
+  // Personal Data Management
   "/query/managePersonalData/gender/genderImages/images",
-  express.static(path.join(__dirname, "query/managePersonalData/gender/genderImages/images"))
-);
+  "/query/managePersonalData/goal/goalImages/images",
+  "/query/managePersonalData/bodytype/bodytypeImages/images",
+  "/query/managePersonalData/specialprograms/specialprogramsImages/images",
+  "/query/managePersonalData/lastidealweight/lastidealweightImages/images",
+  "/query/managePersonalData/dailywater/dailywaterImages/images",
+  
+  // Exercise and Training
+  "/query/exercise/exerciseFiles/images",
+  "/query/exercise/exerciseFiles/videos",
+  "/query/trainings/trainingImages/images",
+  
+  // Challenges and Chapters
+  "/query/challenges/challengesImages",
+  "/query/chapter/chapterImages/images"
+];
+
+// Register all static directories
+staticDirs.forEach(dir => {
+  app.use(dir, express.static(path.join(__dirname, dir)));
+});
 ////////////////////////////// auth
 const loginUserRoute = require("./routes/authRoutes/LoginUserRout");
 const registerUserRoute = require("./routes/authRoutes/RegisterUserRout");
