@@ -4,7 +4,13 @@ const mysql = require("mysql2/promise");
 const { getConnection } = require("./controllers/db");
 const app = express();
 const PORT = process.env.PORT || 3118;
+const path = require("path");
 
+// Serve static files from the images directory
+app.use(
+  "/query/managePersonalData/gender/genderImages/images",
+  express.static(path.join(__dirname, "query/managePersonalData/gender/genderImages/images"))
+);
 ////////////////////////////// auth
 const loginUserRoute = require("./routes/authRoutes/LoginUserRout");
 const registerUserRoute = require("./routes/authRoutes/RegisterUserRout");
