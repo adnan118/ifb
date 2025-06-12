@@ -11,7 +11,7 @@ const mysql = require("mysql2/promise");
 const dbConfig = {
   host: "dreamtsv.com",
   user: "u643198768_project_ifb",
-  password: "projectIfb.118259",
+  password: "CHKX2JYOL7^a",
   database: "u643198768_project_ifb",
 };
 // دالة للحصول على اتصال بقاعدة البيانات
