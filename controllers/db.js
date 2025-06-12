@@ -16,7 +16,7 @@ const dbConfig = {
 };
 // دالة للحصول على اتصال بقاعدة البيانات
 async function getConnection() {
-    res.json({ message:dbConfig });
+  
   return await mysql.createConnection(dbConfig);
 }
 
