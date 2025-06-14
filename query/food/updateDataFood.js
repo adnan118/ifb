@@ -8,7 +8,7 @@ const fs = require("fs");
 
 // دالة لرفع الصور
 const uploadImages = handleImageUpload(
-  "query/food/foodImages/images/images",
+  "query/food/foodImages/images",
 
   [{ name: "food_img", maxCount: 1 }]
 );
