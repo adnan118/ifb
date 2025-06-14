@@ -27,8 +27,14 @@ const staticDirs = [
 ];
 
 // Register all static directories
-staticDirs.forEach(dir => {
-  app.use(dir, express.static(path.join(__dirname, dir)));
+staticDirs.forEach((dir) => {
+  app.use(dir, express.static(path.join(__dirname, dir), {
+    setHeaders: (res, path) => {
+      if (path.endsWith('.svg')) {
+        res.set('Content-Type', 'image/svg+xml');
+      }
+    }
+  }));
 });
 ////////////////////////////// auth
 const loginUserRoute = require("./routes/authRoutes/LoginUserRout");
