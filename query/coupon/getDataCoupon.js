@@ -15,9 +15,9 @@ const getDataCoupon = async (req, res) => {
     let whereClause = `
       coupon_count > 0
       AND coupon_end >= ?
-      AND coupon_name >= ?
+  
     `;
-    const params = [nowDate,coupon_name];
+    const params = [nowDate];
 
     // إذا تم توفير coupon_name، أضف الشرط بطريقة حساسـة لحالة الحروف
     if (coupon_name) {
