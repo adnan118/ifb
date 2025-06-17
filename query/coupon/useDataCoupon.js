@@ -34,6 +34,7 @@ async function useDataCoupon(req, res) {
 
     // تحديث عدد مرات استخدام الكوبون
     const updateCouponData = {
+      coupon_name:coupon.coupon_name,
       coupon_count: coupon.coupon_count - 1,
       coupon_start: coupon.coupon_start,
       coupon_end: coupon.coupon_end,

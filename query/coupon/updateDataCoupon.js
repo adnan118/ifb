@@ -3,6 +3,7 @@ const { updateData } = require("../../controllers/functions");
 async function updateDataCoupon(req, res) {
   try {
     const {
+      coupon_name,
       coupon_id,
       coupon_count,
       coupon_start,
@@ -12,6 +13,7 @@ async function updateDataCoupon(req, res) {
 
     // إعداد البيانات للتحديث
     const updateCouponData = {
+      coupon_name: coupon_name,
       coupon_count: coupon_count,
       coupon_start: coupon_start,
       coupon_end: coupon_end,

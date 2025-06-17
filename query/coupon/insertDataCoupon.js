@@ -2,11 +2,12 @@ const { insertData } = require("../../controllers/functions");
 
 async function insertDataCoupon(req, res) {
   try {
-    const { coupon_count, coupon_start, coupon_end, coupon_discount } =
+    const {coupon_name, coupon_count, coupon_start, coupon_end, coupon_discount } =
       req.body;
 
     // تحضير البيانات للإدراج
     const insertCouponData = {
+      coupon_name:coupon_name,
       coupon_count: coupon_count,
       coupon_start: coupon_start,
       coupon_end: coupon_end,
