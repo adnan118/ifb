@@ -15,7 +15,7 @@ async function insertEquipmentData(req, res) {
       ? req.files["equipments_img"][0]
       : null;
 
-    const { equipments_nameEn, equipments_nameAr, equipments_price } = req.body;
+    const { equipments_nameEn, equipments_nameAr, equipments_price,equipments_url } = req.body;
 
     // تحديد مسارات الصور بناءً على الملفات المرفوعة
     const equipments_img_path = equipment_img_file
@@ -28,6 +28,7 @@ async function insertEquipmentData(req, res) {
       equipments_nameAr: equipments_nameAr,
       equipments_img: equipments_img_path,
       equipments_price: equipments_price,
+      equipments_url:equipments_url,
     };
 
     const result = await insertData("equipments", insertEquipmentData);
