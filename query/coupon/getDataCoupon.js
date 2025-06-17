@@ -15,14 +15,11 @@ const getDataCoupon = async (req, res) => {
     const whereClause = `
       coupon_count > 0
       AND coupon_end >= ?
-      ${coupon_name ? "AND LOWER(coupon_id) = LOWER(?)" : ""}
-    `;
+      AND coupon_name  = LOWER(?)   `;
 
     // إعداد المعاملات
-    const params = [nowDate];
-    if (coupon_name) {
-      params.push(coupon_name);
-    }
+    const params = [nowDate, coupon_name];
+    
 
     const result = await getAllData("coupon", whereClause, params);
 
