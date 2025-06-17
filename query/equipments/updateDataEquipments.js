@@ -32,6 +32,7 @@ async function updateEquipmentData(req, res) {
       equipments_nameEn,
       equipments_nameAr,
       equipments_price,
+      equipments_url
     } = req.body;
 
     // استعلام للحصول على الصورة القديمة
@@ -70,10 +71,11 @@ async function updateEquipmentData(req, res) {
     }
 
     const updateEquipmentData = {
-      equipments_nameEn,
-      equipments_nameAr,
+      equipments_nameEn:equipments_nameEn,
+      equipments_nameAr:equipments_nameAr,
       equipments_img: equipments_img_path,
-      equipments_price,
+      equipments_price:equipments_price,
+      equipments_url:equipments_url
     };
 
     const result = await updateData(
