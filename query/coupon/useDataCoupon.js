@@ -2,26 +2,31 @@ const { updateData, getAllData } = require("../../controllers/functions");
 
 async function useDataCoupon(req, res) {
   try {
-    const { coupon_id } = req.body;
+    const { coupon_name } = req.body;
 
-    if (!coupon_id) {
+    if (!coupon_name) {
       return res.status(400).json({
         status: "failure",
-        message: "Coupon ID is required",
+        message: "Coupon coupon_name is required",
       });
     }
 
     // صياغة التاريخ بصيغة yyyy-mm-dd
     const nowDate = new Date().toISOString().split("T")[0];
-
+    if (coupon_name) {
+      coupon_name = coupon_name.trim(); // إزالة الفراغات
+    }
     // التحقق من صلاحية الكوبون
     const whereClause = `
       coupon_count > 0
       AND coupon_end >= ?
-      AND coupon_id = ?
+      AND coupon_name = ?
     `;
 
-    const validCouponResult = await getAllData("coupon", whereClause, [nowDate, coupon_id]);
+    const validCouponResult = await getAllData("coupon", whereClause, [
+      nowDate,
+      coupon_name,
+    ]);
 
     if (validCouponResult.status !== "success" || !validCouponResult.data || validCouponResult.data.length === 0) {
       return res.status(400).json({
