@@ -33,6 +33,14 @@ const getDataCoupon = async (req, res) => {
       });
     }
 
+    // إذا تم توفير coupon_name ولم يتم العثور على أي كوبونات
+    if (coupon_name && result.data.length === 0) {
+      return res.status(404).json({
+        status: "failure",
+        message: "Coupon not found.",
+      });
+    }
+
     res.status(200).json({
       status: "success",
       message: "Available coupons fetched successfully.",
