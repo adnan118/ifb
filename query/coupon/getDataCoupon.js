@@ -1,6 +1,6 @@
 const { getAllData } = require("../../controllers/functions");
 
-const getValidCoupons = async (req, res) => {
+const getDataCoupon = async (req, res) => {
   try {
     let { coupon_name } = req.query;
 
@@ -48,4 +48,4 @@ const getValidCoupons = async (req, res) => {
   }
 };
 
-module.exports = { getValidCoupons };
+module.exports = { getDataCoupon };
