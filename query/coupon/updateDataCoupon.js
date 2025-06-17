@@ -20,10 +20,14 @@ async function updateDataCoupon(req, res) {
       coupon_discount: coupon_discount,
     };
 
+    
+
+
     const result = await updateData(
       "coupon",
       updateCouponData,
-      `coupon_id = ${coupon_id}`
+      `coupon_id = ?`,
+      [coupon_id]
     );
 
     if (result.status === "success") {
