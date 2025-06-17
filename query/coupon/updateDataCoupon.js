@@ -1,28 +1,50 @@
-const { updateData } = require("../../controllers/functions");
+const { updateData, getAllData } = require("../../controllers/functions");
 
 async function updateDataCoupon(req, res) {
   try {
     const {
-      coupon_name,
       coupon_id,
+      coupon_name,
       coupon_count,
       coupon_start,
       coupon_end,
       coupon_discount,
     } = req.body;
 
+    // تحقق من وجود coupon_id
+    if (!coupon_id) {
+      return res.status(400).json({
+        status: "failure",
+        message: "coupon_id is required.",
+      });
+    }
+
+    // التحقق من وجود الكوبون في قاعدة البيانات
+    const checkCouponResult = await getAllData("coupon", "coupon_id = ?", [
+      coupon_id,
+    ]);
+
+    if (
+      checkCouponResult.status !== "success" ||
+      !checkCouponResult.data ||
+      checkCouponResult.data.length === 0
+    ) {
+      return res.status(404).json({
+        status: "failure",
+        message: "Coupon not found.",
+      });
+    }
+
     // إعداد البيانات للتحديث
     const updateCouponData = {
-      coupon_name: coupon_name,
-      coupon_count: coupon_count,
-      coupon_start: coupon_start,
-      coupon_end: coupon_end,
-      coupon_discount: coupon_discount,
+      coupon_name,
+      coupon_count,
+      coupon_start,
+      coupon_end,
+      coupon_discount,
     };
 
-    
-
-
+    // تحديث البيانات
     const result = await updateData(
       "coupon",
       updateCouponData,
