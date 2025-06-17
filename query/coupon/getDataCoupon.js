@@ -12,14 +12,18 @@ const getDataCoupon = async (req, res) => {
     const nowDate = new Date().toISOString().split("T")[0];
 
     // بناء شرط WHERE
-    const whereClause = `
+    let whereClause = `
       coupon_count > 0
       AND coupon_end >= ?
-      AND coupon_name  = LOWER(?)   `;
+      AND coupon_name >= ?
+    `;
+    const params = [nowDate,coupon_name];
 
-    // إعداد المعاملات
-    const params = [nowDate, coupon_name];
-    
+    // إذا تم توفير coupon_name، أضف الشرط بطريقة حساسـة لحالة الحروف
+    if (coupon_name) {
+      whereClause += ` AND coupon_name = ?`;
+      params.push(coupon_name);
+    }
 
     const result = await getAllData("coupon", whereClause, params);
 
@@ -30,7 +34,7 @@ const getDataCoupon = async (req, res) => {
       });
     }
 
-    // إذا تم توفير coupon_name ولم يتم العثور على أي كوبونات
+    // إذا تم تقديم coupon_name ولم يتم العثور على الكوبونات
     if (coupon_name && result.data.length === 0) {
       return res.status(404).json({
         status: "failure",
