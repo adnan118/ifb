@@ -3,7 +3,7 @@ const express = require("express");
 const mysql = require("mysql2/promise");
 const { getConnection } = require("./controllers/db");
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 443;
 const path = require("path");
 
 // Serve static files from the 'query' directory
