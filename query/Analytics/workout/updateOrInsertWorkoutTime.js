@@ -21,7 +21,9 @@ async function updateOrInsertWorkoutTime(req, res) {
     );
 
     if (
-      if (checkResult.status === "success" && checkResult.data) {
+      checkResult.status === "success" &&
+      checkResult.data !== null &&
+      checkResult.data !== undefined
     ) {
       const existingRecord = checkResult.data[0]; // نفترض أن هناك سجل واحد، أو يمكنك التحقق من المنطق حسب الحاجة
 
