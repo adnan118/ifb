@@ -9,17 +9,19 @@ async function updateOrInsertWorkoutTime(req, res) {
     const { workouttime_user_id, workouttime_goal, workouttime_value_day } = req.body;
 
     // الحصول على التاريخ بصيغة YYYY-MM-DD مع وقت 00:00:00
+ 
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // يعين الوقت إلى 00:00:00
-    const todayISO = today.toISOString().split('T')[0]; // فقط التاريخ
-    const todayDateTime = today.toISOString().replace('T', ' ').split('.')[0]; // التاريخ مع الوقت بصيغة "YYYY-MM-DD HH:MM:SS"
+today.setHours(0, 0, 0, 0); // يعين الوقت إلى الصفر
+const todayISO = today.toISOString().split('T')[0]; // "YYYY-MM-DD"
+const todayDateTime = `${todayISO} 00:00:00`; // كامل التاريخ مع الوقت
 
+    
     // التحقق من وجود سجل مطابق للمستخدم والتاريخ
-    const checkResult = await getData(
-      "workouttime",
-      "workouttime_user_id = ? AND DATE(workouttime_date_day) = ?",
-      [workouttime_user_id, todayISO]
-    );
+  const checkResult = await getData(
+  "workouttime",
+  "workouttime_user_id = ? AND workouttime_date_day = ?",
+  [workouttime_user_id, todayDateTime]
+);
 
     if (checkResult.status === "success" && checkResult.data && checkResult.data.length > 0) {
       // إذا وجد سجل، يتم التحديث
