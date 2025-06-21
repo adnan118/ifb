@@ -12,15 +12,19 @@ async function insertDataFood(req, res) {
       ? req.files["food_img"][0]
       : null;
 
-    const { 
-      food_name, 
-      food_kcal, 
-      food_protein, 
-      food_fat, 
-      food_carbs, 
-      food_cookingtime, 
-      food_note, 
-      food_ingredients 
+    
+    const {
+      food_nameEn,
+      food_nameAr,
+      food_kcal,
+      food_protein,
+      food_fat,
+      food_carbs,
+      food_cookingtime,
+      food_noteEn,
+      food_noteAr,
+      food_ingredientsEn,
+      food_ingredientsAr,
     } = req.body;
 
     // تحديد مسار الصورة المرفوعة
@@ -30,14 +34,17 @@ async function insertDataFood(req, res) {
 
     // إعداد بيانات الإدخال
     const insertFoodData = {
-      food_name: food_name,
+      food_nameEn: food_nameEn,
+      food_nameAr: food_nameAr,
       food_kcal: food_kcal,
       food_protein: food_protein,
       food_fat: food_fat,
       food_carbs: food_carbs,
       food_cookingtime: food_cookingtime,
-      food_note: food_note,
-      food_ingredients: food_ingredients,
+      food_noteEn: food_noteEn,
+      food_noteAr: food_noteAr,
+      food_ingredientsEn: food_ingredientsEn,
+      food_ingredientsAr: food_ingredientsAr,
       food_img: food_img_path,
     };
 
