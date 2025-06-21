@@ -10,9 +10,13 @@ async function updateOrInsertWorkoutTime(req, res) {
       req.body;
 
     // الحصول على التاريخ بصيغة YYYY-MM-DD
-    const today = new Date();
+ /*   const today = new Date();
     const todayISO = today.toISOString().split("T")[0];
-
+*/
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // يعين الوقت إلى 00:00:00
+    const todayISO = today.toISOString(); // الناتج سيكون على شكل "YYYY-MM-DDT00:00:00.000Z"
+    const todayDateTime = todayISO.replace("T", " ").replace(".000Z", "");
     // 1. التحقق من وجود سجل للقيم لهذا اليوم وuser_id
     const checkResult = await getData(
       "workouttime",
