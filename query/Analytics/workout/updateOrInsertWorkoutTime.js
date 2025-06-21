@@ -6,25 +6,27 @@ const {
 
 async function updateOrInsertWorkoutTime(req, res) {
   try {
-    const { workouttime_user_id, workouttime_goal, workouttime_value_day } = req.body;
+    const { workouttime_user_id, workouttime_goal, workouttime_value_day } =
+      req.body;
 
-    // الحصول على التاريخ بصيغة YYYY-MM-DD مع وقت 00:00:00
- 
+    // الحصول على التاريخ بصيغة YYYY-MM-DD
     const today = new Date();
-today.setHours(0, 0, 0, 0); // يعين الوقت إلى الصفر
-const todayISO = today.toISOString().split('T')[0]; // "YYYY-MM-DD"
-const todayDateTime = `${todayISO} 00:00:00`; // كامل التاريخ مع الوقت
+    const todayISO = today.toISOString().split("T")[0];
 
-    
-    // التحقق من وجود سجل مطابق للمستخدم والتاريخ
-  const checkResult = await getData(
-  "workouttime",
-  "workouttime_user_id = ? AND workouttime_date_day = ?",
-  [workouttime_user_id, todayDateTime]
-);
+    // 1. التحقق من وجود سجل للقيم لهذا اليوم وuser_id
+    const checkResult = await getData(
+      "workouttime",
+      "workouttime_user_id = ? AND DATE(workouttime_date_day) = ?",
+      [workouttime_user_id, todayISO]
+    );
 
-    if (checkResult.status === "success" && checkResult.data && checkResult.data.length > 0) {
-      // إذا وجد سجل، يتم التحديث
+    if (
+      
+      checkResult.data  
+    ) {
+      const existingRecord = checkResult.data[0]; // نفترض أن هناك سجل واحد، أو يمكنك التحقق من المنطق حسب الحاجة
+
+      // 2. إذا وجد، قم بالتحديث
       const result = await updateData(
         "workouttime",
         {
@@ -38,41 +40,41 @@ const todayDateTime = `${todayISO} 00:00:00`; // كامل التاريخ مع ا
       if (result.status === "success") {
         res.json({
           status: "success",
-          message: "تم تحديث بيانات التمرين بنجاح.",
+          message: "Workout time data updated successfully.",
           data: result.data,
         });
       } else {
         res.status(500).json({
           status: "failure",
-          message: "فشل في تحديث بيانات التمرين.",
+          message: "Failed to update workout time data.",
         });
       }
     } else {
-      // إذا لم يوجد سجل، نقوم بالإدراج
+      // 3. إذا لم يوجد سجل، قم بالإضافة
       const insertResult = await insertData("workouttime", {
         workouttime_user_id: workouttime_user_id,
         workouttime_goal: workouttime_goal,
         workouttime_value_day: workouttime_value_day,
-        workouttime_date_day: todayISO, // التاريخ بصيغة "YYYY-MM-DD"
+        workouttime_date_day: todayISO, // التاريخ
       });
 
       if (insertResult.status === "success") {
         res.json({
           status: "success",
-          message: "تم إدخال سجل جديد لوقت التمرين بنجاح.",
+          message: "New workout time record inserted successfully.",
         });
       } else {
         res.status(500).json({
           status: "failure",
-          message: "فشل في إدخال سجل جديد لوقت التمرين.",
+          message: "Failed to insert new workout time record.",
         });
       }
     }
   } catch (error) {
-    console.error("خطأ في الدالة updateOrInsertWorkoutTime:", error);
+    console.error("Error in updateOrInsertWorkoutTime:", error);
     res.status(500).json({
       status: "failure",
-      message: "حدثت مشكلة أثناء معالجة الطلب.",
+      message: "There is a problem processing your request.",
     });
   }
 }
