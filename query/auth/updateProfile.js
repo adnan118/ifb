@@ -15,7 +15,7 @@ const {
   
   // دالة لحذف الصور
   const deleteImages = handleImageDeletion(
-    "query/auth/userImages/images/images", // مسار الصور
+    "query/auth/userImages/images", // مسار الصور
      
     "users", // اسم الجدول
     "users_id", // حقل المعرف
