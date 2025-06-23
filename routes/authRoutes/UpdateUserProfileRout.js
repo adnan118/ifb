@@ -1,13 +1,14 @@
 // routes/routes.js
 const express = require("express");
+ 
+
 const {
-  updateUserProfile,
-  uploadUserImage,
+  updateUserData,
+  uploadImages,
 } = require("../../query/auth/updateProfile");
 
 const router = express.Router();
 
-router.post("/updateProfile", uploadUserImage, updateUserProfile);
+router.post("/updateProfile", uploadImages, updateUserData);
 
 module.exports = router;
- 
