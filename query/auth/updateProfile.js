@@ -25,8 +25,10 @@ const {
   async function updateUserData(req, res) {
     try {
       const user_img_file = req.files["users_img"]
-        ? req.files["users_img"][0]
-        : null;
+  ? req.files["users_img"][0]
+  : req.files["file"]
+    ? req.files["file"][0]
+    : null;
   
       const {
         users_id,
