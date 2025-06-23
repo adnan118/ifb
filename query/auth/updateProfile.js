@@ -112,4 +112,4 @@ async function updateUserData(req, res) {
 }
 
 // تصدير الدالة
-module.exports = { updateUserData };
+module.exports = { updateUserData , uploadImages};
