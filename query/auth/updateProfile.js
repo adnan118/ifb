@@ -1,90 +1,115 @@
-const { updateData, getData, handleImageUpload } = require("../../controllers/functions");
-const bcrypt = require("bcrypt");
+const {
+  updateData,
+  handleImageUpload,
+  handleImageDeletion,
+  getData,
+} = require("../../controllers/functions");
 const path = require("path");
 const fs = require("fs");
 
-// إعداد ميدلوير رفع الصورة
-const uploadUserImage = handleImageUpload(
-  "query/auth/userImages/images",
+// دالة لرفع الصور
+const uploadImages = handleImageUpload(
+  "query/users/userImages/images",
   [{ name: "users_img", maxCount: 1 }]
 );
 
-// دالة لتحديث بيانات المستخدم
-async function updateUserProfile(req, res) {
+// دالة لحذف الصور
+const deleteImages = handleImageDeletion(
+  "query/users/userImages/images", // مسار الصور
+  "users", // اسم الجدول
+  "users_id", // حقل المعرف
+  "users_img" // حقل الصورة
+);
+
+async function updateUserData(req, res) {
   try {
-    const { users_id, users_name, users_phone, users_password } = req.body;
-    // تحقق من وجود معرف المستخدم
-    if (!users_id) {
-      return res.status(400).json({
-        status: "failure",
-        message: "users_id is required."
-      });
-    }
+    const user_img_file = req.files["users_img"]
+      ? req.files["users_img"][0]
+      : null;
 
-    // جلب بيانات المستخدم القديمة
-    const oldUserDataResult = await getData("users", "users_id = ?", [users_id]);
-    if (oldUserDataResult.status !== "success") {
-      return res.status(404).json({
-        status: "failure",
-        message: "User not found."
-      });
-    }
-    const oldUser = oldUserDataResult.data;
-    let users_img = oldUser.users_img || "img.png";
+    const {
+      users_id,
+      users_name,
+      users_phone,
+      users_password,
+    } = req.body;
 
-    // معالجة الصورة الجديدة إذا تم رفعها
-    const user_img_file = req.files && req.files["users_img"] ? req.files["users_img"][0] : null;
+    // استعلام للحصول على الصورة القديمة
+    const oldUserData = await getData("users", "users_id = ?", [users_id]);
+
+    const old_users_img =
+      oldUserData &&
+      oldUserData.status === "success" &&
+      oldUserData.data
+        ? oldUserData.data.users_img
+        : null;
+
+    let users_img_path = old_users_img || "img.png"; // الافتراضي
+
     if (user_img_file) {
       const newFileName = user_img_file.filename;
-      // حذف الصورة القديمة إذا كانت ليست الافتراضية
-      if (users_img && users_img !== "img.png" && newFileName !== users_img) {
-        const oldImagePath = path.join(process.cwd(), "query/auth/userImages/images", users_img);
-        if (fs.existsSync(oldImagePath)) {
-          fs.unlinkSync(oldImagePath);
+
+      // إذا كانت الصورة الجديدة مختلفة عن القديمة
+      if (newFileName !== old_users_img) {
+        // حذف الصورة القديمة إن وجدت
+        if (old_users_img && old_users_img !== "img.png") {
+          const oldImagePath = path.join(
+            process.cwd(),
+            "query/users/userImages/images",
+            old_users_img
+          );
+          if (fs.existsSync(oldImagePath)) {
+            fs.unlinkSync(oldImagePath);
+          }
         }
+        users_img_path = newFileName;
       }
-      users_img = newFileName;
     }
 
-    // تجهيز البيانات للتحديث
+    // إعدادات التحديث
     const updateFields = {};
-    if (users_name) updateFields.users_name = users_name;
-    if (users_phone) updateFields.users_phone = users_phone;
-    if (typeof users_img !== "undefined") updateFields.users_img = users_img;
-    if (users_password) {
-      // تشفير كلمة المرور
-      const hashedPassword = await bcrypt.hash(users_password, 10);
-      updateFields.users_password = hashedPassword;
+
+    if (users_name !== undefined) {
+      updateFields.users_name = users_name;
     }
 
-    // إذا لم يتم إرسال أي بيانات للتحديث
-    if (Object.keys(updateFields).length === 0) {
-      return res.status(400).json({
-        status: "failure",
-        message: "No data to update."
-      });
+    if (users_phone !== undefined) {
+      updateFields.users_phone = users_phone;
     }
 
-    // تنفيذ التحديث
-    const result = await updateData("users", updateFields, "users_id = ?", [users_id]);
+    if (users_password !== undefined) {
+      updateFields.users_password = users_password;
+    }
+
+    // التعامل مع الصورة، إذا تم التعديل عليها أو لا
+    updateFields.users_img = users_img_path;
+
+    const result = await updateData(
+      "users",
+      updateFields,
+      "users_id = ?",
+      [users_id]
+    );
+
     if (result.status === "success") {
       res.json({
         status: "success",
-        message: "User profile updated successfully."
+        message: "User data updated successfully.",
       });
     } else {
       res.status(500).json({
         status: "failure",
-        message: "Failed to update user profile."
+        message: "Failed to update user data.",
       });
     }
   } catch (error) {
-    console.error("Error updating user profile: ", error);
+    console.error("Error updating user data: ", error);
     res.status(500).json({
       status: "failure",
-      message: "There is a problem updating user profile."
+      message: "There is a problem updating user data.",
     });
   }
 }
 
-module.exports = { updateUserProfile, uploadUserImage }; 
+// تصدير الدالة
+module.exports = { updateUserData };
