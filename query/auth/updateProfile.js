@@ -6,6 +6,7 @@ const {
   } = require("../../controllers/functions");
   const path = require("path");
   const fs = require("fs");
+  const bcrypt = require("bcrypt");
   
   // دالة لرفع الصور
   const uploadImages = handleImageUpload(
@@ -15,7 +16,7 @@ const {
   
   // دالة لحذف الصور
   const deleteImages = handleImageDeletion(
-    "query/auth/userImages/images", // مسار الصور
+    "query/auth/userImages/images/images", // مسار الصور
      
     "users", // اسم الجدول
     "users_id", // حقل المعرف
@@ -24,12 +25,14 @@ const {
   
   async function updateUserData(req, res) {
     try {
-      const user_img_file = req.files["users_img"]
+       
+  
+        const user_img_file = req.files["users_img"]
   ? req.files["users_img"][0]
   : req.files["file"]
     ? req.files["file"][0]
     : null;
-  
+
       const {
         users_id,
         users_name,
@@ -77,7 +80,9 @@ const {
       }
   
       if (users_password !== undefined) {
-        updateFields.users_password = users_password;
+        // تشفير كلمة المرور قبل الحفظ
+        const hashedPassword = await bcrypt.hash(users_password, 10);
+        updateFields.users_password = hashedPassword;
       }
   
       // التعامل مع الصورة، إذا تم التعديل عليها أو لا
