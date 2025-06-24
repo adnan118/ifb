@@ -76,6 +76,14 @@ const {
       }
   
       if (users_phone !== undefined) {
+        // تحقق إذا كان الرقم الجديد مستخدم من قبل مستخدم آخر
+        const checkPhone = await getData("users", "users_phone = ? AND users_id != ?", [users_phone, users_id]);
+        if (checkPhone.status === "success" && checkPhone.data) {
+          return res.status(400).json({
+            status: "failure",
+            message: "This phone number is already used by another user.",
+          });
+        }
         updateFields.users_phone = users_phone;
       }
   
