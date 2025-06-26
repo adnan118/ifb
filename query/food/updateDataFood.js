@@ -20,6 +20,7 @@ async function updateDataFood(req, res) {
       : null;
     const {
       food_id,
+      food_diettype_id,
       food_nameEn,
       food_nameAr,
       food_kcal,
@@ -68,6 +69,7 @@ async function updateDataFood(req, res) {
     }
 
     const updateFoodData = {
+      food_diettype_id: food_diettype_id,
       food_nameEn: food_nameEn,
       food_nameAr: food_nameAr,
       food_kcal: food_kcal,

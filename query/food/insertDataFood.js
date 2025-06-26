@@ -14,6 +14,7 @@ async function insertDataFood(req, res) {
 
     
     const {
+      food_diettype_id,
       food_nameEn,
       food_nameAr,
       food_kcal,
@@ -34,6 +35,7 @@ async function insertDataFood(req, res) {
 
     // إعداد بيانات الإدخال
     const insertFoodData = {
+      food_diettype_id:food_diettype_id,
       food_nameEn: food_nameEn,
       food_nameAr: food_nameAr,
       food_kcal: food_kcal,
