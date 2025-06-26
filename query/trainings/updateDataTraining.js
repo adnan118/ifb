@@ -31,6 +31,7 @@ async function updateDataTraining(req, res) {
       trainings_id,
       trainings_nameEn,
       trainings_nameAr,
+      training_activities_id,
     } = req.body;
 
     // استعلام للحصول على الصورة القديمة
@@ -65,8 +66,9 @@ async function updateDataTraining(req, res) {
     }
 
     const updateTrainingData = {
-      trainings_nameEn,
-      trainings_nameAr,
+      trainings_nameEn: trainings_nameEn,
+      trainings_nameAr: trainings_nameAr,
+      training_activities_id: training_activities_id,
       trainings_img: trainings_img_path,
     };
 

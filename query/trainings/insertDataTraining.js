@@ -15,7 +15,8 @@ async function insertDataTraining(req, res) {
       ? req.files["trainings_img"][0]
       : null;
 
-    const { trainings_nameEn, trainings_nameAr } = req.body;
+    const { trainings_nameEn, trainings_nameAr, training_activities_id } =
+      req.body;
 
     // تحديد مسارات الصور بناءً على الملفات المرفوعة
     const trainings_img_path = training_img_file
@@ -26,6 +27,7 @@ async function insertDataTraining(req, res) {
     const insertTrainingData = {
       trainings_nameEn: trainings_nameEn,
       trainings_nameAr: trainings_nameAr,
+      training_activities_id:training_activities_id,
       trainings_img: trainings_img_path,
     };
 
