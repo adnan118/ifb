@@ -68,7 +68,6 @@ module.exports = {
   getDataTraining,
 };
 */
-
 const { getAllData, getData } = require("../../controllers/functions");
 
 const getDataTraining = async (req, res) => {
@@ -108,11 +107,10 @@ const getDataTraining = async (req, res) => {
     // 3. بناء الاستعلام بناءً على قيمة الأوفر
     if (offers_discount && offers_discount !== 0) {
       // جلب من user_trainings
-      // نجلب التمارين المرتبطة بالمستخدم
-      const sql = `SELECT ut.*, t.* FROM user_trainings ut
+      let sql = `SELECT ut.*, t.* FROM user_trainings ut
         JOIN trainings t ON ut.training_id = t.trainings_id
         WHERE ut.user_id = ? AND t.training_activities_id = ?`;
-      const values = [personalData_users_id, training_activities_id];
+      let values = [personalData_users_id, training_activities_id];
       // دعم فلترة trainings_id إذا أرسلت
       if (trainings_id && Array.isArray(trainings_id) && trainings_id.length > 0 && !trainings_id.includes(0)) {
         const inClause = trainings_id.map(() => "?").join(",");
