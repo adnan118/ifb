@@ -28,7 +28,7 @@ async function updateOrInsertWorkoutTime(req, res) {
     if (
       checkResult.status === "success" &&
       checkResult.data !== null &&
-      checkResult.data !== undefined &&
+      checkResult.data !== undefined 
      
     ) {
       // 2. إذا وجد، قم بالتحديث
