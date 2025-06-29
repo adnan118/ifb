@@ -6,65 +6,61 @@ const {
 
 async function updateOrInsertWorkoutTime(req, res) {
   try {
-    const { workouttime_user_id, workouttime_goal, workouttime_value_day } = req.body;
+    const {
+      workouttime_user_id,
+      workouttime_goal,
+      workouttime_value_day,
+      workouttime_date_day,
+    } = req.body;
 
-    // الحصول على التاريخ بصيغة YYYY-MM-DD
+    // استخدم التاريخ المرسل من التطبيق أو تاريخ السيرفر إذا لم يوجد
     const today = new Date();
     const todayISO = today.toISOString().split("T")[0];
+    const dateToUse = workouttime_date_day || todayISO;
 
-    // 1. التحقق من وجود سجل لهذا اليوم وuser_id
+    // 1. التحقق من وجود سجل للقيم لهذا اليوم وuser_id
     const checkResult = await getData(
       "workouttime",
       "workouttime_user_id = ? AND DATE(workouttime_date_day) = ?",
-      [workouttime_user_id, todayISO]
+      [workouttime_user_id, dateToUse]
     );
-
-    // متغيرات للقيم المجمعة
-    let newValueDay = workouttime_value_day;
 
     if (
       checkResult.status === "success" &&
       checkResult.data !== null &&
-      checkResult.data !== undefined
+      checkResult.data !== undefined &&
+     
     ) {
-      const existingRecord = checkResult.data;
-
-      // استرجاع القيم الحالية، وتحويلها لأرقام عشريه
-      const currentValue = parseFloat(existingRecord.workouttime_value_day);
-      const newInputValue = parseFloat(workouttime_value_day);
-
-      // جمع القيم العشرية
-      newValueDay = currentValue + newInputValue;
-
-      // 2. تحديث قيمة `workouttime_value_day`
+      // 2. إذا وجد، قم بالتحديث
       const result = await updateData(
         "workouttime",
         {
-          workouttime_value_day: newValueDay,
+          workouttime_goal: workouttime_goal,
+          workouttime_value_day: workouttime_value_day,
         },
         "workouttime_user_id = ? AND DATE(workouttime_date_day) = ?",
-        [workouttime_user_id, todayISO]
+        [workouttime_user_id, dateToUse]
       );
 
       if (result.status === "success") {
         res.json({
           status: "success",
-          message: "تم تحديث زمن التمرين اليومي بنجاح (تمت الإضافة).",
+          message: "Workout time data updated successfully.",
           data: result.data,
         });
       } else {
         res.status(500).json({
           status: "failure",
-          message: "فشل في تحديث زمن التمرين اليومي.",
+          message: "Failed to update workout time data.",
         });
       }
     } else {
-      // إذا لم يوجد سجل، أدخل سجل جديد
+      // 3. إذا لم يوجد سجل، قم بالإضافة
       const insertResult = await insertData("workouttime", {
         workouttime_user_id: workouttime_user_id,
-        workouttime_goal: workouttime_goal, // ثابت، لا يتغير
+        workouttime_goal: workouttime_goal,
         workouttime_value_day: workouttime_value_day,
-        workouttime_date_day: todayISO,
+        workouttime_date_day: dateToUse, // التاريخ الصحيح
       });
 
       if (insertResult.status === "success") {
@@ -80,7 +76,7 @@ async function updateOrInsertWorkoutTime(req, res) {
       }
     }
   } catch (error) {
-    console.error("خطأ في updateOrInsertWorkoutTime:", error);
+    console.error("Error in updateOrInsertWorkoutTime:", error);
     res.status(500).json({
       status: "failure",
       message: "There is a problem processing your request.",
