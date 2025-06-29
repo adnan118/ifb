@@ -6,19 +6,14 @@ const {
 
 async function updateOrInsertWorkoutTime(req, res) {
   try {
-    const {
-      workouttime_user_id,
-      workouttime_goal,
-      workouttime_value_day,
-      workouttime_date_day,
-    } = req.body;
+    const { workouttime_user_id, workouttime_goal, workouttime_value_day, workouttime_date_day } = req.body;
 
-    // استخدم التاريخ المرسل من التطبيق أو تاريخ السيرفر إذا لم يوجد
+    // استخدم التاريخ المرسل أو تاريخ السيرفر
     const today = new Date();
     const todayISO = today.toISOString().split("T")[0];
     const dateToUse = workouttime_date_day || todayISO;
 
-    // 1. التحقق من وجود سجل للقيم لهذا اليوم وuser_id
+    // 1. التحقق من وجود سجل لهذا اليوم وuser_id
     const checkResult = await getData(
       "workouttime",
       "workouttime_user_id = ? AND DATE(workouttime_date_day) = ?",
@@ -28,15 +23,19 @@ async function updateOrInsertWorkoutTime(req, res) {
     if (
       checkResult.status === "success" &&
       checkResult.data !== null &&
-      checkResult.data !== undefined 
-     
+      checkResult.data !== undefined  
     ) {
-      // 2. إذا وجد، قم بالتحديث
+      // سجل موجود: اجمع القيمة القديمة مع الجديدة
+      const existingRecord = checkResult.data[0];
+      const oldValue = Number(existingRecord.workouttime_value_day) || 0;
+      const newValue = Number(workouttime_value_day) || 0;
+      const totalValue = oldValue + newValue;
+
       const result = await updateData(
         "workouttime",
         {
           workouttime_goal: workouttime_goal,
-          workouttime_value_day: workouttime_value_day,
+          workouttime_value_day: totalValue, // اجمع القيمتين
         },
         "workouttime_user_id = ? AND DATE(workouttime_date_day) = ?",
         [workouttime_user_id, dateToUse]
@@ -45,7 +44,7 @@ async function updateOrInsertWorkoutTime(req, res) {
       if (result.status === "success") {
         res.json({
           status: "success",
-          message: "Workout time data updated successfully.",
+          message: "Workout time data updated successfully (accumulated).",
           data: result.data,
         });
       } else {
@@ -55,12 +54,12 @@ async function updateOrInsertWorkoutTime(req, res) {
         });
       }
     } else {
-      // 3. إذا لم يوجد سجل، قم بالإضافة
+      // لا يوجد سجل: أضف سجل جديد
       const insertResult = await insertData("workouttime", {
         workouttime_user_id: workouttime_user_id,
         workouttime_goal: workouttime_goal,
         workouttime_value_day: workouttime_value_day,
-        workouttime_date_day: dateToUse, // التاريخ الصحيح
+        workouttime_date_day: dateToUse,
       });
 
       if (insertResult.status === "success") {
