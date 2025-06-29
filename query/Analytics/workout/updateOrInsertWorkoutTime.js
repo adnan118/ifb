@@ -21,10 +21,9 @@ async function updateOrInsertWorkoutTime(req, res) {
 
     if (
       checkResult.status === "success" &&
-      checkResult.data &&
-      checkResult.data.length > 0
+      checkResult.data
     ) {
-      const existingRecord = checkResult.data[0];
+      const existingRecord = checkResult.data;
       // جمع القيمة الجديدة مع القديمة
       const newValue =
         Number(existingRecord.workouttime_value_day || 0) + Number(workouttime_value_day);
