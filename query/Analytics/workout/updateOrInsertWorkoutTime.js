@@ -6,43 +6,45 @@ const {
 
 async function updateOrInsertWorkoutTime(req, res) {
   try {
-    const { workouttime_user_id, workouttime_goal, workouttime_value_day } =
+    const { workouttime_user_id, workouttime_goal, workouttime_value_day, workouttime_date_day } =
       req.body;
 
-    // الحصول على التاريخ بصيغة YYYY-MM-DD
-    const today = new Date();
-    const todayISO = today.toISOString().split("T")[0];
+    // استخدم التاريخ القادم من التطبيق مباشرة
+    const dateDay = workouttime_date_day;
 
     // 1. التحقق من وجود سجل للقيم لهذا اليوم وuser_id
     const checkResult = await getData(
       "workouttime",
       "workouttime_user_id = ? AND DATE(workouttime_date_day) = ?",
-      [workouttime_user_id, todayISO]
+      [workouttime_user_id, dateDay]
     );
 
     if (
       checkResult.status === "success" &&
-      checkResult.data !== null &&
-      checkResult.data !== undefined
+      checkResult.data &&
+      checkResult.data.length > 0
     ) {
-      const existingRecord = checkResult.data[0]; // نفترض أن هناك سجل واحد، أو يمكنك التحقق من المنطق حسب الحاجة
+      const existingRecord = checkResult.data[0];
+      // جمع القيمة الجديدة مع القديمة
+      const newValue =
+        Number(existingRecord.workouttime_value_day || 0) + Number(workouttime_value_day);
 
-      // 2. إذا وجد، قم بالتحديث
+      // 2. إذا وجد، قم بالتحديث بالقيمة التراكمية
       const result = await updateData(
         "workouttime",
         {
           workouttime_goal: workouttime_goal,
-          workouttime_value_day: workouttime_value_day,
+          workouttime_value_day: newValue,
         },
         "workouttime_user_id = ? AND DATE(workouttime_date_day) = ?",
-        [workouttime_user_id, todayISO]
+        [workouttime_user_id, dateDay]
       );
 
       if (result.status === "success") {
         res.json({
           status: "success",
-          message: "Workout time data updated successfully.",
-          data: result.data,
+          message: "Workout time data updated successfully (cumulative).",
+          data: { ...result.data, workouttime_value_day: newValue },
         });
       } else {
         res.status(500).json({
@@ -56,7 +58,7 @@ async function updateOrInsertWorkoutTime(req, res) {
         workouttime_user_id: workouttime_user_id,
         workouttime_goal: workouttime_goal,
         workouttime_value_day: workouttime_value_day,
-        workouttime_date_day: todayISO, // التاريخ
+        workouttime_date_day: dateDay, // التاريخ القادم من التطبيق
       });
 
       if (insertResult.status === "success") {
