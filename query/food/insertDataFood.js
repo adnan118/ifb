@@ -26,6 +26,8 @@ async function insertDataFood(req, res) {
       food_noteAr,
       food_ingredientsEn,
       food_ingredientsAr,
+      food_preparationEn,
+      food_preparationAr,
     } = req.body;
 
     // تحديد مسار الصورة المرفوعة
@@ -47,6 +49,8 @@ async function insertDataFood(req, res) {
       food_noteAr: food_noteAr,
       food_ingredientsEn: food_ingredientsEn,
       food_ingredientsAr: food_ingredientsAr,
+      food_preparationEn: food_preparationEn,
+      food_preparationAr: food_preparationAr,
       food_img: food_img_path,
     };
 
