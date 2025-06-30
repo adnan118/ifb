@@ -32,6 +32,8 @@ async function updateDataFood(req, res) {
       food_noteAr,
       food_ingredientsEn,
       food_ingredientsAr,
+      food_preparationEn,
+      food_preparationAr,
     } = req.body;
 
     // استعلام للحصول على الصورة القديمة
@@ -81,6 +83,8 @@ async function updateDataFood(req, res) {
       food_noteAr: food_noteAr,
       food_ingredientsEn: food_ingredientsEn,
       food_ingredientsAr: food_ingredientsAr,
+      food_preparationEn: food_preparationEn,
+      food_preparationAr: food_preparationAr,
       food_img: food_img_path,
     };
 
