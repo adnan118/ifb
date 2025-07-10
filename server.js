@@ -188,7 +188,7 @@ app.use("/api84818datafeedback", feedbacksRout);
 //////////////////////////// trainings
 app.use("/api84818datatrainings", trainingsRout);
 //////////////////////////// trainingCategory
-app.use("/api84818datatrainingCategoryRout", trainingCategoryRout);
+app.use("/api84818datatrainingCategory", trainingCategoryRout);
 
 //////////////////////////// exercise
 app.use("/api84818dataexercise", exerciseRout);
