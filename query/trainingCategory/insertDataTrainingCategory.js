@@ -17,7 +17,7 @@ async function insertDataTrainingCategory(req, res) {
       : null;
 
     const {
-      training_category_id,
+       
       training_category_idTraining,
       training_category_nameEn,
       training_category_nameAr,
@@ -30,7 +30,7 @@ async function insertDataTrainingCategory(req, res) {
 
     // إعداد البيانات لإدخالها
     const insertTrainingCategoryData = {
-      training_category_id: training_category_id,
+    
       training_category_idTraining: training_category_idTraining,
       training_category_nameEn: training_category_nameEn,
       training_category_nameAr: training_category_nameAr,
