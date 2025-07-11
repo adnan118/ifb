@@ -1,17 +1,19 @@
 const express = require('express');
   
  const {
-   insertDataTrainingCategory,   uploadImages, } = require("../../query/trainingCategory/insertDataTrainingCategory"); 
+   insertDataTrainingCategory,
+   uploadImages,
+ } = require("../../query/training_category/insertDataTrainingCategory"); 
  const {
    updateDataTrainingCategory,
- } = require("../../query/trainingCategory/updateDataTrainingCategory");
+ } = require("../../query/training_category/updateDataTrainingCategory");
  const {
    getTrainingCategories,
- } = require("../../query/trainingCategory/getDataTrainingCategory");
+ } = require("../../query/training_category/getDataTrainingCategory");
  const {
    deleteDataTrainingCategory,
    deleteImages,
- } = require("../../query/trainingCategory/deleteDataTrainingCategory");
+ } = require("../../query/training_category/deleteDataTrainingCategory");
  
  
  const router = express.Router();
@@ -29,6 +31,5 @@ router.post(
 );
   
  
-
- 
+  
 module.exports = router; 
