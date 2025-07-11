@@ -47,7 +47,7 @@ async function updateDataExercise(req, res) {
 
     const {
       exercise_id,
-      exercise_idTraining,
+      exercise_idCategoryTraining,
       exercise_nameEn,
       exercise_nameAr,
       exercise_equipment,
@@ -106,7 +106,7 @@ async function updateDataExercise(req, res) {
 
     // تحديث البيانات في قاعدة البيانات
     const updateExerciseData = {
-      exercise_idTraining,
+      exercise_idCategoryTraining,
       exercise_nameEn,
       exercise_nameAr,
       exercise_equipment,
