@@ -43,7 +43,7 @@ async function insertDataExercise(req, res) {
       : null;
 
     const {
-      exercise_idTraining,
+      exercise_idCategoryTraining,
       exercise_nameEn,
       exercise_nameAr,
       exercise_equipment,
@@ -66,7 +66,7 @@ async function insertDataExercise(req, res) {
 
     // إدخال البيانات في قاعدة البيانات
     const insertExerciseData = {
-      exercise_idTraining,
+      exercise_idCategoryTraining,
       exercise_nameEn,
       exercise_nameAr,
       exercise_equipment,
