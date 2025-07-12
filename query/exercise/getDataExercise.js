@@ -2,8 +2,21 @@ const { getAllData } = require("../../controllers/functions");
 
 const getDataExercise = async (req, res) => {
   try {
-    const result = await getAllData('exercise');
-    
+    const { exercise_idCategoryTraining } = req.query; // أو req.params إذا كانت بشكل URL
+
+    if (!exercise_idCategoryTraining) {
+      return res.status(400).json({
+        status: "failure",
+        message: "exercise_idCategoryTraining is required"
+      });
+    }
+
+    const result = await getAllData(
+      'exercise',
+      'exercise_idCategoryTraining = ?',
+      [exercise_idCategoryTraining]
+    );
+
     if (result.status === "success") {
       res.status(200).json({
         status: "success",
@@ -28,4 +41,4 @@ const getDataExercise = async (req, res) => {
 
 module.exports = {
   getDataExercise
-}; 
+};
