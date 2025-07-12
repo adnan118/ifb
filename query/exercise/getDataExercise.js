@@ -2,7 +2,7 @@ const { getAllData } = require("../../controllers/functions");
 
 const getDataExercise = async (req, res) => {
   try {
-    const { exercise_idCategoryTraining } = req.query; // أو req.params إذا كانت بشكل URL
+    const { exercise_idCategoryTraining } = req.body; // أو req.params إذا كانت بشكل URL
 
     if (!exercise_idCategoryTraining) {
       return res.status(400).json({
