@@ -1,45 +1,59 @@
-const { updateData } = require("../../controllers/functions"); 
- const bcrypt = require("bcrypt");
+const { updateData, getData } = require("../../controllers/functions"); 
+const bcrypt = require("bcrypt");
+
+// دالة لتوليد كود تحقق عشوائي مكون من أرقام فقط
+function generateVerificationCode(length) {
+  const chars = "0123456789";
+  let code = "";
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * chars.length);
+    code += chars[randomIndex];
+  }
+  return code;
+}
+
 async function FgPassword(req, res) {
   try {
-    const { users_phone, users_password } = req.body; // الحصول على الهاتف وكود التحقق من الجسم
+    const { users_phone } = req.body;
 
     // التحقق من وجود البيانات
-    if (!users_phone || !users_password) {
+    if (!users_phone) {
       return res.status(400).json({
         status: "failure",
-        message: "You must enter your phone and password .",
+        message: "You must enter your phone.",
       });
     }
 
-    
-  
-        const hashedPassword = await bcrypt.hash(users_password, 10);
+    // تحقق من وجود المستخدم
+    const userResult = await getData("users", "users_phone = ?", [users_phone]);
+    if (userResult.status !== "success" || !userResult.data) {
+      return res.status(404).json({
+        status: "failure",
+        message: "Phone number not found.",
+      });
+    }
 
-        const data = {
-          users_password: hashedPassword, 
-        };
+    // توليد كود تحقق جديد
+    const verificationCode = generateVerificationCode(4);
 
-        // تحديث كود التحقق في قاعدة البيانات
-        const result = await updateData("users", data, "users_phone = ?", [
-          users_phone,
-        ]);
+    // تحديث كود التحقق فقط بدون تغيير كلمة المرور
+    const data = {
+      users_verflyCode: verificationCode
+    };
 
-        if (result.status === "success") {
-           
-          res.json({
-            status: "success",
-            message: "changed password successfully",
-          });
-        } else {
-          res.json({
-            status: "failure",
-            message: "Failed changed password.",
-          });
-      }
-      
- 
-   
+    const result = await updateData("users", data, "users_phone = ?", [users_phone]);
+
+    if (result.status === "success") {
+      res.json({
+        status: "success",
+        message: "Password changed and verification code updated successfully.", 
+      });
+    } else {
+      res.json({
+        status: "failure",
+        message: "Failed to change password.",
+      });
+    }
   } catch (error) {
     console.error("Error processing reset password: ", error);
     res.status(500).json({
