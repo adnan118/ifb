@@ -41,6 +41,7 @@ const getDataFood = async (req, res) => {
 module.exports = {
   getDataFood,
 };*/
+
 const { getAllData, getData } = require("../../controllers/functions");
 const mysql = require("mysql2/promise");
 const { getConnection } = require("../../controllers/db");
@@ -97,7 +98,7 @@ const getDataFood = async (req, res) => {
     }
     const userData = userDataResult.data;
     const offers_id = userData.personalData_offers_id;
-    const user_food_diettype_id = userData.food_diettype_id;
+    const user_food_diettype_id = userData.personalData_dietType_id;
     // 2. جلب بيانات الأوفر
     let offers_discount = 0;
     if (offers_id) {
