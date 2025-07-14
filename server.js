@@ -8,7 +8,7 @@ const path = require("path");
 
 // Serve static files from the 'query' directory
 app.use('/query', express.static(path.join(__dirname, 'query')));
-
+app.use('/query/food/foodImages/images', express.static(path.join(__dirname, 'query/food/foodImages/images')));
 ////////////////////////////// auth
 const loginUserRoute = require("./routes/authRoutes/LoginUserRout");
 const registerUserRoute = require("./routes/authRoutes/RegisterUserRout");
