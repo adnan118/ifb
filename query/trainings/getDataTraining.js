@@ -152,16 +152,17 @@ const getDataTraining = async (req, res) => {
       }
     } else {
       // --- لا يوجد أوفر أو الخصم = 0 ---
-      // يجب إرسال training_activities_id
-      if (!training_activities_id) {
+      // استخدم personalData_activities_id من بيانات المستخدم
+      const activities_id = userDataResult.data.personalData_activities_id;
+      if (!activities_id) {
         return res.status(400).json({
           status: "failure",
-          message: "training_activities_id is required",
+          message: "personalData_activities_id is required in user data",
         });
       }
       // بناء شرط الجلب من جدول trainings
       let whereClause = "training_activities_id = ?";
-      const values = [training_activities_id];
+      const values = [activities_id];
       let trainingsArray = [];
       // دعم فلترة trainings_id إذا أرسلت
       if (trainings_id !== undefined) {
