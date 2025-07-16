@@ -2,7 +2,7 @@ const {
     updateData
   } = require("../../controllers/functions");
  
- 
+ const bcrypt = require("bcrypt");
   
   async function updatePassword(req, res) {
     try {
