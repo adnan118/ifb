@@ -56,5 +56,29 @@ async function getUserData(req, res) {
   }
 }
 
+// دالة لإرجاع جميع المستخدمين
+async function getAllUsers(req, res) {
+  try {
+    const result = await getAllData("users");
+    if (result.status === "success" && result.data.length > 0) {
+      res.status(200).json({
+        status: "success",
+        data: result.data,
+      });
+    } else {
+      res.status(404).json({
+        status: "failure",
+        message: "لا يوجد مستخدمون",
+      });
+    }
+  } catch (error) {
+    console.error("Error in getAllUsers: ", error);
+    res.status(500).json({
+      status: "failure",
+      message: "هناك خطأ في جلب المستخدمين",
+    });
+  }
+}
+
 // تصدير الدالة
-module.exports = { getUserData };
+module.exports = { getUserData, getAllUsers };
