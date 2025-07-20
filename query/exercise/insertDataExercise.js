@@ -43,16 +43,19 @@ async function insertDataExercise(req, res) {
       : null;
 
     const {
-      exercise_idCategoryTraining,
+      exercise_idTraining,
       exercise_nameEn,
       exercise_nameAr,
       exercise_equipment,
       exercise_duration,
       exercise_Kcal,
       exercise_musclesTargeted,
-      exercise_stepHowDoing,
-      commonMistakes,
-      tips
+      exercise_stepHowDoingEn,
+      exercise_stepHowDoingAr,
+      exercise_commonMistakesEn,
+      exercise_commonMistakesAr,
+      exercise_tipsEn,
+      exercise_tipsAr,
     } = req.body;
 
     // تحديد مسارات الصور والفيديو بناءً على الملفات المرفوعة
@@ -66,7 +69,7 @@ async function insertDataExercise(req, res) {
 
     // إدخال البيانات في قاعدة البيانات
     const insertExerciseData = {
-      exercise_idCategoryTraining,
+      exercise_idTraining,
       exercise_nameEn,
       exercise_nameAr,
       exercise_equipment,
@@ -75,9 +78,12 @@ async function insertDataExercise(req, res) {
       exercise_img: exercise_img_path,
       exercise_video: exercise_video_path,
       exercise_musclesTargeted,
-      exercise_stepHowDoing,
-      commonMistakes,
-      tips
+      exercise_stepHowDoingEn,
+      exercise_stepHowDoingAr,
+      exercise_commonMistakesEn,
+      exercise_commonMistakesAr,
+      exercise_tipsEn,
+      exercise_tipsAr,
     };
 
     const result = await insertData("exercise", insertExerciseData);
