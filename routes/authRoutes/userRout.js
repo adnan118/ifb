@@ -5,6 +5,6 @@ const { getUserData, getAllUsers } = require("../../query/auth/getUserData");
 const router = express.Router();
 
 router.post("/getUserData", getUserData);
-router.get("/getAllUsers", getAllUsers);
+router.post("/getAllUsers", getAllUsers);
 
 module.exports = router;
