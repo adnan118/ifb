@@ -1,4 +1,4 @@
-const { getData } = require("../../controllers/functions");
+const { getAllData } = require("../../controllers/functions");
 
 const allowedFields = [
   "users_id",
@@ -12,11 +12,7 @@ async function getUserData(req, res) {
     let { field, value } = req.body;
 
     // التحقق من أن الحقل مسموح
-    if (
-      !field ||
-      !value ||
-      !allowedFields.includes(field)
-    ) {
+    if (!field || !value || !allowedFields.includes(field)) {
       return res.status(400).json({
         status: "failure",
         message: "حقل البحث غير صحيح أو غير موجود",
@@ -32,15 +28,15 @@ async function getUserData(req, res) {
     // قيمة البحث مع علامات النمط "%"
     const searchValue = `%${value}%`;
 
-    const result = await getData("users", condition, [searchValue]);
+    const result = await getAllData("users", condition, [searchValue]);
 
-    if (result.status === "success") {
+    if (result.status === "success" && result.data.length > 0) {
       res.status(200).json({
         status: "success",
         data: result.data,
       });
     } else {
-      res.status(500).json({
+      res.status(404).json({
         status: "failure",
         message: "فشل في جلب البيانات",
       });
