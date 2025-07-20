@@ -47,16 +47,19 @@ async function updateDataExercise(req, res) {
 
     const {
       exercise_id,
-      exercise_idCategoryTraining,
+      exercise_idTraining,
       exercise_nameEn,
       exercise_nameAr,
       exercise_equipment,
       exercise_duration,
       exercise_Kcal,
       exercise_musclesTargeted,
-      exercise_stepHowDoing,
-      commonMistakes,
-      tips
+      exercise_stepHowDoingEn,
+      exercise_stepHowDoingAr,
+      exercise_commonMistakesEn,
+      exercise_commonMistakesAr,
+      exercise_tipsEn,
+      exercise_tipsAr,
     } = req.body;
 
     // استعلام للحصول على البيانات القديمة
@@ -106,7 +109,7 @@ async function updateDataExercise(req, res) {
 
     // تحديث البيانات في قاعدة البيانات
     const updateExerciseData = {
-      exercise_idCategoryTraining,
+      exercise_idTraining,
       exercise_nameEn,
       exercise_nameAr,
       exercise_equipment,
@@ -115,9 +118,12 @@ async function updateDataExercise(req, res) {
       exercise_img: exercise_img_path,
       exercise_video: exercise_video_path,
       exercise_musclesTargeted,
-      exercise_stepHowDoing,
-      commonMistakes,
-      tips
+      exercise_stepHowDoingEn,
+      exercise_stepHowDoingAr,
+      exercise_commonMistakesEn,
+      exercise_commonMistakesAr,
+      exercise_tipsEn,
+      exercise_tipsAr,
     };
 
     const result = await updateData(
