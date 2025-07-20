@@ -2,31 +2,29 @@ const { getAllData } = require("../../controllers/functions");
 
 const getDataExercise = async (req, res) => {
   try {
-    const { exercise_idCategoryTraining } = req.body; // أو req.params إذا كانت بشكل URL
+    const { exercise_idTraining } = req.body;  
 
-    if (!exercise_idCategoryTraining) {
+    if (!exercise_idTraining) {
       return res.status(400).json({
         status: "failure",
-        message: "exercise_idCategoryTraining is required"
+        message: "exercise_idTraining is required",
       });
     }
 
-    const result = await getAllData(
-      'exercise',
-      'exercise_idCategoryTraining = ?',
-      [exercise_idCategoryTraining]
-    );
+    const result = await getAllData("exercise", "exercise_idTraining = ?", [
+      exercise_idTraining,
+    ]);
 
     if (result.status === "success") {
       res.status(200).json({
         status: "success",
         message: "Exercises fetched successfully",
-        data: result.data
+        data: result.data,
       });
     } else {
       res.status(500).json({
         status: "failure",
-        message: result.message || "Error fetching exercises"
+        message: result.message || "Error fetching exercises",
       });
     }
   } catch (error) {
@@ -34,11 +32,11 @@ const getDataExercise = async (req, res) => {
     res.status(500).json({
       status: "failure",
       message: "Internal server error",
-      error: error.message
+      error: error.message,
     });
   }
 };
 
 module.exports = {
-  getDataExercise
+  getDataExercise,
 };
