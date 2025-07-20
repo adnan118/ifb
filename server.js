@@ -14,7 +14,7 @@ const loginUserRoute = require("./routes/authRoutes/LoginUserRout");
 const registerUserRoute = require("./routes/authRoutes/RegisterUserRout");
 const verifyUserRoute = require("./routes/authRoutes/VfcRout");
 const fgpasswordRout = require("./routes/authRoutes/FgpasswordRout");
-const getUserDataRout = require("./routes/authRoutes/LoginUserRout");
+const getUserDataRout = require("./routes/authRoutes/userRout"); 
 const UpdateUserProfileRout = require("./routes/authRoutes/UpdateUserProfileRout");
 
 ////////////////////////////// PersonalDataRegister
@@ -106,9 +106,9 @@ app.get("/", async (req, res) => {
 app.use("/api84818auth", registerUserRoute);
 app.use("/api84818auth", loginUserRoute);
 app.use("/api84818auth", verifyUserRoute);
-app.use("/api84818auth", fgpasswordRout);
-app.use("/api84818auth", getUserDataRout);
+app.use("/api84818auth", fgpasswordRout); 
 app.use("/api84818auth", UpdateUserProfileRout);
+app.use("/api84818auth", getUserDataRout);
 //PersonalDataRegister
 app.use("/api84818datar", insertPersonalDataRegisterRout);
 app.use("/api84818datar", updatePDR);
