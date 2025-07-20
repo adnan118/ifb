@@ -22,11 +22,17 @@ async function getUserData(req, res) {
     // إزالة الفراغات من البداية والنهاية
     value = value.trim();
 
-    // بناء شرط البحث باستخدام LIKE مع تجاهل الحالة
-    const condition = `LOWER(${field}) LIKE LOWER(?)`;
+    // بناء شرط البحث
+    let condition;
+    let searchValue;
 
-    // قيمة البحث مع علامات النمط "%"
-    const searchValue = `%${value}%`;
+    if (field === "users_id") {
+      condition = `${field} = ?`;
+      searchValue = value; // بدون علامات النمط
+    } else {
+      condition = `LOWER(${field}) LIKE LOWER(?)`;
+      searchValue = `%${value}%`;
+    }
 
     const result = await getAllData("users", condition, [searchValue]);
 
