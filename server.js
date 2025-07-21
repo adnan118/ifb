@@ -1,11 +1,16 @@
 require("dotenv").config();  
 const express = require("express");
+const cors = require("cors"); // أضف هذا السطرff
 const mysql = require("mysql2/promise");
 const { getConnection } = require("./controllers/db");
 
 const app = express();
 
-const PORT = process.env.PORT || 3118;
+app.use(cors()); // أضف هذا السطر هنا
+
+
+   
+const PORT = process.env.PORT || 3118 ;
 const path = require("path");
 
 // Serve static files from the 'query' directory
