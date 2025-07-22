@@ -9,18 +9,19 @@ const {
  
 async function updateAvailabilityTraining(req, res) {
   try {
-    const { trainings_id } = req.body;
+    const { trainings_id, user_id } = req.body;
 
     const updateTrainingData = {
       trainings_id: trainings_id,
+      user_id: user_id,
       active: 0,
     };
 
     const result = await updateData(
       "user_trainings",
       updateTrainingData,
-      "trainings_id = ?",
-      [trainings_id]
+      "trainings_id = ? AND user_id = ?",
+      [trainings_id, user_id]
     );
 
     if (result.status === "success") {
