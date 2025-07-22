@@ -13,6 +13,9 @@ const express = require('express');
    deleteImages,
  } = require("../../query/trainings/deleteDataTraining");
  
+   const {
+    updateAvailabilityTraining,
+  } = require("../../query/trainings/updateAvailabilityTraining");
  
  const router = express.Router();
  
@@ -22,7 +25,8 @@ const express = require('express');
  
  router.post("/getDataTraining", getDataTraining);
  router.post("/deleteDataTraining", deleteDataTraining, deleteImages);
-  
+  router.post("/updateAvailabilityTraining", updateAvailabilityTraining);
+
  
 
  
