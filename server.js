@@ -28,7 +28,7 @@ const UpdateUserProfileRout = require("./routes/authRoutes/UpdateUserProfileRout
 const insertPersonalDataRegisterRout = require("./routes/personaldata/personalDataRegisterRout");
 const updatePDR = require("./routes/personaldata/personalDataRegisterRout");
 const getPDR = require("./routes/personaldata/personalDataRegisterRout");
-/*
+ 
 //goal
 const DataGoalsRout = require("./routes/managePersonalData/goal/DataGoalsRout");
 //gender
@@ -93,7 +93,7 @@ const exerciseRout = require("./routes/exercise/exerciseRout");
 const equipmentRout = require("./routes/equipment/equipmentRout");
 ////////////////////////////// coupon
 const couponRout = require("./routes/coupon/DataCouponRout");
- */
+ 
  
 app.use(express.json());
 
@@ -120,7 +120,7 @@ app.use("/api84818auth", getUserDataRout);
 app.use("/api84818datar", insertPersonalDataRegisterRout);
 app.use("/api84818datar", updatePDR);
 app.use("/api84818datar", getPDR);
-/*
+ 
 //goal
 app.use("/api84818datar", DataGoalsRout);
 
@@ -200,7 +200,7 @@ app.use("/api84818dataexercise", exerciseRout);
 app.use("/api84818dataequipment", equipmentRout);
 ////////////////////////////// coupon
  app.use("/api84818dataecoupon", couponRout);
-*/
+ 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
 });
