@@ -6,10 +6,11 @@ const dbConfig = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 */
-          host: "147.93.121.3",
-  user: "root",
-  password: "ifb118",
-  database: "ib",
+  host: '147.93.121.3',   // عنوان السيرفر
+  port: 3120,             // منفذ قاعدة البيانات
+  user: 'root',
+  password: 'ifb118',
+  database: 'ib',  
  
 };
 
