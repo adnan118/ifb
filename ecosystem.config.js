@@ -15,7 +15,7 @@ module.exports = {
       },
       env_production: {
         NODE_ENV: "production",
-        PORT: 3120,
+        PORT: "3120",
         DB_HOST: "147.93.121.3",
         DB_USER: "root",
         DB_PASSWORD: "ifb118",
