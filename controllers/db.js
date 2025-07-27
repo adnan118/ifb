@@ -11,7 +11,7 @@ const dbConfig = {
   user:   "root",
   password:  "ifb118",
   database:   "ib",
-  port:   "3120",
+//  port:   "3120",
  
 };
 
