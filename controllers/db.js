@@ -5,6 +5,9 @@ const dbConfig = {
   user: process.env.DB_USER || "root",
   password: process.env.DB_PASSWORD || "ifb118",
   database: process.env.DB_NAME || "ib",
+  port: process.env.PORT || "3120",
+
+  
  
 };
 
