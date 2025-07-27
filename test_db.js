@@ -3,10 +3,10 @@ const { getConnection } = require('./controllers/db');
 async function testConnection() {
   try {
     const connection = await getConnection();
-    console.log('تم الاتصال بنجاح بقاعدة البيانات!');
+    console.log('Database contacted!');
     await connection.end(); // لإغلاق الاتصال بعد الاختبار
   } catch (err) {
-    console.error('فشل الاتصال بقاعدة البيانات:', err);
+    console.error('Database connection failed', err);
   }
 }
 
