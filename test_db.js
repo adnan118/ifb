@@ -1,6 +1,8 @@
 const { getConnection } = require('./controllers/db');
 
 async function testConnection() {
+  console.log(dbConfig);
+
   try {
     const connection = await getConnection();
     console.log('Database contacted!');
