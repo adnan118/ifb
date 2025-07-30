@@ -102,10 +102,10 @@ app.get("/", async (req, res) => {
     const connection = await getConnection();
     // يمكن استخدام الاتصال لأي استعلام هنا
     await connection.end(); // اغلاق الاتصال بعد الاستخدام
-    res.json({ message: "Connected to the database successfully!" });
+    res.json({ message: "Connected to the database successfully!"+dbConfig });
   } catch (error) {
     console.error("خطأ في الاتصال:", error);
-    res.status(500).json({ message: "Database connection failed." });
+    res.status(500).json({ message: "Database connection failed."+dbConfig });
   }
 });
 
