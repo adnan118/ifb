@@ -9,7 +9,7 @@ module.exports = {
       env: {
         NODE_ENV: "development",
         PORT: 3118,
-        DB_HOST: "idealbody25.online",
+        DB_HOST: "147.93.121.3",
         DB_USER: "root",
         DB_PASSWORD: "ifb118",
         DB_NAME: "ib",
@@ -18,7 +18,7 @@ module.exports = {
       env_production: {
         NODE_ENV: "production",
         PORT: 3118,
-        DB_HOST: "idealbody25.online",
+        DB_HOST: "147.93.121.3",
         DB_USER: "root",
         DB_PASSWORD: "ifb118",
         DB_NAME: "ib",
