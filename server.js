@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql2/promise");
 const { getConnection } = require("./controllers/db");
+const fs = require('fs');
 
 const app = express();
 
