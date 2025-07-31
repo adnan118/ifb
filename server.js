@@ -129,7 +129,7 @@ app.get("/status", async (req, res) => {
 
     // الحصول على معلومات قاعدة البيانات
     const [tables] = await connection.execute("SHOW TABLES");
-    const [serverInfo] = await connection.execute("SELECT VERSION() as version, NOW() as current_time");
+    const [serverInfo] = await connection.execute("SELECT VERSION() as version, NOW() as current_datetime");
 
     await connection.end();
 
@@ -140,7 +140,7 @@ app.get("/status", async (req, res) => {
         connected: true,
         version: serverInfo[0].version,
         tables_count: tables.length,
-        current_time: serverInfo[0].current_time
+        current_time: serverInfo[0].current_datetime
       },
       server: {
         port: PORT,
