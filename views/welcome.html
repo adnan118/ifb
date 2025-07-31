@@ -136,6 +136,11 @@
       background: rgba(255, 255, 255, 0.1);
     }
     
+    .btn-admin {
+      background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+      border-color: #ff6b6b;
+    }
+    
     @media (max-width: 768px) {
       .container {
         padding: 20px;
@@ -196,6 +201,7 @@
     <div class="action-buttons">
       <a href="/status" class="btn btn-primary">📊 حالة النظام</a>
       <a href="/api-info" class="btn btn-secondary">🔗 معلومات API</a>
+      <a href="/phpmyadmin" class="btn btn-admin" target="_blank">🗄️ phpMyAdmin</a>
     </div>
     
     <div class="api-info">
@@ -205,6 +211,12 @@
       <p><span class="api-endpoint">/api84818datafood</span> - قاعدة بيانات الطعام</p>
       <p><span class="api-endpoint">/api84818datatrainings</span> - التدريبات</p>
       <p><span class="api-endpoint">/api84818dataexercise</span> - التمارين</p>
+      
+      <h3 style="margin-top: 20px; color: #ff6b6b;">🗄️ إدارة قاعدة البيانات:</h3>
+      <p><span class="api-endpoint">/phpmyadmin</span> - إدارة قاعدة البيانات (phpMyAdmin)</p>
+      <p style="font-size: 0.8rem; opacity: 0.8; margin-top: 10px;">
+        💡 يمكنك الوصول إلى phpMyAdmin لإدارة قاعدة البيانات مباشرة
+      </p>
     </div>
     
     <div class="server-info">
@@ -229,7 +241,11 @@
         const data = await response.json();
         
         if (data.status === 'success') {
-          statusElement.innerHTML = '✅ تم الاتصال بقاعدة البيانات بنجاح';
+          statusElement.innerHTML = `
+            ✅ تم الاتصال بقاعدة البيانات بنجاح
+            <br>
+            <small style="opacity: 0.8;">عدد الجداول: ${data.database.tables_count} | الإصدار: ${data.database.version}</small>
+          `;
           statusElement.style.background = 'rgba(76, 175, 80, 0.2)';
           statusElement.style.borderColor = '#4CAF50';
         } else {
