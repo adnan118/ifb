@@ -8,11 +8,6 @@ module.exports = {
       watch: false,
       env: {
         NODE_ENV: "development",
-     /*   DB_HOST: "localhost",
-        DB_USER: "root",
-        DB_PASSWORD: "",
-        DB_NAME: "test",
-*/
         PORT: 3118,
         DB_HOST: "147.93.121.3",
         DB_USER: "root",
