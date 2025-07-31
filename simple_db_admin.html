@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة قاعدة البيانات - Ideal Body Fitness</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .connection-info {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .info-card h3 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        
+        .connection-string {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            padding: 10px;
+            font-family: monospace;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+        
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border-color: #4CAF50;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            border-color: #3498db;
+        }
+        
+        .btn-warning {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border-color: #ff6b6b;
+        }
+        
+        .status {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 1.1rem;
+        }
+        
+        .error {
+            background: rgba(244, 67, 54, 0.2);
+            border-color: #f44336;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🗄️ إدارة قاعدة البيانات</div>
+            <p>Ideal Body Fitness - Database Management</p>
+        </div>
+        
+        <div class="status" id="db-status">
+            🔄 جاري التحقق من الاتصال...
+        </div>
+        
+        <div class="connection-info">
+            <h2>🔧 معلومات الاتصال</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>🌐 معلومات السيرفر</h3>
+                    <p><strong>العنوان:</strong> 147.93.121.3</p>
+                    <p><strong>المنفذ:</strong> 3120</p>
+                    <p><strong>قاعدة البيانات:</strong> ib</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>👤 بيانات الدخول</h3>
+                    <p><strong>المستخدم:</strong> root</p>
+                    <p><strong>كلمة المرور:</strong> ifb118</p>
+                    <p><strong>نوع الاتصال:</strong> MySQL</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>🔗 سلسلة الاتصال</h3>
+                    <div class="connection-string">
+                        mysql://root:ifb118@147.93.121.3:3120/ib
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>💻 MySQL Workbench</h3>
+                <p>استخدم MySQL Workbench للاتصال بقاعدة البيانات:</p>
+                <ol style="text-align: right; margin: 10px 0;">
+                    <li>افتح MySQL Workbench</li>
+                    <li>اضغط على "+" لإضافة اتصال جديد</li>
+                    <li>أدخل البيانات المذكورة أعلاه</li>
+                    <li>اضغط "Test Connection" للتأكد</li>
+                    <li>اضغط "OK" للاتصال</li>
+                </ol>
+                <a href="#" class="btn btn-primary" onclick="copyConnectionInfo()">📋 نسخ معلومات الاتصال</a>
+            </div>
+            
+            <div class="info-card">
+                <h3>🌐 phpMyAdmin</h3>
+                <p>إذا كان phpMyAdmin متاحاً:</p>
+                <a href="http://idealbody25.online/phpmyadmin" class="btn btn-secondary" target="_blank">🗄️ فتح phpMyAdmin</a>
+                <p style="font-size: 0.9rem; margin-top: 10px; opacity: 0.8;">
+                    إذا لم يعمل الرابط، قد يكون phpMyAdmin غير مثبت أو غير مُكوّن بشكل صحيح
+                </p>
+            </div>
+            
+            <div class="info-card">
+                <h3>🔧 أدوات أخرى</h3>
+                <p>يمكنك استخدام أي من هذه الأدوات:</p>
+                <ul style="text-align: right; margin: 10px 0;">
+                    <li>MySQL Workbench (موصى به)</li>
+                    <li>phpMyAdmin (إذا كان متاحاً)</li>
+                    <li>DBeaver</li>
+                    <li>HeidiSQL</li>
+                    <li>Navicat</li>
+                </ul>
+            </div>
+            
+            <div class="info-card">
+                <h3>📊 حالة قاعدة البيانات</h3>
+                <div id="db-details">
+                    <p>جاري التحقق...</p>
+                </div>
+                <a href="/status" class="btn btn-warning" target="_blank">🔍 فحص مفصل</a>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/" class="btn btn-secondary">🏠 العودة للصفحة الرئيسية</a>
+        </div>
+    </div>
+    
+    <script>
+        // التحقق من حالة قاعدة البيانات
+        async function checkDatabaseStatus() {
+            const statusElement = document.getElementById('db-status');
+            const detailsElement = document.getElementById('db-details');
+            
+            try {
+                const response = await fetch('/status');
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    statusElement.innerHTML = `
+                        ✅ تم الاتصال بقاعدة البيانات بنجاح
+                        <br>
+                        <small style="opacity: 0.8;">عدد الجداول: ${data.database.tables_count} | الإصدار: ${data.database.version}</small>
+                    `;
+                    statusElement.style.background = 'rgba(76, 175, 80, 0.2)';
+                    statusElement.style.borderColor = '#4CAF50';
+                    
+                    detailsElement.innerHTML = `
+                        <p><strong>✅ الحالة:</strong> متصل</p>
+                        <p><strong>📊 عدد الجداول:</strong> ${data.database.tables_count}</p>
+                        <p><strong>🔧 الإصدار:</strong> ${data.database.version}</p>
+                        <p><strong>⏰ آخر تحديث:</strong> ${data.database.current_time}</p>
+                    `;
+                } else {
+                    throw new Error('فشل في الاتصال');
+                }
+            } catch (error) {
+                statusElement.innerHTML = '❌ فشل في الاتصال بقاعدة البيانات';
+                statusElement.style.background = 'rgba(244, 67, 54, 0.2)';
+                statusElement.style.borderColor = '#f44336';
+                statusElement.classList.add('error');
+                
+                detailsElement.innerHTML = `
+                    <p><strong>❌ الحالة:</strong> غير متصل</p>
+                    <p><strong>🔍 السبب:</strong> فشل في الاتصال بالسيرفر</p>
+                    <p><strong>💡 الحل:</strong> تحقق من إعدادات الشبكة أو اتصل بالدعم</p>
+                `;
+                
+                console.error('خطأ في التحقق من قاعدة البيانات:', error);
+            }
+        }
+        
+        // نسخ معلومات الاتصال
+        function copyConnectionInfo() {
+            const connectionInfo = `mysql://root:ifb118@147.93.121.3:3120/ib`;
+            navigator.clipboard.writeText(connectionInfo).then(() => {
+                alert('✅ تم نسخ معلومات الاتصال إلى الحافظة');
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = connectionInfo;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('✅ تم نسخ معلومات الاتصال إلى الحافظة');
+            });
+        }
+        
+        // تشغيل التحقق عند تحميل الصفحة
+        checkDatabaseStatus();
+    </script>
+</body>
+</html> 
