@@ -96,7 +96,7 @@ const couponRout = require("./routes/coupon/DataCouponRout");
  
  
 app.use(express.json());
-
+/*
 app.get("/", async (req, res) => {
   try {
     const connection = await getConnection();
@@ -107,8 +107,18 @@ app.get("/", async (req, res) => {
     console.error("خطأ في الاتصال:", error);
     res.status(500).json({ message: "Database connection failed.." });
   }
+});*/
+app.get("/", (req, res) => {
+  // قراءة ملف HTML منفصل
+  const welcomePath = path.join(__dirname, 'views', 'welcome.html');
+  
+  if (fs.existsSync(welcomePath)) {
+    const htmlContent = fs.readFileSync(welcomePath, 'utf8');
+    res.send(htmlContent);
+  } else {
+    res.status(404).json({ error: "Welcome page not found" });
+  }
 });
-
 //auth
 app.use("/api84818auth", registerUserRoute);
 app.use("/api84818auth", loginUserRoute);
