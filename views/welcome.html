@@ -141,6 +141,11 @@
       border-color: #ff6b6b;
     }
     
+    .btn-workbench {
+      background: linear-gradient(45deg, #3498db, #2980b9);
+      border-color: #3498db;
+    }
+    
     @media (max-width: 768px) {
       .container {
         padding: 20px;
@@ -202,6 +207,7 @@
       <a href="/status" class="btn btn-primary">📊 حالة النظام</a>
       <a href="/api-info" class="btn btn-secondary">🔗 معلومات API</a>
       <a href="http://idealbody25.online/phpmyadmin" class="btn btn-admin" target="_blank">🗄️ phpMyAdmin</a>
+      <a href="#" class="btn btn-workbench" onclick="showWorkbenchInfo()">💻 MySQL Workbench</a>
     </div>
     
     <div class="api-info">
@@ -214,8 +220,12 @@
       
       <h3 style="margin-top: 20px; color: #ff6b6b;">🗄️ إدارة قاعدة البيانات:</h3>
       <p><span class="api-endpoint">http://idealbody25.online/phpmyadmin</span> - إدارة قاعدة البيانات (phpMyAdmin)</p>
+      <p><span class="api-endpoint">MySQL Workbench</span> - إدارة قاعدة البيانات (برنامج سطح المكتب)</p>
       <p style="font-size: 0.8rem; opacity: 0.8; margin-top: 10px;">
         💡 يمكنك الوصول إلى phpMyAdmin لإدارة قاعدة البيانات مباشرة عبر المنفذ 80
+      </p>
+      <p style="font-size: 0.8rem; opacity: 0.8; margin-top: 5px;">
+        💻 أو استخدام MySQL Workbench مع البيانات: 147.93.121.3:3120
       </p>
     </div>
     
@@ -257,6 +267,28 @@
         statusElement.style.borderColor = '#f44336';
         console.error('خطأ في التحقق من قاعدة البيانات:', error);
       }
+    }
+    
+    // عرض معلومات MySQL Workbench
+    function showWorkbenchInfo() {
+      const info = `
+🔧 معلومات الاتصال بـ MySQL Workbench:
+
+🌐 العنوان: 147.93.121.3
+🔌 المنفذ: 3120
+👤 المستخدم: root
+🔑 كلمة المرور: ifb118
+🗄️ قاعدة البيانات: ib
+
+📋 خطوات الاتصال:
+1. افتح MySQL Workbench
+2. اضغط على "+" لإضافة اتصال جديد
+3. أدخل البيانات أعلاه
+4. اضغط "Test Connection" للتأكد
+5. اضغط "OK" للاتصال
+      `;
+      
+      alert(info);
     }
     
     // تشغيل التحقق عند تحميل الصفحة
