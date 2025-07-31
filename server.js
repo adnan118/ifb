@@ -97,18 +97,7 @@ const couponRout = require("./routes/coupon/DataCouponRout");
  
  
 app.use(express.json());
-/*
-app.get("/", async (req, res) => {
-  try {
-    const connection = await getConnection();
-    // يمكن استخدام الاتصال لأي استعلام هنا
-    await connection.end(); // اغلاق الاتصال بعد الاستخدام
-    res.json({ message: "Connected to the database successfully!" });
-  } catch (error) {
-    console.error("خطأ في الاتصال:", error);
-    res.status(500).json({ message: "Database connection failed.." });
-  }
-});*/
+
 app.get("/", (req, res) => {
   // قراءة ملف HTML منفصل
   const welcomePath = path.join(__dirname, 'views', 'welcome.html');
@@ -120,6 +109,78 @@ app.get("/", (req, res) => {
     res.status(404).json({ error: "Welcome page not found" });
   }
 });
+
+// مسار إدارة قاعدة البيانات
+app.get("/db-admin", (req, res) => {
+  const dbAdminPath = path.join(__dirname, 'simple_db_admin.html');
+  
+  if (fs.existsSync(dbAdminPath)) {
+    const htmlContent = fs.readFileSync(dbAdminPath, 'utf8');
+    res.send(htmlContent);
+  } else {
+    res.status(404).json({ error: "Database admin page not found" });
+  }
+});
+
+// مسار لعرض حالة النظام
+app.get("/status", async (req, res) => {
+  try {
+    const connection = await getConnection();
+
+    // الحصول على معلومات قاعدة البيانات
+    const [tables] = await connection.execute("SHOW TABLES");
+    const [serverInfo] = await connection.execute("SELECT VERSION() as version, NOW() as current_time");
+
+    await connection.end();
+
+    res.json({
+      status: "success",
+      message: "النظام يعمل بشكل طبيعي",
+      database: {
+        connected: true,
+        version: serverInfo[0].version,
+        tables_count: tables.length,
+        current_time: serverInfo[0].current_time
+      },
+      server: {
+        port: PORT,
+        environment: process.env.NODE_ENV || "development",
+        uptime: process.uptime()
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: "خطأ في الاتصال بقاعدة البيانات",
+      error: error.message
+    });
+  }
+});
+
+// مسار لعرض معلومات API
+app.get("/api-info", (req, res) => {
+  res.json({
+    name: "Ideal Body Fitness API",
+    version: "1.0.0",
+    description: "API لتطبيق اللياقة البدنية والصحة",
+    endpoints: {
+      auth: "/api84818auth",
+      personal_data: "/api84818datar",
+      food: "/api84818datafood",
+      trainings: "/api84818datatrainings",
+      exercise: "/api84818dataexercise",
+      challenges: "/api84818datachallenges",
+      chapter: "/api84818datachapter",
+      meal_food: "/api84818datamealfood",
+      feedback: "/api84818datafeedback",
+      equipment: "/api84818dataequipment",
+      coupon: "/api84818dataecoupon",
+      analytics: "/api84818dataAnaly",
+      profile: "/api84818dataUser"
+    }
+  });
+});
+
 //auth
 app.use("/api84818auth", registerUserRoute);
 app.use("/api84818auth", loginUserRoute);
