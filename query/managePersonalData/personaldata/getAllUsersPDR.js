@@ -2,6 +2,11 @@ const { getConnection } = require("../../../controllers/db");
 
 async function getAllUsersPDR(req, res) {
   try {
+    // Handle empty body for POST requests
+    if (req.method === 'POST' && (!req.body || Object.keys(req.body).length === 0)) {
+      // Continue with empty body
+    }
+    
     // Get all users' personal data register with offers_id and users_id only
     const connection = await getConnection();
     
