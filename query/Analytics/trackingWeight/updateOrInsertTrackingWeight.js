@@ -1,7 +1,7 @@
 const {
   updateData,
   insertData,
-  getData
+  getAllData
 } = require("../../../controllers/functions");
 
 async function updateOrInsertTrackingWeight(req, res) {
@@ -11,12 +11,20 @@ async function updateOrInsertTrackingWeight(req, res) {
       trakingWeight_current 
     } = req.body;
 
+    // Validate required fields
+    if (!trakingWeight_user_id || !trakingWeight_current) {
+      return res.status(400).json({
+        status: "failure",
+        message: "trakingWeight_user_id and trakingWeight_current are required."
+      });
+    }
+
     // Get current date and time
     const now = new Date();
     const currentTimestamp = now.toISOString();
 
     // 1. Check if user has a record
-    const checkResult = await getData(
+    const checkResult = await getAllData(
       "trakingweight",
       "trakingWeight_user_id = ?",
       [trakingWeight_user_id]
@@ -25,14 +33,14 @@ async function updateOrInsertTrackingWeight(req, res) {
     console.log("Check Result:", checkResult); // Debug log
 
     // Check if we have a valid record
-    if (checkResult && checkResult.data && checkResult.data.trakingWeight_id) {
+    if (checkResult && checkResult.status === "success" && checkResult.data && checkResult.data.length > 0) {
       console.log("Found existing record:", checkResult.data); // Debug log
 
       // Update existing record
       const result = await updateData(
         "trakingweight",
         {
-          trakingWeight_pre: checkResult.data.trakingWeight_current,
+          trakingWeight_pre: checkResult.data[0].trakingWeight_current,
           trakingWeight_current: trakingWeight_current,
           trakingWeight_lastedit: currentTimestamp
         },
@@ -49,9 +57,11 @@ async function updateOrInsertTrackingWeight(req, res) {
           data: result.data,
         });
       } else {
+        console.error("Update failed:", result);
         res.status(500).json({
           status: "failure",
           message: "Failed to update weight tracking data.",
+          error: result?.message || "Unknown error"
         });
       }
     } else {
@@ -73,9 +83,11 @@ async function updateOrInsertTrackingWeight(req, res) {
           message: "New weight tracking record inserted successfully.",
         });
       } else {
+        console.error("Insert failed:", insertResult);
         res.status(500).json({
           status: "failure",
           message: "Failed to insert new weight tracking record.",
+          error: insertResult?.message || "Unknown error"
         });
       }
     }
