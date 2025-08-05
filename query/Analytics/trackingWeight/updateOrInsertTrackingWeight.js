@@ -61,7 +61,12 @@ async function updateOrInsertTrackingWeight(req, res) {
         res.status(500).json({
           status: "failure",
           message: "Failed to update weight tracking data.",
-          error: result?.message || "Unknown error"
+          error: result?.message || "Unknown error",
+          debug: {
+            user_id: trakingWeight_user_id,
+            current_weight: trakingWeight_current,
+            existing_record: checkResult.data[0]
+          }
         });
       }
     } else {
