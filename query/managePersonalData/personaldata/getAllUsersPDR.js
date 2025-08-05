@@ -1,9 +1,9 @@
-const { getData } = require("../../../controllers/functions");
+const { getAllData } = require("../../../controllers/functions");
 
 async function getAllUsersPDR(req, res) {
   try {
     // Get all users' personal data register with offers_id and users_id
-    const result = await getData(
+    const result = await getAllData(
       "personaldataregister",
       "personalData_offers_id IS NOT NULL AND personalData_users_id IS NOT NULL",
       [], // No parameters needed since we're getting all users
