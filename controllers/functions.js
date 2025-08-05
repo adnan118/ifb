@@ -43,14 +43,19 @@ async function getAllData(table, where = null, values = null, json = true) {
     return { status: "failure", message: "There is a problem retrieving data" }; // رسالة الخطأ
   }
 }
-// دالة لاسترجاع بيانات فردية
+ // دالة لاسترجاع بيانات فردية
 async function getData(table, where = null, values = null, json = true) { 
   const connection = await getConnection(); // الحصول على الاتصال
 
-  const query = `SELECT * FROM ${mysql.escapeId(table)} WHERE ${where}`;
+  let query = `SELECT * FROM ${mysql.escapeId(table)}`;
+  
+  // إضافة شرط WHERE إذا كان موجودًا
+  if (where) {
+    query += ` WHERE ${where}`;
+  }
 
   try {
-    const [results] = await connection.execute(query, values);
+    const [results] = await connection.execute(query, values || []);
     await connection.end();
 
     if (results.length > 0) {
@@ -388,3 +393,4 @@ module.exports = {
   handleVideoDeletion,
   createMulterConfig
 };
+
