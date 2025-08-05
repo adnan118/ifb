@@ -36,17 +36,17 @@ async function updateOrInsertTrackingWeight(req, res) {
     if (checkResult && checkResult.status === "success" && checkResult.data && checkResult.data.length > 0) {
       console.log("Found existing record:", checkResult.data); // Debug log
 
-      // Update existing record
-      const result = await updateData(
-        "trakingweight",
-        {
-          trakingWeight_pre: checkResult.data[0].trakingWeight_current,
-          trakingWeight_current: trakingWeight_current,
-          trakingWeight_lastedit: currentTimestamp
-        },
-        "trakingWeight_user_id = ?",
-        [trakingWeight_user_id]
-      );
+             // Update existing record
+       const result = await updateData(
+         "trakingweight",
+         {
+           trakingWeight_pre: checkResult.data[0].trakingWeight_current,
+           trakingWeight_current: trakingWeight_current,
+           trakingWeight_lastedit: currentTimestamp
+         },
+         "trakingWeight_id = ?",
+         [checkResult.data[0].trakingWeight_id]
+       );
 
       console.log("Update Result:", result); // Debug log
 
