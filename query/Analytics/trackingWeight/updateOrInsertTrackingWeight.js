@@ -20,9 +20,9 @@ async function updateOrInsertTrackingWeight(req, res) {
       });
     }
 
-    // Get current date and time
+    // Get current date and time in MySQL format
     const now = new Date();
-    const currentTimestamp = now.toISOString();
+    const currentTimestamp = now.toISOString().slice(0, 19).replace('T', ' ');
 
     // 1. Check if user has a record
     const checkResult = await getAllData(
