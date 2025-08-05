@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 async function testTrackingWeightAPI() {
   try {
     console.log('🔍 اختبار API تحديث الوزن...');
@@ -11,27 +9,31 @@ async function testTrackingWeightAPI() {
 
     console.log('📤 إرسال البيانات:', testData);
 
-    const response = await axios.post(
+    const response = await fetch(
       'http://localhost:3118/api84818dataAnaly/updateOrInsertTrackingWeight',
-      testData,
       {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify(testData)
       }
     );
 
-    console.log('✅ نجح الطلب!');
-    console.log('📊 الاستجابة:', response.data);
+    const responseData = await response.json();
+
+    if (response.ok) {
+      console.log('✅ نجح الطلب!');
+      console.log('📊 الاستجابة:', responseData);
+    } else {
+      console.log('❌ فشل الطلب!');
+      console.log('📊 كود الخطأ:', response.status);
+      console.log('📊 رسالة الخطأ:', responseData);
+    }
     
   } catch (error) {
     console.log('❌ فشل الطلب!');
-    if (error.response) {
-      console.log('📊 كود الخطأ:', error.response.status);
-      console.log('📊 رسالة الخطأ:', error.response.data);
-    } else {
-      console.log('📊 خطأ الشبكة:', error.message);
-    }
+    console.log('📊 خطأ الشبكة:', error.message);
   }
 }
 
