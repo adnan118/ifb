@@ -10,8 +10,8 @@ async function getAllUsersPDR(req, res) {
     // Get all users' personal data register with offers_id and users_id only
     const connection = await getConnection();
     
-    const query = `
-      SELECT personalData_users_id, personalData_offers_id, personalData_goal_id 
+      const query = `
+      SELECT personalData_users_id, personalData_offers_id, personalData_goal_id, personalData_dietType_id 
       FROM personaldataregister 
       WHERE personalData_offers_id IS NOT NULL AND personalData_users_id IS NOT NULL
     `;
