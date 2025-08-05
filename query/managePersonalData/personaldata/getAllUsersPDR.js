@@ -1,13 +1,20 @@
-const { getAllData } = require("../../../controllers/functions");
+const { getConnection } = require("../../../controllers/db");
 
 async function getAllUsersPDR(req, res) {
   try {
-    // Get all users' personal data register with offers_id and users_id
-    const result = await getAllData(
-      "personaldataregister",
-      "personalData_offers_id IS NOT NULL AND personalData_users_id IS NOT NULL",
-      [], // No parameters needed since we're getting all users
-    );
+    // Get all users' personal data register with offers_id and users_id only
+    const connection = await getConnection();
+    
+    const query = `
+      SELECT personalData_users_id, personalData_offers_id 
+      FROM personaldataregister 
+      WHERE personalData_offers_id IS NOT NULL AND personalData_users_id IS NOT NULL
+    `;
+    
+    const [results] = await connection.execute(query);
+    await connection.end();
+    
+    const result = { status: "success", data: results };
 
     if (result.status === "success") {
       res.status(200).json({
