@@ -13,7 +13,7 @@ async function getAllUsersPDR(req, res) {
       const query = `
       SELECT personalData_users_id, personalData_offers_id, personalData_goal_id, personalData_dietType_id ,personalData_gender_id,
       FROM personaldataregister 
-      WHERE personalData_offers_id IS NOT NULL AND personalData_users_id IS NOT NULL
+      WHERE personalData_offers_id IS NOT NULL AND personalData_users_id IS NOT NULL  AND personalData_gender_id IS NOT NULL
     `;
     
     const [results] = await connection.execute(query);
