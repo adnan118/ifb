@@ -17,7 +17,7 @@ const router = express.Router();
 router.post("/getDataCoupon", getDataCoupon);
 router.post("/deleteDataCoupon", deleteDataCoupon);
 
-router.get("/getAllCoupons", getAllCoupons);
+router.post("/getAllCoupons", getAllCoupons);
 router.post("/insertDataCoupon", insertDataCoupon);
 router.post("/updateDataCoupon", updateDataCoupon);
 router.post("/useDataCoupon", useDataCoupon);
@@ -25,4 +25,5 @@ router.post("/useDataCoupon", useDataCoupon);
  
 
 module.exports = router;
+
 
