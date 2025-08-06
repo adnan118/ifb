@@ -16,12 +16,14 @@ const express = require('express');
    const {
     updateAvailabilityTraining,
   } = require("../../query/trainings/updateAvailabilityTraining");
- 
+ const { getTrainingsByActivityId } = require("../../query/trainings/getTrainingsByActivityId");
+
  const router = express.Router();
  
  router.post("/insertDataTraining", uploadImages, insertDataTraining);
  router.post("/updateDataTraining", uploadImages, updateDataTraining);
- 
+ router.post("/getTrainingsByActivityId", getTrainingsByActivityId);
+
  
  router.post("/getDataTraining", getDataTraining);
  router.post("/deleteDataTraining", deleteDataTraining, deleteImages);
@@ -31,3 +33,4 @@ const express = require('express');
 
  
 module.exports = router; 
+
