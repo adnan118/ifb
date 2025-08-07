@@ -17,26 +17,28 @@ const path = require("path");
 // Serve static files from the 'query' directory
 // Debug route to check if files exist
 // Debug route to check if files exist
-app.get('/debug/check-file/:path(*)', (req, res) => {
-  // Remove 'query/' from the beginning if it exists
-  let cleanPath = req.params.path;
-  if (cleanPath.startsWith('query/')) {
-    cleanPath = cleanPath.substring(6); // Remove 'query/'
+app.use('/query', express.static(path.join(__dirname, 'query')));
+
+ // Custom route for images if static doesn't work
+app.get('/query/auth/userImages/images/:filename', (req, res) => {
+  const filePath = path.join(__dirname, 'query/auth/userImages/images', req.params.filename);
+  if (fs.existsSync(filePath)) {
+    res.sendFile(filePath);
+  } else {
+    // List available files for debugging
+    const dirPath = path.join(__dirname, 'query/auth/userImages/images');
+    if (fs.existsSync(dirPath)) {
+      const files = fs.readdirSync(dirPath).filter(file => !file.startsWith('.'));
+      res.status(404).json({ 
+        error: 'File not found', 
+        requestedFile: req.params.filename,
+        path: filePath,
+        availableFiles: files
+      });
+    } else {
+      res.status(404).json({ error: 'Directory not found', path: dirPath });
+    }
   }
-  
-  const filePath = path.join(__dirname, 'query', cleanPath);
-  res.json({ 
-    __dirname: __dirname,
-    requestedPath: req.params.path,
-    cleanPath: cleanPath,
-    fullPath: filePath,
-    exists: fs.existsSync(filePath),
-    queryDirExists: fs.existsSync(path.join(__dirname, 'query')),
-    queryAuthDirExists: fs.existsSync(path.join(__dirname, 'query/auth')),
-    queryAuthUserImagesDirExists: fs.existsSync(path.join(__dirname, 'query/auth/userImages')),
-    queryAuthUserImagesImagesDirExists: fs.existsSync(path.join(__dirname, 'query/auth/userImages/images')),
-    logoExists: fs.existsSync(path.join(__dirname, 'query/auth/userImages/images/logo.png'))
-  });
 });
 ////////////////////////////// auth
 const loginUserRoute = require("./routes/authRoutes/LoginUserRout");
@@ -297,6 +299,7 @@ app.use("/api84818dataequipment", equipmentRout);
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
 });
+
 
 
 
