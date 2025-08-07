@@ -18,6 +18,7 @@ const path = require("path");
 app.use('/query', express.static(path.join(__dirname, 'query')));
 app.use('/query/food/foodImages/images', express.static(path.join(__dirname, 'query/food/foodImages/images')));
 app.use('/query/auth/userImages/images', express.static(path.join(__dirname, 'query/auth/userImages/images')));
+
 ////////////////////////////// auth
 const loginUserRoute = require("./routes/authRoutes/LoginUserRout");
 const registerUserRoute = require("./routes/authRoutes/RegisterUserRout");
@@ -277,5 +278,6 @@ app.use("/api84818dataequipment", equipmentRout);
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
 });
+
 
 
