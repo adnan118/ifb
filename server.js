@@ -15,23 +15,20 @@ const path = require("path");
 
 
 // Serve static files from the 'query' directory
- app.use('/query', express.static(path.join(__dirname, 'query')));
 // Debug route to check if files exist
 app.get('/debug/check-file/:path(*)', (req, res) => {
   const filePath = path.join(__dirname, 'query', req.params.path);
-  if (fs.existsSync(filePath)) {
-    res.json({ 
-      exists: true, 
-      path: filePath,
-      stats: fs.statSync(filePath)
-    });
-  } else {
-    res.json({ 
-      exists: false, 
-      path: filePath,
-      error: 'File not found'
-    });
-  }
+  res.json({ 
+    __dirname: __dirname,
+    requestedPath: req.params.path,
+    fullPath: filePath,
+    exists: fs.existsSync(filePath),
+    queryDirExists: fs.existsSync(path.join(__dirname, 'query')),
+    queryAuthDirExists: fs.existsSync(path.join(__dirname, 'query/auth')),
+    queryAuthUserImagesDirExists: fs.existsSync(path.join(__dirname, 'query/auth/userImages')),
+    queryAuthUserImagesImagesDirExists: fs.existsSync(path.join(__dirname, 'query/auth/userImages/images')),
+    logoExists: fs.existsSync(path.join(__dirname, 'query/auth/userImages/images/logo.png'))
+  });
 });
 ////////////////////////////// auth
 const loginUserRoute = require("./routes/authRoutes/LoginUserRout");
@@ -292,6 +289,7 @@ app.use("/api84818dataequipment", equipmentRout);
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
 });
+
 
 
 
