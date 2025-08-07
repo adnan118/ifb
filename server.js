@@ -14,32 +14,58 @@ const PORT = process.env.PORT || 3118;
 const path = require("path");
 
 
-// Serve static files from the 'query' directory
-// Debug route to check if files exist
-// Debug route to check if files exist
+// Serve static files from the 'query' directory 
 app.use('/query', express.static(path.join(__dirname, 'query')));
 
- // Custom route for images if static doesn't work
+ // Custom route for user images with fallback to default
 app.get('/query/auth/userImages/images/:filename', (req, res) => {
   const filePath = path.join(__dirname, 'query/auth/userImages/images', req.params.filename);
+  
   if (fs.existsSync(filePath)) {
     res.sendFile(filePath);
+  } else if (req.params.filename === 'logo.png') {
+    // إذا طلب logo.png ولم توجد في images، ابحث في المجلد الأب userImages
+    const parentDirPath = path.join(__dirname, 'query/auth/userImages');
+    if (fs.existsSync(parentDirPath)) {
+      const files = fs.readdirSync(parentDirPath).filter(file => 
+        !file.startsWith('.') && 
+        (file.endsWith('.png') || file.endsWith('.jpg') || file.endsWith('.jpeg'))
+      );
+      
+      if (files.length > 0) {
+        const fallbackImagePath = path.join(parentDirPath, files[0]);
+        res.sendFile(fallbackImagePath);
+      } else {
+        // إذا لم توجد في userImages، ابحث في default-images
+        const defaultImagePath = path.join(__dirname, 'default-images/default-avatar.png');
+        if (fs.existsSync(defaultImagePath)) {
+          res.sendFile(defaultImagePath);
+        } else {
+          res.status(404).json({ error: 'No default image available' });
+        }
+      }
+    } else {
+      res.status(404).json({ error: 'No user images directory found' });
+    }
   } else {
-    // List available files for debugging
-    const dirPath = path.join(__dirname, 'query/auth/userImages/images');
-    if (fs.existsSync(dirPath)) {
-      const files = fs.readdirSync(dirPath).filter(file => !file.startsWith('.'));
+    // إذا لم توجد الصورة في images، ابحث في المجلد الأب userImages
+    const parentDirPath = path.join(__dirname, 'query/auth/userImages');
+    const parentFilePath = path.join(parentDirPath, req.params.filename);
+    
+    if (fs.existsSync(parentFilePath)) {
+      res.sendFile(parentFilePath);
+    } else {
       res.status(404).json({ 
         error: 'File not found', 
         requestedFile: req.params.filename,
-        path: filePath,
-        availableFiles: files
+        searchedPaths: [
+          path.join(__dirname, 'query/auth/userImages/images', req.params.filename),
+          path.join(__dirname, 'query/auth/userImages', req.params.filename)
+        ]
       });
-    } else {
-      res.status(404).json({ error: 'Directory not found', path: dirPath });
     }
   }
-});
+}); 
 ////////////////////////////// auth
 const loginUserRoute = require("./routes/authRoutes/LoginUserRout");
 const registerUserRoute = require("./routes/authRoutes/RegisterUserRout");
@@ -299,6 +325,7 @@ app.use("/api84818dataequipment", equipmentRout);
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
 });
+
 
 
 
