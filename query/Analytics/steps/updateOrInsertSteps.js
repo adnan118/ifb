@@ -101,6 +101,7 @@ if (checkResult.status === "success" && checkResult.data) {
 module.exports = { updateOrInsertSteps };
 */
 
+
 const {
   updateData,
   insertData,
@@ -110,6 +111,14 @@ const {
 async function updateOrInsertSteps(req, res) {
   try {
     const { steps_user_id, steps_goal, steps_value_day, steps_date_day } = req.body;
+
+    // تحقق من توفر معرف المستخدم
+    if (!steps_user_id) {
+      return res.status(400).json({
+        status: "failure",
+        message: "steps_user_id is required",
+      });
+    }
 
     // تحديد تاريخ الهدف: تاريخ الطلب إن وُجد، وإلا تاريخ اليوم في الخادم بصيغة YYYY-MM-DD
     const serverTodayISO = new Date().toISOString().split("T")[0];
@@ -205,6 +214,3 @@ async function updateOrInsertSteps(req, res) {
 }
 
 module.exports = { updateOrInsertSteps };
-
-
- 
