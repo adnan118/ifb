@@ -164,12 +164,7 @@ const { getAllData, getData } = require("../../controllers/functions");
 const mysql = require("mysql2/promise");
 const { getConnection } = require("../../controllers/db");
 
-/**
- * دالة جلب التمارين للمستخدم بناءً على حالة الأوفر
- * إذا كان لدى المستخدم أوفر فعال (خصم لا يساوي 0) يتم جلب التمارين المخصصة له من user_trainings
- * إذا لم يكن لديه أوفر أو الخصم = 0 يتم جلب التمارين العامة من جدول trainings
- * @param req - يجب أن يحتوي على personalData_users_id دائماً، و training_activities_id إذا لم يكن هناك أوفر
- */
+ 
 const getDataTraining = async (req, res) => {
   try {
     const { training_activities_id, trainings_id, personalData_users_id } = req.body;
@@ -303,4 +298,5 @@ const getDataTraining = async (req, res) => {
 module.exports = {
   getDataTraining,
 };*/
+
 
