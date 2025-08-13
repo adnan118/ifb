@@ -28,6 +28,8 @@ async function insertPersonalDataRegister(req, res) {
       personalData_specialEvent_id,
       personalData_specialEvent_date,
       personalData_offers_id,
+      personalData_expOffer,
+      personalData_isPaidOffer,
      } = req.body;
 
     // إدخال البيانات في قاعدة البيانات
@@ -56,6 +58,8 @@ async function insertPersonalDataRegister(req, res) {
       personalData_specialEvent_id: personalData_specialEvent_id,
       personalData_specialEvent_date:personalData_specialEvent_date,
       personalData_offers_id: personalData_offers_id,
+      personalData_expOffer: personalData_expOffer,
+      personalData_isPaidOffer: personalData_isPaidOffer,
      };
 
     
