@@ -11,7 +11,7 @@ async function updatePDR(req, res) {
       personalData_goalWeight,
       personalData_activities_id,
       personalData_specialPrograms_id,
-      personalData_offers_id, // الحقل الجديد مضاف هنا
+      personalData_offers_id,  
     } = req.body;
 
     // جلب البيانات الحالية
@@ -80,8 +80,7 @@ async function updatePDR(req, res) {
     else  
       updatedUserData.personalData_specialPrograms_id =
         currentData.personalData_specialPrograms_id;
-
-    // الحقل الجديد personalData_offers_id
+ 
     if (typeof personalData_offers_id !== 'undefined' && personalData_offers_id !== '')
       updatedUserData.personalData_offers_id = personalData_offers_id;
     else
@@ -117,3 +116,4 @@ async function updatePDR(req, res) {
 }
 
 module.exports = { updatePDR };
+
