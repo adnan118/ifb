@@ -1,4 +1,4 @@
- const { getData, updateData } = require("../../../controllers/functions");  
+const { getData, updateData } = require("../../../controllers/functions");  
 
 async function updatePDR(req, res) {
   try {
@@ -11,6 +11,7 @@ async function updatePDR(req, res) {
       personalData_goalWeight,
       personalData_activities_id,
       personalData_specialPrograms_id,
+      personalData_offers_id, // الحقل الجديد مضاف هنا
     } = req.body;
 
     // جلب البيانات الحالية
@@ -29,11 +30,11 @@ async function updatePDR(req, res) {
     const currentData = currentDataResult.data;
     
 
-    // تحديث القيم فقط إذا كانت غير null
+    // تحديث القيم فقط إذا كانت غير null أو غير خالية
     const updatedUserData = {};
 
-    // فقط القيم غير null
-    if (personalData_username.length > 0) {
+    // فقط القيم غير null/غير فارغة
+    if (personalData_username && personalData_username.length > 0) {
       updatedUserData.personalData_username = personalData_username;
       updateData(
         "users",
@@ -41,13 +42,10 @@ async function updatePDR(req, res) {
         "users_id = ?",
         [personalData_users_id]
       );
-    }
-    else
+    } else {
       updatedUserData.personalData_username = currentData.personalData_username;
+    }
 
-     
-    
-    
     if (personalData_birthdate != '')
       updatedUserData.personalData_birthdate = personalData_birthdate;
     else
@@ -80,8 +78,14 @@ async function updatePDR(req, res) {
       updatedUserData.personalData_specialPrograms_id =
         personalData_specialPrograms_id;
     else  
-    updatedUserData.personalData_specialPrograms_id =
-      currentData.personalData_specialPrograms_id;
+      updatedUserData.personalData_specialPrograms_id =
+        currentData.personalData_specialPrograms_id;
+
+    // الحقل الجديد personalData_offers_id
+    if (typeof personalData_offers_id !== 'undefined' && personalData_offers_id !== '')
+      updatedUserData.personalData_offers_id = personalData_offers_id;
+    else
+      updatedUserData.personalData_offers_id = currentData.personalData_offers_id;
 
     // تنفيذ عملية التحديث
     const result = await updateData(
