@@ -73,6 +73,7 @@ const verifyUserRoute = require("./routes/authRoutes/VfcRout");
 const fgpasswordRout = require("./routes/authRoutes/FgpasswordRout");
 const getUserDataRout = require("./routes/authRoutes/userRout"); 
 const UpdateUserProfileRout = require("./routes/authRoutes/UpdateUserProfileRout");
+const DeleteUserRout = require("./routes/authRoutes/DeleteUserRout");
 
 ////////////////////////////// PersonalDataRegister
 const insertPersonalDataRegisterRout = require("./routes/personaldata/personalDataRegisterRout");
@@ -237,6 +238,8 @@ app.use("/api84818auth", verifyUserRoute);
 app.use("/api84818auth", fgpasswordRout); 
 app.use("/api84818auth", UpdateUserProfileRout);
 app.use("/api84818auth", getUserDataRout);
+app.use("/api84818auth", DeleteUserRout);
+
 //PersonalDataRegister
 app.use("/api84818datar", insertPersonalDataRegisterRout);
 app.use("/api84818datar", updatePDR);
@@ -325,6 +328,7 @@ app.use("/api84818dataequipment", equipmentRout);
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
 });
+
 
 
 
