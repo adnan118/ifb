@@ -17,6 +17,9 @@ const {
 } = require("../../query/managePersonalData/personaldata/getAllUsersPDR");
 
 
+const {
+  deletePersonalData,
+} = require("../../query/managePersonalData/personaldata/deletePersonalData");
 
 
 const {
@@ -37,7 +40,10 @@ router.post("/getAllUsersPDR", getAllUsersPDR);
 
 // مسار تحديث حالة الدفع
 router.post("/updatePaymentStatus", updatePaymentStatus);
+// مسار حذف البيانات الشخصية
+router.post("/deletePersonalData", deletePersonalData);
 
 ;
 module.exports = router;
+
 
