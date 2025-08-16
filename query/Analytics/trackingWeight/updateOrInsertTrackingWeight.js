@@ -60,33 +60,7 @@ async function updateOrInsertTrackingWeight(req, res) {
 
       console.log("Update Result:", JSON.stringify(result, null, 2)); // Debug log
 
-      if (result && result.status === "success") {
-        // Update personalData_currentWeight in personaldataregister table
-        const personalDataUpdateResult = await updateData(
-          "personaldataregister",
-          {
-            personalData_currentWeight: trakingWeight_current
-          },
-          "personalData_users_id = ?",
-          [trakingWeight_user_id]
-        );
-
-        console.log("Personal Data Update Result:", JSON.stringify(personalDataUpdateResult, null, 2)); // Debug log
-
-        res.json({
-          status: "success",
-          message: "Weight tracking data updated successfully.",
-          data: result.data,
-        });
-      } else {
-        console.log("Update failed. Result status:", result ? result.status : "null result"); // Debug log
-        console.log("Full result object:", JSON.stringify(result, null, 2)); // Debug log
-        res.status(500).json({
-          status: "failure",
-          message: "Failed to update weight tracking data.",
-          debug: result // Add debug info to response
-        });
-      }
+       
     } else {
       console.log("No existing record found, creating new one"); // Debug log
 
