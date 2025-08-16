@@ -72,7 +72,7 @@ async function updateOrInsertTrackingWeight(req, res) {
       if (result.status !== "success") {
         return res.status(500).json({
           status: "failure",
-          message: `Update failed. Table: trakingweight, Fields: ${JSON.stringify(updateFields)}, Where: trakingWeight_user_id = ${trakingWeight_user_id}, Error: ${result.message || 'Unknown error'}`
+          message: `Update failed. Table: trakingweight, Fields: ${JSON.stringify(updateFields)}, Where: trakingWeight_user_id = ${trakingWeight_user_id}, Found record: ${JSON.stringify(checkResult.data)}, Error: ${result.message || 'Unknown error'}`
         });
       }
 
