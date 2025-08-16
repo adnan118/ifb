@@ -11,6 +11,14 @@ async function updateOrInsertTrackingWeight(req, res) {
       trakingWeight_current 
     } = req.body;
 
+    // Validate input data
+    if (!trakingWeight_user_id || trakingWeight_current === undefined || trakingWeight_current === null) {
+      return res.status(400).json({
+        status: "failure",
+        message: "Missing required fields: trakingWeight_user_id and trakingWeight_current are required."
+      });
+    }
+
     // Get current date and time
     const now = new Date();
     const currentTimestamp = now.toISOString();
@@ -25,7 +33,7 @@ async function updateOrInsertTrackingWeight(req, res) {
     console.log("Check Result:", checkResult); // Debug log
 
     // Check if we have a valid record
-    if (checkResult && checkResult.data && checkResult.data.trakingWeight_id) {
+    if (checkResult && checkResult.status === "success" && checkResult.data) {
       console.log("Found existing record:", checkResult.data); // Debug log
 
       // Update existing record
@@ -46,12 +54,13 @@ async function updateOrInsertTrackingWeight(req, res) {
         res.json({
           status: "success",
           message: "Weight tracking data updated successfully.",
-          data: result.data,
         });
       } else {
+        console.error("Update failed:", result); // Debug log
         res.status(500).json({
           status: "failure",
           message: "Failed to update weight tracking data.",
+          error: result ? result.message : "Unknown error"
         });
       }
     } else {
@@ -73,9 +82,11 @@ async function updateOrInsertTrackingWeight(req, res) {
           message: "New weight tracking record inserted successfully.",
         });
       } else {
+        console.error("Insert failed:", insertResult); // Debug log
         res.status(500).json({
           status: "failure",
           message: "Failed to insert new weight tracking record.",
+          error: insertResult ? insertResult.message : "Unknown error"
         });
       }
     }
