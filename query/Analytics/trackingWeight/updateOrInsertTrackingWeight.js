@@ -24,8 +24,6 @@ async function updateOrInsertTrackingWeight(req, res) {
     const now = new Date();
     const currentTimestamp = now.toISOString();
 
-    console.log("Input data:", { trakingWeight_user_id, trakingWeight_current, trakingWeight_target }); // Debug log
-
     // 1. Check if user has a record
     const checkResult = await getData(
       "trakingweight",
@@ -33,12 +31,16 @@ async function updateOrInsertTrackingWeight(req, res) {
       [trakingWeight_user_id]
     );
 
-    console.log("Check Result:", checkResult); // Debug log
+    // Debug: Check if getData failed
+    if (!checkResult) {
+      return res.status(500).json({
+        status: "failure",
+        message: "Database connection error while checking existing record."
+      });
+    }
 
     // Check if we have a valid record
     if (checkResult && checkResult.data && checkResult.data.trakingWeight_id) {
-      console.log("Found existing record:", checkResult.data); // Debug log
-
       // تحضير بيانات التحديث
       const updateFields = {
         trakingWeight_pre: checkResult.data.trakingWeight_current,
@@ -51,8 +53,6 @@ async function updateOrInsertTrackingWeight(req, res) {
         updateFields.trakingWeight_target = trakingWeight_target;
       }
 
-      console.log("Update fields:", updateFields); // Debug log
-
       // Update existing record
       const result = await updateData(
         "trakingweight",
@@ -61,9 +61,14 @@ async function updateOrInsertTrackingWeight(req, res) {
         [trakingWeight_user_id]
       );
 
-      console.log("Update Result:", result); // Debug log
+      if (!result) {
+        return res.status(500).json({
+          status: "failure",
+          message: "Database connection error during update operation."
+        });
+      }
 
-      if (result && result.status === "success") {
+      if (result.status === "success") {
         // تحضير بيانات تحديث جدول البيانات الشخصية
         const personalDataFields = {
           personalData_currentWeight: trakingWeight_current
@@ -74,32 +79,34 @@ async function updateOrInsertTrackingWeight(req, res) {
           personalDataFields.personalData_goalWeight = trakingWeight_target;
         }
 
-        console.log("Personal data update fields:", personalDataFields); // Debug log
-
         // Update personalData_currentWeight and personalData_goalWeight in personaldataregister table
         const personalDataUpdateResult = await updateData(
           "personaldataregister",
           personalDataFields,
-          "personalData_user_id = ?",
+          "personalData_users_id = ?",
           [trakingWeight_user_id]
         );
 
-        console.log("Personal Data Update Result:", personalDataUpdateResult); // Debug log
+        let message = "Weight tracking data updated successfully.";
+        if (personalDataUpdateResult && personalDataUpdateResult.status === "success") {
+          message += " Personal data also updated.";
+        } else {
+          message += " Warning: Personal data update failed.";
+        }
 
         res.json({
           status: "success",
-          message: "Weight tracking data updated successfully.",
+          message: message,
           data: result.data,
         });
       } else {
         res.status(500).json({
           status: "failure",
-          message: "Failed to update weight tracking data.",
+          message: `Failed to update weight tracking data. Error: ${result.message || 'Unknown error'}`,
         });
       }
     } else {
-      console.log("No existing record found, creating new one"); // Debug log
-
+      // No existing record found, creating new one
       // تحضير بيانات الإدراج
       const insertFields = {
         trakingWeight_user_id: trakingWeight_user_id,
@@ -113,14 +120,17 @@ async function updateOrInsertTrackingWeight(req, res) {
         insertFields.trakingWeight_target = trakingWeight_target;
       }
 
-      console.log("Insert fields:", insertFields); // Debug log
-
       // Create new record
       const insertResult = await insertData("trakingweight", insertFields);
 
-      console.log("Insert Result:", insertResult); // Debug log
+      if (!insertResult) {
+        return res.status(500).json({
+          status: "failure",
+          message: "Database connection error during insert operation."
+        });
+      }
 
-      if (insertResult && insertResult.status === "success") {
+      if (insertResult.status === "success") {
         // تحضير بيانات تحديث جدول البيانات الشخصية
         const personalDataFields = {
           personalData_currentWeight: trakingWeight_current
@@ -131,34 +141,36 @@ async function updateOrInsertTrackingWeight(req, res) {
           personalDataFields.personalData_goalWeight = trakingWeight_target;
         }
 
-        console.log("Personal data update fields:", personalDataFields); // Debug log
-
         // Update personalData_currentWeight and personalData_goalWeight in personaldataregister table
         const personalDataUpdateResult = await updateData(
           "personaldataregister",
           personalDataFields,
-          "personalData_user_id = ?",
+          "personalData_users_id = ?",
           [trakingWeight_user_id]
         );
 
-        console.log("Personal Data Update Result:", personalDataUpdateResult); // Debug log
+        let message = "New weight tracking record inserted successfully.";
+        if (personalDataUpdateResult && personalDataUpdateResult.status === "success") {
+          message += " Personal data also updated.";
+        } else {
+          message += " Warning: Personal data update failed.";
+        }
 
         res.json({
           status: "success",
-          message: "New weight tracking record inserted successfully.",
+          message: message,
         });
       } else {
         res.status(500).json({
           status: "failure",
-          message: "Failed to insert new weight tracking record.",
+          message: `Failed to insert new weight tracking record. Error: ${insertResult.message || 'Unknown error'}`,
         });
       }
     }
   } catch (error) {
-    console.error("Error in updateOrInsertTrackingWeight:", error);
     res.status(500).json({
       status: "failure",
-      message: "There is a problem processing your request.",
+      message: `There is a problem processing your request. Error: ${error.message}`,
     });
   }
 }
