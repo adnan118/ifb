@@ -40,7 +40,7 @@ async function updateOrInsertTrackingWeight(req, res) {
     }
 
     // Check if we have a valid record
-    if (checkResult && checkResult.data && checkResult.data.trakingWeight_id) {
+    if (checkResult.status === "success" && checkResult.data && checkResult.data.trakingWeight_id) {
       // تحضير بيانات التحديث
       const updateFields = {
         trakingWeight_pre: checkResult.data.trakingWeight_current,
@@ -65,6 +65,14 @@ async function updateOrInsertTrackingWeight(req, res) {
         return res.status(500).json({
           status: "failure",
           message: "Database connection error during update operation."
+        });
+      }
+
+      // Debug: Show what we're trying to update
+      if (result.status !== "success") {
+        return res.status(500).json({
+          status: "failure",
+          message: `Update failed. Table: trakingweight, Fields: ${JSON.stringify(updateFields)}, Where: trakingWeight_user_id = ${trakingWeight_user_id}, Error: ${result.message || 'Unknown error'}`
         });
       }
 
@@ -107,6 +115,15 @@ async function updateOrInsertTrackingWeight(req, res) {
       }
     } else {
       // No existing record found, creating new one
+      // Debug info about why we're creating new record
+      let debugInfo = `No existing record found for user ${trakingWeight_user_id}. `;
+      if (checkResult.status === "failure") {
+        debugInfo += `Check result: ${checkResult.message || 'Unknown error'}. `;
+      } else if (!checkResult.data) {
+        debugInfo += `No data returned from check. `;
+      } else if (!checkResult.data.trakingWeight_id) {
+        debugInfo += `Record exists but no trakingWeight_id found. `;
+      }
       // تحضير بيانات الإدراج
       const insertFields = {
         trakingWeight_user_id: trakingWeight_user_id,
@@ -127,6 +144,14 @@ async function updateOrInsertTrackingWeight(req, res) {
         return res.status(500).json({
           status: "failure",
           message: "Database connection error during insert operation."
+        });
+      }
+
+      // Debug: Show what we're trying to insert
+      if (insertResult.status !== "success") {
+        return res.status(500).json({
+          status: "failure",
+          message: `Insert failed. Table: trakingweight, Fields: ${JSON.stringify(insertFields)}, Error: ${insertResult.message || 'Unknown error'}, Debug: ${debugInfo}`
         });
       }
 
