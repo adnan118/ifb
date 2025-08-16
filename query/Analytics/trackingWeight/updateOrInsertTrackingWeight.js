@@ -36,7 +36,7 @@ async function updateOrInsertTrackingWeight(req, res) {
     console.log("Check Result:", JSON.stringify(checkResult, null, 2)); // Debug log
 
     // Check if we have a valid record
-    if (checkResult && checkResult.status === "success" && checkResult.data && checkResult.data.trakingWeight_id) {
+    if (checkResult && checkResult.status === "success") {
       console.log("Found existing record:", checkResult.data); // Debug log
 
       // Update existing record
