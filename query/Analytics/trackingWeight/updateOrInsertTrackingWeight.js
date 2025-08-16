@@ -68,7 +68,6 @@ async function updateOrInsertTrackingWeight(req, res) {
 
       try {
         const [updateResult] = await connection.execute(query, queryValues);
-        await connection.end();
 
         console.log("Direct Update Result:", updateResult);
 
@@ -84,6 +83,9 @@ async function updateOrInsertTrackingWeight(req, res) {
             // لا نوقف العملية إذا فشل تحديث البيانات الشخصية
           }
 
+          // إغلاق الاتصال بعد انتهاء جميع العمليات
+          await connection.end();
+
           res.json({
             status: "success",
             message: "Weight tracking data updated successfully.",
@@ -91,6 +93,9 @@ async function updateOrInsertTrackingWeight(req, res) {
           });
           return;
         } else {
+          // إغلاق الاتصال في حالة فشل التحديث
+          await connection.end();
+          
           res.status(500).json({
             status: "failure",
             message: "No rows were updated.",
@@ -120,28 +125,6 @@ async function updateOrInsertTrackingWeight(req, res) {
           },
         });
         return;
-      }
-
-      console.log("Update Result:", result); // Debug log
-
-      if (result && result.status === "success") {
-        res.json({
-          status: "success",
-          message: "Weight tracking data updated successfully.",
-          data: result.data,
-        });
-      } else {
-        console.error("Update failed:", result);
-        res.status(500).json({
-          status: "failure",
-          message: "Failed to update weight tracking data.",
-          error: result?.message || "Unknown error",
-          debug: {
-            user_id: trakingWeight_user_id,
-            current_weight: trakingWeight_current,
-            existing_record: checkResult.data[0],
-          },
-        });
       }
     } else {
       console.log("No existing record found, creating new one"); // Debug log
