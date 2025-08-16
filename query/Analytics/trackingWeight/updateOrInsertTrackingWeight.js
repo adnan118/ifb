@@ -11,6 +11,17 @@ async function updateOrInsertTrackingWeight(req, res) {
       trakingWeight_current 
     } = req.body;
 
+    console.log("Request body:", req.body); // Debug log
+    console.log("User ID:", trakingWeight_user_id, "Current Weight:", trakingWeight_current); // Debug log
+
+    // Validate input
+    if (!trakingWeight_user_id || !trakingWeight_current) {
+      return res.status(400).json({
+        status: "failure",
+        message: "Missing required fields: trakingWeight_user_id and trakingWeight_current are required.",
+      });
+    }
+
     // Get current date and time
     const now = new Date();
     const currentTimestamp = now.toISOString();
@@ -22,7 +33,7 @@ async function updateOrInsertTrackingWeight(req, res) {
       [trakingWeight_user_id]
     );
 
-    console.log("Check Result:", checkResult); // Debug log
+    console.log("Check Result:", JSON.stringify(checkResult, null, 2)); // Debug log
 
     // Check if we have a valid record
     if (checkResult && checkResult.data && checkResult.data.trakingWeight_id) {
@@ -40,7 +51,7 @@ async function updateOrInsertTrackingWeight(req, res) {
         [trakingWeight_user_id]
       );
 
-      console.log("Update Result:", result); // Debug log
+      console.log("Update Result:", JSON.stringify(result, null, 2)); // Debug log
 
       if (result && result.status === "success") {
         // Update personalData_currentWeight in personaldataregister table
@@ -53,7 +64,7 @@ async function updateOrInsertTrackingWeight(req, res) {
           [trakingWeight_user_id]
         );
 
-        console.log("Personal Data Update Result:", personalDataUpdateResult); // Debug log
+        console.log("Personal Data Update Result:", JSON.stringify(personalDataUpdateResult, null, 2)); // Debug log
 
         res.json({
           status: "success",
@@ -61,9 +72,12 @@ async function updateOrInsertTrackingWeight(req, res) {
           data: result.data,
         });
       } else {
+        console.log("Update failed. Result status:", result ? result.status : "null result"); // Debug log
+        console.log("Full result object:", JSON.stringify(result, null, 2)); // Debug log
         res.status(500).json({
           status: "failure",
           message: "Failed to update weight tracking data.",
+          debug: result // Add debug info to response
         });
       }
     } else {
@@ -77,7 +91,7 @@ async function updateOrInsertTrackingWeight(req, res) {
         trakingWeight_lastedit: currentTimestamp
       });
 
-      console.log("Insert Result:", insertResult); // Debug log
+      console.log("Insert Result:", JSON.stringify(insertResult, null, 2)); // Debug log
 
       if (insertResult && insertResult.status === "success") {
         // Update personalData_currentWeight in personaldataregister table
@@ -90,16 +104,19 @@ async function updateOrInsertTrackingWeight(req, res) {
           [trakingWeight_user_id]
         );
 
-        console.log("Personal Data Update Result:", personalDataUpdateResult); // Debug log
+        console.log("Personal Data Update Result:", JSON.stringify(personalDataUpdateResult, null, 2)); // Debug log
 
         res.json({
           status: "success",
           message: "New weight tracking record inserted successfully.",
         });
       } else {
+        console.log("Insert failed. Result status:", insertResult ? insertResult.status : "null result"); // Debug log
+        console.log("Full insert result object:", JSON.stringify(insertResult, null, 2)); // Debug log
         res.status(500).json({
           status: "failure",
           message: "Failed to insert new weight tracking record.",
+          debug: insertResult // Add debug info to response
         });
       }
     }
