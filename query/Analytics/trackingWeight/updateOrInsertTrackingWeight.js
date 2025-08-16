@@ -36,10 +36,17 @@ async function updateOrInsertTrackingWeight(req, res) {
     console.log("Check Result:", JSON.stringify(checkResult, null, 2)); // Debug log
 
     // Check if we have a valid record
-    if (checkResult && checkResult.data && checkResult.data.trakingWeight_id) {
+    if (checkResult && checkResult.status === "success" && checkResult.data && checkResult.data.trakingWeight_id) {
       console.log("Found existing record:", checkResult.data); // Debug log
 
       // Update existing record
+      console.log("Attempting to update with data:", {
+        trakingWeight_pre: checkResult.data.trakingWeight_current,
+        trakingWeight_current: trakingWeight_current,
+        trakingWeight_lastedit: currentTimestamp
+      });
+      console.log("Update condition:", "trakingWeight_user_id = ?", [trakingWeight_user_id]);
+      
       const result = await updateData(
         "trakingweight",
         {
