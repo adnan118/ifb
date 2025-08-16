@@ -1,8 +1,9 @@
 const {
   updateData,
   insertData,
-  getData
+  getAllData
 } = require("../../../controllers/functions");
+const { getConnection } = require("../../../controllers/db");
 
 async function updateOrInsertTrackingWeight(req, res) {
   try {
@@ -11,12 +12,20 @@ async function updateOrInsertTrackingWeight(req, res) {
       trakingWeight_current 
     } = req.body;
 
-    // Get current date and time
+    // Validate required fields
+    if (!trakingWeight_user_id || !trakingWeight_current) {
+      return res.status(400).json({
+        status: "failure",
+        message: "trakingWeight_user_id and trakingWeight_current are required."
+      });
+    }
+
+    // Get current date and time in MySQL format
     const now = new Date();
-    const currentTimestamp = now.toISOString();
+    const currentTimestamp = now.toISOString().slice(0, 19).replace('T', ' ');
 
     // 1. Check if user has a record
-    const checkResult = await getData(
+    const checkResult = await getAllData(
       "trakingweight",
       "trakingWeight_user_id = ?",
       [trakingWeight_user_id]
@@ -25,20 +34,76 @@ async function updateOrInsertTrackingWeight(req, res) {
     console.log("Check Result:", checkResult); // Debug log
 
     // Check if we have a valid record
-    if (checkResult && checkResult.data && checkResult.data.trakingWeight_id) {
+    if (checkResult && checkResult.status === "success" && checkResult.data && checkResult.data.length > 0) {
       console.log("Found existing record:", checkResult.data); // Debug log
 
-      // Update existing record
-      const result = await updateData(
-        "trakingweight",
-        {
-          trakingWeight_pre: checkResult.data.trakingWeight_current,
-          trakingWeight_current: trakingWeight_current,
-          trakingWeight_lastedit: currentTimestamp
-        },
-        "trakingWeight_user_id = ?",
-        [trakingWeight_user_id]
-      );
+                    // Update existing record
+       const updateDataObj = {
+         trakingWeight_pre: checkResult.data[0].trakingWeight_current,
+         trakingWeight_current: trakingWeight_current,
+         trakingWeight_lastedit: currentTimestamp
+       };
+       
+       console.log("Update Data Object:", updateDataObj);
+       console.log("Where Condition: trakingWeight_id = ?");
+       console.log("Where Values:", [checkResult.data[0].trakingWeight_id]);
+       
+        // Try direct database update for debugging
+        const connection = await getConnection();
+        const setClause = Object.keys(updateDataObj)
+          .map((key) => `\`${key}\` = ?`)
+          .join(", ");
+        
+        const query = `UPDATE \`trakingweight\` SET ${setClause} WHERE \`trakingWeight_id\` = ?`;
+        const queryValues = [...Object.values(updateDataObj), checkResult.data[0].trakingWeight_id];
+        
+        console.log("Generated Query:", query);
+        console.log("Query Values:", queryValues);
+        
+        try {
+          const [updateResult] = await connection.execute(query, queryValues);
+          await connection.end();
+          
+          console.log("Direct Update Result:", updateResult);
+          
+          if (updateResult.affectedRows > 0) {
+            res.json({
+              status: "success",
+              message: "Weight tracking data updated successfully.",
+              data: { affectedRows: updateResult.affectedRows }
+            });
+            return;
+          } else {
+            res.status(500).json({
+              status: "failure",
+              message: "No rows were updated.",
+              debug: {
+                user_id: trakingWeight_user_id,
+                current_weight: trakingWeight_current,
+                existing_record: checkResult.data[0],
+                query: query,
+                values: queryValues
+              }
+            });
+            return;
+          }
+        } catch (dbError) {
+          console.error("Database Error:", dbError);
+          await connection.end();
+          res.status(500).json({
+            status: "failure",
+            message: "Database error occurred.",
+            error: dbError.message,
+            debug: {
+              user_id: trakingWeight_user_id,
+              current_weight: trakingWeight_current,
+              existing_record: checkResult.data[0],
+              query: query,
+              values: queryValues
+            }
+          });
+          return;
+        }
 
       console.log("Update Result:", result); // Debug log
 
@@ -49,9 +114,16 @@ async function updateOrInsertTrackingWeight(req, res) {
           data: result.data,
         });
       } else {
+        console.error("Update failed:", result);
         res.status(500).json({
           status: "failure",
           message: "Failed to update weight tracking data.",
+          error: result?.message || "Unknown error",
+          debug: {
+            user_id: trakingWeight_user_id,
+            current_weight: trakingWeight_current,
+            existing_record: checkResult.data[0]
+          }
         });
       }
     } else {
@@ -73,9 +145,11 @@ async function updateOrInsertTrackingWeight(req, res) {
           message: "New weight tracking record inserted successfully.",
         });
       } else {
+        console.error("Insert failed:", insertResult);
         res.status(500).json({
           status: "failure",
           message: "Failed to insert new weight tracking record.",
+          error: insertResult?.message || "Unknown error"
         });
       }
     }
