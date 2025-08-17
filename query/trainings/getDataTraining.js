@@ -58,7 +58,7 @@ const getDataTraining = async (req, res) => {
     // 3. تحديد منطق الجلب بناءً على حالة الأوفر وصلاحيته
     //offers_id = 2 ->  Training & Diet
     //offers_id = 3 ->  Training 
-    if ((offers_discount && offers_discount !== 0 && !isOfferExpired) || (offers_id === 2 || offers_id === 3)) {
+     if (offers_discount && offers_discount !== 0 && !isOfferExpired && (offers_id === 2 || offers_id === 3)) {
 
       // --- المستخدم لديه أوفر فعال وغير منتهي ---
       // نجلب التمارين المخصصة له من جدول user_trainings
@@ -301,6 +301,7 @@ const getDataTraining = async (req, res) => {
 module.exports = {
   getDataTraining,
 };*/
+
 
 
 
