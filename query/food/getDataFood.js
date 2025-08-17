@@ -156,7 +156,7 @@ const getDataFood = async (req, res) => {
 
 module.exports = {
   getDataFood,
-};
+};/*
 const getDataFood = async (req, res) => {
   try {
     const { food_diettype_id, user_id } = req.body;
@@ -281,4 +281,5 @@ module.exports = {
 };
 
 */
+
 
