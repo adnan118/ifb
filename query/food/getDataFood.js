@@ -354,7 +354,9 @@ const getDataFood = async (req, res) => {
     // 3. تحديد منطق الجلب بناءً على حالة الأوفر وصلاحيته
     //offers_id = 2 ->  Training & Diet
     //offers_id = 4 ->  Diet
-    if ((offers_discount && offers_discount !== 0 && !isOfferExpired) || offers_id === 2 || offers_id === 4) {
+   
+    if (offers_discount && offers_discount !== 0 && !isOfferExpired && (offers_id === 2 || offers_id === 4)) {
+
       // --- المستخدم لديه أوفر فعال وغير منتهي ---
       // نجلب الطعام المخصص له من جدول user_foods
       const connection = await getConnection();
@@ -430,5 +432,6 @@ const getDataFood = async (req, res) => {
 module.exports = {
   getDataFood,
 };
+
 
 
