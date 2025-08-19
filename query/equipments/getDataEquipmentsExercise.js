@@ -130,7 +130,7 @@ const getAllEquipmentsExercise = async (req, res) => {
         const equipmentPlaceholders = equipmentIds.map(() => '?').join(',');
         
         // Query to get equipment details
-        const query = `SELECT * FROM equipments WHERE equipment_id IN (${equipmentPlaceholders})`;
+        const query = `SELECT * FROM equipments WHERE equipments_id IN (${equipmentPlaceholders})`;
         console.log("Equipment query:", query);
         console.log("Equipment query params:", equipmentIds);
         
