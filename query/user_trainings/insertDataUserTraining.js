@@ -3,7 +3,7 @@ const { insertData } = require("../../controllers/functions");
 
 async function insertDataUserTraining(req, res) {
   try {
-    const { user_id, training_id, daysOfWeek_id, active } = req.body;
+    const { user_id, training_id, daysOfWeek_id } = req.body;
 
     // التحقق من وجود البيانات المطلوبة
     if (!user_id || !training_id || !daysOfWeek_id) {
@@ -18,7 +18,7 @@ async function insertDataUserTraining(req, res) {
       user_id: user_id,
       training_id: training_id,
       daysOfWeek_id: daysOfWeek_id,
-      active: active || 1, // افتراضي 1 (نشط)
+      active:  1, // افتراضي 1 (نشط)
       assigned_at: new Date(), // الوقت الحالي
     };
 
@@ -51,5 +51,6 @@ async function insertDataUserTraining(req, res) {
 
 
 module.exports = { insertDataUserTraining };
+
 
 
