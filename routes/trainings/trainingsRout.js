@@ -17,7 +17,12 @@ const express = require('express');
     updateAvailabilityTraining,
   } = require("../../query/trainings/updateAvailabilityTraining");
  const { getTrainingsByActivityId } = require("../../query/trainings/getTrainingsByActivityId");
-
+ // استيراد وظائف user_trainings
+ const { insertDataUserTraining } = require("../../query/user_trainings/insertDataUserTraining");
+ const { updateDataUserTraining } = require("../../query/user_trainings/updateDataUserTraining");
+ const { deleteDataUserTraining } = require("../../query/user_trainings/deleteDataUserTraining");
+ const { getDataUserTrainingsByUserId } = require("../../query/user_trainings/getDataUserTraining");
+ 
  const router = express.Router();
  
  router.post("/insertDataTraining", uploadImages, insertDataTraining);
@@ -29,8 +34,14 @@ const express = require('express');
  router.post("/deleteDataTraining", deleteDataTraining, deleteImages);
   router.post("/updateAvailabilityTraining", updateAvailabilityTraining);
 
- 
+ // روابط user_trainings
+router.post("/insertUserTraining", insertDataUserTraining);
+router.post("/updateUserTraining", updateDataUserTraining);
+router.post("/deleteUserTraining", deleteDataUserTraining);
+router.post("/getUserTrainings", getDataUserTrainingsByUserId);
+
 
  
 module.exports = router; 
+
 
