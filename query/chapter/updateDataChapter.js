@@ -17,7 +17,7 @@ async function updateDataChapter(req, res) {
       ? req.files["chapter_img"][0]
       : null;
 
-    const { chapter_id, chapter_text } = req.body;
+    const { chapter_id, chapter_textEn, chapter_textAr } = req.body;
 
     // استعلام للحصول على الصورة القديمة
     const oldChapterData = await getData("chapter", "chapter_id = ?", [
@@ -55,7 +55,8 @@ async function updateDataChapter(req, res) {
     }
 
     const updateChapterData = {
-      chapter_text: chapter_text,
+      chapter_textEn: chapter_textEn,
+      chapter_textAr: chapter_textAr,
       chapter_img: chapter_img_path,
     };
 
