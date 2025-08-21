@@ -1,4 +1,4 @@
-/*
+
 
 const { getData } = require("../../controllers/functions");
 
@@ -14,7 +14,7 @@ const getDataUserTrainingsByUserId = async (req, res) => {
       });
     }
 
-    const result = await getData("user_trainings", "user_id = ?", [user_id]);
+    const result = await getAllData("user_trainings", "user_id = ?", [user_id]);
 
     if (result.status === "success") {
       res.status(200).json({
@@ -43,4 +43,5 @@ module.exports = {
 
 };
 
-*/
+
+
