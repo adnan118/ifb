@@ -1,3 +1,4 @@
+/*
 const { updateData, getData } = require("../../controllers/functions");
 
 async function updateDataUserTraining(req, res) {
@@ -70,4 +71,6 @@ async function updateDataUserTraining(req, res) {
   }
 }
 
+
 module.exports = { updateDataUserTraining };
+*/
