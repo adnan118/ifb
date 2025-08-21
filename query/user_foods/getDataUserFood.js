@@ -12,7 +12,7 @@ const getDataUserFoodsByUserId = async (req, res) => {
       });
     }
 
-    const result = await getData("user_foods", "user_id = ?", [user_id]);
+    const result = await getAllData("user_foods", "user_id = ?", [user_id]);
 
     if (result.status === "success") {
       res.status(200).json({
@@ -38,4 +38,5 @@ const getDataUserFoodsByUserId = async (req, res) => {
 
 module.exports = {
   getDataUserFoodsByUserId,
+
 };
