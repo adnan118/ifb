@@ -1,3 +1,5 @@
+/*
+
 const { getData } = require("../../controllers/functions");
 
 // جلب تدريبات مستخدم معين
@@ -38,4 +40,7 @@ const getDataUserTrainingsByUserId = async (req, res) => {
 
 module.exports = {
   getDataUserTrainingsByUserId,
+
 };
+
+*/
