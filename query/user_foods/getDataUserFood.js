@@ -1,4 +1,4 @@
-const { getData } = require("../../controllers/functions");
+const { getData,getAllData } = require("../../controllers/functions");
 
 // جلب أطعمة مستخدم معين
 const getDataUserFoodsByUserId = async (req, res) => {
@@ -40,3 +40,4 @@ module.exports = {
   getDataUserFoodsByUserId,
 
 };
+
