@@ -1,3 +1,4 @@
+/*
 const { deleteData, getData } = require("../../controllers/functions");
 
 async function deleteDataUserTraining(req, res) {
@@ -50,4 +51,6 @@ async function deleteDataUserTraining(req, res) {
   }
 }
 
+
 module.exports = { deleteDataUserTraining };
+*/
