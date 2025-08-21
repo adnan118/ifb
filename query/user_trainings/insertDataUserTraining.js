@@ -1,4 +1,4 @@
-/*
+
 const { insertData } = require("../../controllers/functions");
 
 async function insertDataUserTraining(req, res) {
@@ -51,4 +51,5 @@ async function insertDataUserTraining(req, res) {
 
 
 module.exports = { insertDataUserTraining };
-*/
+
+
