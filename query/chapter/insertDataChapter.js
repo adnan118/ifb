@@ -15,7 +15,7 @@ async function insertDataChapter(req, res) {
       ? req.files["chapter_img"][0]
       : null;
 
-    const {   chapter_text } = req.body;
+    const { chapter_textEn, chapter_textAr } = req.body;
 
     // تحديد مسار الصورة المرفوعة
     const chapter_img_path = chapter_img_file
@@ -25,7 +25,8 @@ async function insertDataChapter(req, res) {
     // إعداد بيانات الإدخال
     const insertChapterData = { 
       chapter_img: chapter_img_path,
-      chapter_text: chapter_text,
+      chapter_textEn: chapter_textEn,
+      chapter_textAr: chapter_textAr,
     };
 
     const result = await insertData("chapter", insertChapterData);
