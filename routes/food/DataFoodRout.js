@@ -5,10 +5,12 @@ const { getDataFood } = require("../../query/food/getDataFood");
 const { deleteDataFood } = require("../../query/food/deleteDataFood"); 
 
 // استيراد وظائف user_foods
+ 
 const { insertDataUserFood } = require("../../query/user_foods/insertDataUserFood");
 const { updateDataUserFood } = require("../../query/user_foods/updateDataUserFood");
 const { deleteDataUserFood } = require("../../query/user_foods/deleteDataUserFood");
 const { getDataUserFoodsByUserId } = require("../../query/user_foods/getDataUserFood"); 
+
 
 
 const router = express.Router();
@@ -30,4 +32,5 @@ router.post("/getUserFoods", getDataUserFoodsByUserId);
 
 
 module.exports = router;
+
 
