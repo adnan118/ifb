@@ -91,7 +91,9 @@ async function insertData(table, data, json = true) {
   } catch (error) {
     console.error("Database query error: ", error);
     await connection.end();
-    return { status: "failure", message: "There is a problem inserting data" };
+   // return { status: "failure", message: "There is a problem inserting data" };
+       return { status: "failure", message: error.message }; // 👈 رجّع الخطأ الحقيقي
+
   }
 }
 
@@ -393,4 +395,5 @@ module.exports = {
   handleVideoDeletion,
   createMulterConfig
 };
+
 
