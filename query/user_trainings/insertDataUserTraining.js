@@ -24,16 +24,13 @@ async function insertDataUserTraining(req, res) {
 
     const result = await insertData("user_trainings", insertUserTrainingData);
 
-    if (result.status === "success") {
-      res.status(201).json({
-        status: "success",
-        message: "User training assigned successfully.",
-        data: {
-          id: result.insertId,
-          ...insertUserTrainingData,
-        },
-      });
-    } else {
+     if (result.status === "success") {
+        res.status(201).json({
+          status: "success",
+          message: "User training assigned successfully.",
+          data: insertUserTrainingData,  
+        });
+      } else {
       res.status(500).json({
         status: "failure",
         message: "Failed to assign user training.",
@@ -51,6 +48,7 @@ async function insertDataUserTraining(req, res) {
 
 
 module.exports = { insertDataUserTraining };
+
 
 
 
