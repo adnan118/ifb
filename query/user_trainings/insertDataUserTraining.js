@@ -41,18 +41,23 @@ async function insertDataUserTraining(req, res) {
          dbError: result.message 
       });
     }
-  } catch (error) {
+  } catch (error) {/*
     console.error("Error inserting user training data: ", error);
     res.status(500).json({
       status: "failure",
       message: "There is a problem assigning user training",
       error: error.message,
-    });
+    });*/
+      console.error("Database query error: ", error);
+  await connection.end();
+  return { status: "failure", message: error.message }; // 👈 رجّع رسالة الخطأ الحقيقية
+
   }
 }
 
 
 module.exports = { insertDataUserTraining };
+
 
 
 
