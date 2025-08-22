@@ -19,7 +19,7 @@ async function insertDataUserTraining(req, res) {
       training_id: training_id,
       daysOfWeek_id: daysOfWeek_id,
       active:  1, // افتراضي 1 (نشط)
-      assigned_at: new Date(), // الوقت الحالي
+  assigned_at: formatDateToMySQL(new Date()), // الوقت الحالي
     };
 
     const result = await insertData("user_trainings", insertUserTrainingData);
@@ -48,6 +48,7 @@ async function insertDataUserTraining(req, res) {
 
 
 module.exports = { insertDataUserTraining };
+
 
 
 
