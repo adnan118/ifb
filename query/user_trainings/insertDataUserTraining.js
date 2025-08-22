@@ -1,6 +1,10 @@
 
 const { insertData } = require("../../controllers/functions");
 
+// دالة لتنسيق التاريخ ليتوافق مع MySQL
+function formatDateToMySQL(date) {
+  return date.toISOString().slice(0, 19).replace("T", " ");
+}
 async function insertDataUserTraining(req, res) {
   try {
     const { user_id, training_id, daysOfWeek_id } = req.body;
@@ -48,6 +52,7 @@ async function insertDataUserTraining(req, res) {
 
 
 module.exports = { insertDataUserTraining };
+
 
 
 
