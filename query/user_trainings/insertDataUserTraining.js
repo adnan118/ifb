@@ -36,8 +36,9 @@ async function insertDataUserTraining(req, res) {
         });
       } else {
       res.status(500).json({
-        status: "failure",
-        message: "Failed to assign user training.",
+         status: "failure",
+         message: "Failed to assign user training.",
+         dbError: result.message 
       });
     }
   } catch (error) {
@@ -52,6 +53,7 @@ async function insertDataUserTraining(req, res) {
 
 
 module.exports = { insertDataUserTraining };
+
 
 
 
