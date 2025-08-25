@@ -3,6 +3,7 @@ const {  insertDataFood,  uploadImages,} = require("../../query/food/insertDataF
 const { updateDataFood } = require("../../query/food/updateDataFood"); 
 const { getDataFood } = require("../../query/food/getDataFood"); 
 const { deleteDataFood } = require("../../query/food/deleteDataFood"); 
+const { getAllFood } = require("../../query/food/getAllDataFood"); 
 
 // استيراد وظائف user_foods
  
@@ -21,6 +22,7 @@ router.post("/updateDataFood", uploadImages, updateDataFood);
 
 router.post("/getDataFood", getDataFood);
 router.post("/deleteDataFood", deleteDataFood);
+router.post("/getAllFood", getAllFood);
 
 
 // روابط user_foods
@@ -32,5 +34,6 @@ router.post("/getUserFoods", getDataUserFoodsByUserId);
 
 
 module.exports = router;
+
 
 
