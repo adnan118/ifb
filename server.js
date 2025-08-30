@@ -150,7 +150,7 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
   // قراءة ملف HTML منفصل
-  const welcomePath = path.join(__dirname, 'views', 'welcome.html');
+  const welcomePath = path.join(__dirname, 'views', 'index.html');
   
   if (fs.existsSync(welcomePath)) {
     const htmlContent = fs.readFileSync(welcomePath, 'utf8');
@@ -328,6 +328,7 @@ app.use("/api84818dataequipment", equipmentRout);
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
 });
+
 
 
 
