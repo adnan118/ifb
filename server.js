@@ -147,7 +147,24 @@ const couponRout = require("./routes/coupon/DataCouponRout");
  
  
 app.use(express.json());
+// 1) مسار البناء الخاص بتطبيق React
+const reactBuildPath = path.join(__dirname, 'frontend_build');
 
+// 2) خدمة الملفات الثابتة لـ React
+app.use(express.static(reactBuildPath));
+
+// 3) توجيه الجذر إلى React
+app.get('/', (req, res) => {
+  res.sendFile(path.join(reactBuildPath, 'index.html'));
+});
+
+// 4) دعم المسارات الفرعية لـ React Router
+app.get('*', (req, res) => {
+  // إذا كان الملف المطلوب موجوداً كـ static فسيتم خدمته قبل هذا المسار
+  // وإلا فسنعيد index.html ليعالج العميل من جانب React
+  res.sendFile(path.join(reactBuildPath, 'index.html'));
+});
+/*
 app.get("/", (req, res) => {
   // قراءة ملف HTML منفصل
   const welcomePath = path.join(__dirname, 'views', 'welcom.html');
@@ -158,7 +175,7 @@ app.get("/", (req, res) => {
   } else {
     res.status(404).json({ error: "Welcome page not found" });
   }
-});
+});*/
 
 // مسار إدارة قاعدة البيانات
 app.get("/db-admin", (req, res) => {
@@ -328,6 +345,7 @@ app.use("/api84818dataequipment", equipmentRout);
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
 });
+
 
 
 
