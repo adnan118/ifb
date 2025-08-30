@@ -63,12 +63,12 @@ async function LoginUser(req, res) {
     });
   }
 }
-async function LoginAdmin(req, res) {
+ async function LoginAdmin(req, res) {
   try {
-    const { phone, users_password } = req.body; //req.body: يحتوي على بيانات المستخدم (البريد الإلكتروني وكلمة المرور) التي تم إرسالها من العميل.
+    const { phone, password } = req.body; //req.body: يحتوي على بيانات المستخدم (البريد الإلكتروني وكلمة المرور) التي تم إرسالها من العميل.
 
     // التحقق من وجود البيانات
-    if (!phone || !users_password) {
+    if (!phone || !password) {
       return res.status(400).json({
         status: "failure",
         message: "You must enter your phone and password.",
@@ -88,8 +88,8 @@ async function LoginAdmin(req, res) {
 
       // التحقق من كلمة المرور
       const isPasswordValid = await bcrypt.compare(
-        users_password,
-        user.users_password
+        password,
+        user.password
       );
 
       if (isPasswordValid) {
@@ -128,5 +128,6 @@ async function LoginAdmin(req, res) {
 
 // تصدير الدالة
 module.exports = { LoginUser, LoginAdmin };
+
 
 
