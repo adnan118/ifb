@@ -1,0 +1,411 @@
+{
+  "sidebar": {
+    "main_menu": "القائمة الرئيسية",
+    "content_management": "إدارة المحتوى",
+    "dashboard": "لوحة التحكم",
+    "trainees": "إدارة المتدربين",
+    "coupons": "إدارة الكوبونات",
+    "challenges": "إدارة التحديات",
+    "exercise": "إدارة التمارين",
+    "meals": "إدارة الوجبات",
+    "feedback": "نظام الملاحظات",
+    "plans": "خطط الاشتراك",
+    "finance": "الإدارة المالية",
+    "start": "إبدا بعقلك"
+  },
+  "user": {
+    "admin": "المشرف"
+  },
+  "dashboard": {
+    "title": "نظرة عامة على لوحة التحكم",
+    "subtitle": "مرحبًا بعودتك! إليك ما يحدث في تطبيق Ideal Body",
+    "last_7_days": "آخر 7 أيام",
+    "export_report": "تصدير التقرير",
+    "revenue_chart": "مخطط الإيرادات",
+    "subscription_performance": "أداء الاشتراكات",
+    "financial_overview": "نظرة عامة على المالية",
+    "financial_subtitle": "تحليل شامل للإيرادات والاشتراكات وأداء المالية",
+    "time_period": "الفترة الزمنية:",
+    "today": "اليوم",
+    "this_month": "هذا الشهر",
+    "this_year": "هذا العام",
+    "advanced_filter": "فلتر متقدم:",
+    "stats_time_period": "الفترة الزمنية:",
+    "stats_new_subscriptions": "الاشتراكات الجديدة",
+    "stats_total_revenue": "إجمالي الإيرادات",
+    "stats_avg_revenue_per_user": "متوسط الإيراد لكل مستخدم",
+    "total_revenue": "إجمالي الإيرادات",
+    "goals_revenue": "إيرادات الأهداف",
+    "revenue_distribution": "توزيع الإيرادات",
+    "plan_details": "تفاصيل الخطط",
+    "filtered_by": "مفلتر بواسطة:",
+    "revenue": "إيرادات",
+    "of_users": "من المستخدمين",
+    "diet_type": "نوع النظام الغذائي",
+    "water_intake": "استهلاك الماء"
+  },
+  "stats": {
+    "name": "الاسم",
+    "value": "القيمة",
+    "change": "التغير",
+    "note": "ملاحظة",
+    "total_active_users": "إجمالي المستخدمين النشطين",
+    "weekly_signups": "التسجيلات الأسبوعية",
+    "avg_weight_loss": "متوسط فقدان الوزن",
+    "most_popular_diet": "أشهر نظام غذائي",
+    "most_popular_goal": "أكثر هدف مسجل",
+    "vs_last_week": "مقارنة بالأسبوع الماضي",
+    "this_week": "هذا الأسبوع",
+    "per_user": "لكل مستخدم",
+    "following": "متابعين",
+    "excellent": "ممتاز",
+    "of_users": "من المستخدمين",
+    "no_data": "لا توجد بيانات"
+  },
+  "chart": {
+    "title": "الاشتراكات الأسبوعية",
+    "subtitle": "عدد المشتركين لكل أسبوع",
+    "monthly_title": "الاشتراكات الشهرية",
+    "monthly_subtitle": "عدد المشتركين الجدد كل شهر"
+  },
+  "goals": {
+    "title": "توزيع أهداف المستخدمين",
+    "subtitle": "ما الذي يرغب المستخدمون في تحقيقه",
+    "loseWeight": "فقدان الوزن",
+    "stayFit": "الحفاظ على اللياقة",
+    "buildMuscle": "بناء العضلات",
+    "other": "أخرى",
+    "percentage": "النسبة",
+    "count": "العدد"
+  },
+  "subs": {
+    "title": "أداء الاشتراكات",
+    "subtitle": "كيف كان أداء كل خطة",
+    "yearly": "خطة سنوية",
+    "monthly": "خطة شهرية",
+    "weekly": "خطة أسبوعية",
+    "trial": "خطة تجريبية",
+    "users": "مستخدم"
+  },
+  "filters": {
+    "all": "الكل",
+    "active": "النشطون",
+    "expired": "غير نشطون",
+    "paused": "موقوفة",
+    "not_active": "غير فعال"
+  },
+  "trainees_management": {
+    "title": "إدارة المتدربين",
+    "subtitle": "إدارة جميع المستخدمات المسجلات في تطبيق الجسم المثالي ",
+    "trainees_count": "متدرب",
+    "total_trainees": "إجمالي المتدربات",
+    "active_members": "الأعضاء النشطات",
+    "this_month": "هذا الشهر",
+    "this_month_trainees": "المتدربين الذين انضموا هذا الشهر",
+    "avg_weight": "متوسط الوزن",
+    "search_placeholder": "ابحث عن متدرب..."
+  },
+  "exercise_management": {
+    "title": "إدارة الأنشطة",
+    "subtitle": "إدارة الأنشطة  والبرامج التدريبية و التمارين",
+    "add_category": "إضافة نشاط",
+    "categories": "أنشطة",
+    "search_placeholder": "البحث في الأنشطة...",
+    "manage_programs": "إدارة البرامج",
+    "programs": "برامج",
+    "no_categories": "لم يتم العثور على أنشطة",
+    "no_categories_desc": "حاول تعديل مصطلحات البحث"
+  },
+  "trainees_table": {
+    "title": "جميع المتدربين",
+    "full_name": "الاسم الكامل",
+    "phone_number": "رقم الهاتف",
+    "current_weight": "الوزن الحالي",
+    "goal": "الهدف",
+    "activity_level": "مستوى النشاط",
+    "joined_date": "تاريخ الانضمام",
+    "actions": "الإجراءات",
+    "view_profile": "عرض الملف",
+    "active": "فعال",
+    "not_active": "غير فعال",
+    "users_id": "المعرف",
+    "users_name": "الاسم",
+    "users_phone": "رقم الهاتف",
+    "users_verflyCode": "رمز التحقق",
+    "users_approve": "مفعل",
+    "users_img": "الصورة",
+    "users_haveoldaccount": "حساب قديم",
+    "created_at": "تاريخ الإنشاء",
+    "last_log": "آخر دخول",
+    "pay": "دفعة مالية"
+  },
+  "trainee": {
+    "delete_title": "حذف المتدربة",
+    "delete_desc": "هل أنت متأكد أنك تريد حذف هذه المتدرب ؟ لا يمكن التراجع عن هذا الإجراء.",
+    "delete_confirm": "حذف",
+    "delete_cancel": "إلغاء",
+    "delete_success": "تم حذف المتدربة بنجاح.",
+    "back_to_trainees": "العودة للمتدربين",
+    "tabs": {
+      "profile": "الملف الشخصي",
+      "workouts": "التمارين",
+      "meals": "الوجبات",
+      "progress": "التقدم",
+      "settings": "الإعدادات"
+    },
+    "personal_info": {
+      "title": "المعلومات الشخصية",
+      "gender": "الجنس",
+      "gender_female": "أنثى",
+      "phone": "رقم الهاتف",
+      "birthday": "تاريخ الميلاد",
+      "body_type": "نوع الجسم",
+      "body_type_pear": "كمثرى"
+    },
+    "measurements": {
+      "title": "القياسات الجسدية",
+      "height": "الطول",
+      "current_weight": "الوزن الحالي",
+      "target_weight": "الوزن المستهدف",
+      "weight_to_lose": "الوزن الذي يريد خسارته",
+      "weight_to_gain": "الوزن الذي يريد اكتسابه"
+    },
+    "special": {
+      "title": "البرامج الخاصة والنشاط اليومي",
+      "programs_needed": "البرامج الخاصة المطلوبة",
+      "none": "لا يوجد",
+      "daily_activity": "النشاط اليومي المعتاد",
+      "desk_job": "عمل مكتبي"
+    }
+  },
+  "loading": "جاري التحميل...",
+  "error_loading_users": "حدث خطأ أثناء تحميل المستخدمين. يرجى المحاولة لاحقًا.",
+  "error_loading_activities": "حدث خطأ أثناء تحميل الأنشطة. يرجى المحاولة لاحقًا.",
+  "energy_activity": {
+    "title": "مستويات الطاقة والنشاط",
+    "daily_energy_levels": "مستوى الطاقة اليومي",
+    "physical_activity_level": "مستوى النشاط البدني",
+    "self_rated_fitness_level": "مستوى اللياقة حسب التقييم الذاتي",
+    "activity_level_api": "  مستوى النشاط"
+  },
+  "focus_areas": {
+    "title": "الأهداف ومناطق التركيز",
+    "label": "مناطق التركيز",
+    "attention_area": "منطقة التركيز",
+    "event_motivation": "الدافع للحدث"
+  },
+  "weight_history": {
+    "title": "تاريخ الوزن والعادات",
+    "last_ideal_weight": "آخر مرة كان الوزن مثالي",
+    "bad_habits": "العادات السيئة"
+  },
+  "health_lifestyle": {
+    "title": "الصحة ونمط الحياة",
+    "sleep_quality": "جودة النوم",
+    "good": "جيد"
+  },
+  "training": {
+    "exercise": "إدارة",
+    "available": "متاح",
+    "add_title": "إضافة تمرين جديد",
+    "add_description": "أدخل تفاصيل التمرين الجديد لإضافته إلى النشاط",
+    "name_en_label": "اسم التمرين (إنجليزي)",
+    "name_en_placeholder": "أدخل اسم التمرين بالإنجليزية",
+    "name_ar_label": "اسم التمرين (عربي)",
+    "name_ar_placeholder": "أدخل اسم التمرين بالعربية",
+    "image_label": "صورة التمرين",
+    "upload_image": "انقر لرفع صورة التمرين",
+    "image_preview_alt": "معاينة صورة التمرين",
+    "image_upload_hint": "PNG, JPG, JPEG بحجم يصل إلى 5 ميجابايت",
+    "validation": {
+      "name_en_min": "يجب أن يكون الاسم الإنجليزي 3 أحرف على الأقل.",
+      "name_ar_min": "يجب أن يكون الاسم العربي 3 أحرف على الأقل.",
+      "image_required": "صورة التمرين مطلوبة.",
+      "image_size": "يجب أن يكون حجم الصورة أقل من 5 ميجابايت.",
+      "image_type": "فقط صيغ .jpg, .jpeg, .png مدعومة."
+    },
+    "toasts": {
+      "success": "تمت إضافة التمرين بنجاح!",
+      "error": "فشل في إضافة التمرين. يرجى المحاولة مرة أخرى."
+    }
+  },
+  "trainings_management": {
+    "title": "تمارين النشاط",
+    "no_data": "لم يتم العثور على تمارين",
+    "subtitle": "إدارة وتنظيم التمارين التدريبية"
+  },
+  "trainings_plural": {
+    "zero": "تمارين",
+    "one": "تمرين واحد",
+    "two": "تمرينان",
+    "few": "تمارين",
+    "many": "تمرين",
+    "other": "تمرين"
+  },
+  "coupon_management": {
+    "title": "إدارة الكوبونات",
+    "subtitle": "إنشاء وإدارة كوبونات الخصم الترويجية",
+    "active_coupons": "الكوبونات النشطة",
+    "upcoming_coupons": "القادمة",
+    "expired_coupons": "منتهية الصلاحية",
+    "total_count": "إجمالي العدد"
+  },
+  "add_training_form": {
+    "title": "إضافة تمرين جديد",
+    "description": "أدخل تفاصيل التمرين الجديد لإضافته إلى النشاط.",
+    "name_en_label": "اسم التمرين (باللغة الإنجليزية)",
+    "name_en_placeholder": "أدخل اسم التمرين باللغة الإنجليزية",
+    "name_ar_label": "اسم التمرين (باللغة العربية)",
+    "name_ar_placeholder": "أدخل اسم التمرين باللغة العربية",
+    "image_label": "صورة التمرين",
+    "image_upload_cta": "انقر لتحميل صورة التمرين",
+    "image_upload_hint": "JPG, PNG (الحد الأقصى 5 ميجابايت)",
+    "image_preview_alt": "معاينة التمرين",
+    "success_toast": "تمت إضافة التمرين بنجاح!",
+    "error_toast": "فشل في إضافة التمرين. يرجى المحاولة مرة أخرى.",
+    "validation": {
+      "name_en_required": "اسم التمرين باللغة الإنجليزية مطلوب",
+      "name_en_min": "الحد الأدنى 3 أحرف مطلوبة",
+      "name_ar_required": "اسم التمرين باللغة العربية مطلوب",
+      "name_ar_min": "الحد الأدنى 3 أحرف مطلوبة",
+      "image_required": "صورة التمرين مطلوبة",
+      "image_size": "يجب أن يكون حجم الملف أقل من 5 ميجابايت",
+      "image_type": "يتم قبول ملفات JPEG و JPG و PNG فقط"
+    }
+  },
+  "common": {
+    "loadingError": "خطأ في تحميل البيانات. يرجى المحاولة مرة أخرى.",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "saving": "جاري الحفظ...",
+    "submit": "إرسال",
+    "submitting": "جاري الإرسال...",
+    "uploadImage": "رفع صورة",
+    "changeImage": "تغيير الصورة",
+    "removeImage": "إزالة الصورة",
+    "imagePreview": "معاينة الصورة",
+    "actions": "الإجراءات",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "view": "عرض",
+    "close": "إغلاق",
+    "required": "هذا الحقل مطلوب",
+    "selectImage": "اختر صورة",
+    "saveChanges": "حفظ التغييرات"
+  },
+  "error_loading_trainings": "حدث خطأ أثناء تحميل التمارين. يرجى المحاولة لاحقًا.",
+  "start_brain": {
+    "englishTextRequired": "النص الإنجليزي مطلوب",
+    "arabicTextRequired": "النص العربي مطلوب",
+    "chapterUpdatedSuccess": "تم تحديث الفصل بنجاح!",
+    "chapterUpdatedError": "فشل في تحديث الفصل. حاول مرة أخرى.",
+    "loadingError": "خطأ في التحميل",
+    "noChaptersFound": "لا توجد فصول",
+    "startWithYourBrain": "ابدأ مع عقلك",
+    "educationalChaptersManagement": "إدارة الفصول التعليمية",
+    "chapter": "الفصل",
+    "editChapter": "تعديل الفصل",
+    "englishText": "النص الإنجليزي",
+    "enterEnglishText": "أدخل النص الإنجليزي...",
+    "arabicText": "النص العربي",
+    "enterArabicText": "أدخل النص العربي...",
+    "imageName": "اسم الصورة",
+    "imagePlaceholder": "image.jpg",
+    "chapterImage": "صورة الفصل"
+  },
+  "workouts_tab": {
+    "assign_new_training": "تعيين تمرين جديد",
+    "select_training_plan": "اختر خطة التمرين",
+    "choose_training_plan": "اختر خطة تمرين...",
+    "select_day": "اختر اليوم",
+    "choose_day": "اختر يومًا...",
+    "assign_training_button": "تعيين التمرين",
+    "assigning_training_button": "جارٍ التعيين...",
+    "weekly_plan_title": "خطة التدريب الأسبوعية الخاصة بك",
+    "no_training_scheduled": "لا يوجد تمرين مجدول",
+    "assign_workout_for_day": "قم بتعيين تمرين لهذا اليوم.",
+    "no_workouts_assigned_title": "لم يتم تعيين أي تمارين",
+    "no_workouts_assigned_desc": "ابدأ بإضافة خطة تمرين مخصصة لهذا المستخدم.",
+    "delete_dialog_title": "هل أنت متأكد؟",
+    "delete_dialog_desc": "لا يمكن التراجع عن هذا الإجراء. سيؤدي هذا إلى حذف التمرين المحدد نهائيًا من جدول هذا اليوم.",
+    "toasts": {
+      "select_training_and_day": "يرجى اختيار تمرين ويوم.",
+      "add_success": "تمت إضافة التمرين بنجاح!",
+      "add_error": "فشل في إضافة التمرين:",
+      "delete_success": "تم حذف التمرين بنجاح!",
+      "delete_error": "فشل في حذف التمرين. يرجى المحاولة مرة أخرى."
+    },
+    "days": {
+      "sunday": "الأحد",
+      "monday": "الإثنين",
+      "tuesday": "الثلاثاء",
+      "wednesday": "الأربعاء",
+      "thursday": "الخميس",
+      "friday": "الجمعة",
+      "saturday": "السبت"
+    }
+  },
+  "meals_management": {
+    "title": "إدارة الوجبات",
+    "description": "إدارة قاعدة بيانات التغذية وتعيينات الوجبات",
+    "search_placeholder": "ابحث عن وجبات...",
+    "add_meal_button": "إضافة وجبة",
+    "meals_count": "وجبات",
+    "view_details_button": "عرض التفاصيل",
+    "filter_by_diet": "فلترة حسب الحمية",
+    "all_diets": "جميع الحميات",
+    "calories": "سعرة حرارية",
+    "protein": "بروتين",
+    "carbs": "كربوهيدرات",
+    "fat": "دهون",
+    "note": "ملاحظة",
+    "total_cal": "إجمالي السعرات",
+    "serving": "حصة",
+    "minutes": "دقائق"
+  },
+  "details": {
+    "nutrition_facts": "حقائق غذائية",
+    "ingredients": "المكونات"
+  },
+  "error": {
+    "title": "حدث خطأ",
+    "fetch_failed": "فشل في جلب الوجبات."
+  },
+  "no_results": {
+    "title": "لم يتم العثور على وجبات",
+    "description": "حاول تعديل بحثك."
+  },
+  "close": "إغلاق",
+  "meals_tab": {
+    "assign_new_meal": "تعيين وجبة جديدة",
+    "select_meal_plan": "اختر خطة الوجبة",
+    "choose_meal_plan": "اختر خطة وجبة...",
+    "select_day": "اختر اليوم",
+    "choose_day": "اختر يومًا...",
+    "assign_meal_button": "تعيين الوجبة",
+    "assigning_meal_button": "جارٍ التعيين...",
+    "weekly_plan_title": "خطة الوجبات الأسبوعية الخاصة بك",
+    "no_meal_scheduled": "لا توجد وجبة مجدولة",
+    "assign_meal_for_day": "قم بتعيين وجبة لهذا اليوم.",
+    "no_meals_assigned_title": "لم يتم تعيين أي وجبات",
+    "no_meals_assigned_desc": "ابدأ بإضافة خطة وجبات مخصصة لهذا المستخدم.",
+    "delete_dialog_title": "هل أنت متأكد؟",
+    "delete_dialog_desc": "لا يمكن التراجع عن هذا الإجراء. سيؤدي هذا إلى حذف الوجبة المحددة نهائيًا من جدول هذا اليوم.",
+    "toasts": {
+      "select_meal_and_day": "يرجى اختيار وجبة ويوم.",
+      "add_success": "تمت إضافة الوجبة بنجاح!",
+      "add_error": "فشل في إضافة الوجبة:",
+      "delete_success": "تم حذف الوجبة بنجاح!",
+      "delete_error": "فشل في حذف الوجبة. يرجى المحاولة مرة أخرى."
+    },
+    "days": {
+      "sunday": "الأحد",
+      "monday": "الإثنين",
+      "tuesday": "الثلاثاء",
+      "wednesday": "الأربعاء",
+      "thursday": "الخميس",
+      "friday": "الجمعة",
+      "saturday": "السبت"
+    }
+  }
+}
