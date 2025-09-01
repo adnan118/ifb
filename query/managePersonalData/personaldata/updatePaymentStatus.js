@@ -107,13 +107,15 @@ module.exports = {
 };
 */ 
 
+
 const { getConnection } = require("../../../controllers/db");
 
 // دالة لتعديل حالة الدفع وتحديث تاريخ الانتهاء + إدراج سجل في جدول الدفعات payments
 async function updatePaymentStatus(req, res) {
   let connection;
   try {
-    const { personalData_users_id, payments_amount } = req.body;
+    const { personalData_users_id, payments_amount, payments_amount_net } =
+      req.body;
 
     // التحقق من وجود معرف المستخدم
     if (!personalData_users_id) {
@@ -127,7 +129,7 @@ async function updatePaymentStatus(req, res) {
     if (payments_amount === undefined || payments_amount === null) {
       return res.status(400).json({
         status: "failure",
-        message: "payments_amount is required",
+        message: "payments_amount ,payments_amount_net is required",
       });
     }
 
@@ -181,11 +183,8 @@ async function updatePaymentStatus(req, res) {
     // الأعمدة المتاحة حسب توضيحك: payments_id, payments_userid, payments_offerid, payments_couponid, payments_amount, payments_amount_net, payments_date
     const payments_userid = personalData_users_id;
     const payments_offerid = currentData.personalData_offers_id || null; // إن وُجد
- 
     const payments_couponid = (req.body && req.body.payments_couponid != null) ? Number(req.body.payments_couponid) : 0; // افتراضي 0 إذا كان الحقل NOT NULL
-    const payments_amount_net = Number(payments_amount); // نفس المبلغ حالياً
-    
-    const payments_date = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+     const payments_date = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
 
     await connection.execute(
       "INSERT INTO payments (payments_userid, payments_offerid, payments_couponid, payments_amount, payments_amount_net, payments_date) VALUES (?, ?, ?, ?, ?, ?)",
@@ -241,3 +240,4 @@ async function updatePaymentStatus(req, res) {
 module.exports = {
   updatePaymentStatus,
 };
+ 
