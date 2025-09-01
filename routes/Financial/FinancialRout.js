@@ -7,7 +7,7 @@ const { getPayments, getRevenueByYearAndMonth } = require("../../query/Financial
 // Route لجلب جميع المدفوعات
 router.get("/getPayments", getPayments);
 
-// Route لحساب الإيرادات بناءً على السنة والشهر
-router.post("/getRevenue", getRevenueByYearAndMonth);
+// Route لحساب الإيرادات والدفعات بناءً على السنة والشهر
+router.post("/getRevenueAndPayments", getRevenueByYearAndMonth);
 
 module.exports = router;
