@@ -27,106 +27,83 @@ const getPayments = async (req, res) => {
   }
 };
 
-// وظيفة لحساب الإيرادات بناءً على السنة والشهر
+// وظيفة لحساب الإيرادات والدفعات بناءً على السنة والشهر
 const getRevenueByYearAndMonth = async (req, res) => {
   try {
-    const { year, month } = req.body;
+    const { date } = req.body; // تتوقع تاريخ بصيغة "2025-09" أو "2025"
 
-    // التحقق من وجود السنة
-    if (!year) {
+    // التحقق من وجود التاريخ
+    if (!date) {
       return res.status(400).json({
         status: "failure",
-        message: "Year is required",
+        message: "Date is required (format: YYYY or YYYY-MM)",
       });
     }
 
     const connection = await getConnection();
 
-    let yearlyRevenueQuery;
-    let monthlyRevenueQuery;
-    let yearlyParams = [year];
-    let monthlyParams = [year];
+    let query;
+    let params = [];
+    let isMonthly = false;
 
-    // حساب الإيرادات السنوية
-    yearlyRevenueQuery = `
-      SELECT 
-        SUM(payments_amount) as total_revenue,
-        COUNT(*) as total_payments
-      FROM payments 
-      WHERE YEAR(payments_date) = ?
-    `;
-
-    // حساب الإيرادات الشهرية لكل شهر في السنة
-    let monthlyRevenueByMonthQuery = `
-      SELECT 
-        MONTH(payments_date) as month,
-        SUM(payments_amount) as monthly_revenue,
-        COUNT(*) as monthly_payments
-      FROM payments 
-      WHERE YEAR(payments_date) = ?
-      GROUP BY MONTH(payments_date)
-      ORDER BY MONTH(payments_date)
-    `;
-
-    // إذا تم تحديد شهر معين، احسب الإيرادات لذلك الشهر فقط
-    if (month) {
-      monthlyRevenueQuery = `
+    // تحديد نوع الاستعلام بناءً على صيغة التاريخ
+    if (date.includes('-')) {
+      // إذا كان التاريخ يحتوي على شهر (مثل 2025-09)
+      const [year, month] = date.split('-');
+      isMonthly = true;
+      
+      query = `
         SELECT 
-          SUM(payments_amount) as monthly_revenue,
-          COUNT(*) as monthly_payments
+          SUM(payments_amount) as total_revenue,
+          COUNT(*) as total_payments,
+          payments.*
         FROM payments 
         WHERE YEAR(payments_date) = ? AND MONTH(payments_date) = ?
       `;
-      monthlyParams.push(month);
+      params = [year, month];
+    } else {
+      // إذا كان التاريخ سنة فقط (مثل 2025)
+      query = `
+        SELECT 
+          SUM(payments_amount) as total_revenue,
+          COUNT(*) as total_payments,
+          payments.*
+        FROM payments 
+        WHERE YEAR(payments_date) = ?
+      `;
+      params = [date];
     }
 
-    // تنفيذ الاستعلامات
-    const [yearlyResult] = await connection.execute(yearlyRevenueQuery, yearlyParams);
-    const [monthlyByMonthResult] = await connection.execute(monthlyRevenueByMonthQuery, [year]);
-    
-    let specificMonthResult = null;
-    if (month) {
-      const [specificMonth] = await connection.execute(monthlyRevenueQuery, monthlyParams);
-      specificMonthResult = specificMonth[0];
-    }
+    // تنفيذ الاستعلام للحصول على الإحصائيات
+    const [summaryResult] = await connection.execute(
+      query.replace('payments.*', '1'), // استعلام للإحصائيات فقط
+      params
+    );
+
+    // تنفيذ الاستعلام للحصول على تفاصيل الدفعات
+    const [paymentsResult] = await connection.execute(
+      query.replace('SUM(payments_amount) as total_revenue,\n          COUNT(*) as total_payments,\n          ', ''),
+      params
+    );
 
     await connection.end();
 
     // تنسيق البيانات
-    const yearlyRevenue = yearlyResult[0];
+    const summary = summaryResult[0];
     
-    // إنشاء مصفوفة للأشهر الـ 12 مع القيم الافتراضية
-    const monthsData = [];
-    for (let i = 1; i <= 12; i++) {
-      const monthData = monthlyByMonthResult.find(item => item.month === i);
-      monthsData.push({
-        month: i,
-        monthly_revenue: monthData ? parseFloat(monthData.monthly_revenue) || 0 : 0,
-        monthly_payments: monthData ? monthData.monthly_payments || 0 : 0
-      });
-    }
-
     const responseData = {
-      year: parseInt(year),
-      yearly_summary: {
-        total_revenue: parseFloat(yearlyRevenue.total_revenue) || 0,
-        total_payments: yearlyRevenue.total_payments || 0
+      period: date,
+      period_type: isMonthly ? "monthly" : "yearly",
+      summary: {
+        total_revenue: parseFloat(summary.total_revenue) || 0,
+        total_payments: summary.total_payments || 0
       },
-      monthly_breakdown: monthsData
+      payments: paymentsResult || []
     };
-
-    // إضافة بيانات الشهر المحدد إذا تم طلبه
-    if (month && specificMonthResult) {
-      responseData.specific_month = {
-        month: parseInt(month),
-        monthly_revenue: parseFloat(specificMonthResult.monthly_revenue) || 0,
-        monthly_payments: specificMonthResult.monthly_payments || 0
-      };
-    }
 
     res.status(200).json({
       status: "success",
-      message: "Revenue data fetched successfully",
+      message: `${isMonthly ? 'Monthly' : 'Yearly'} revenue and payments data fetched successfully`,
       data: responseData,
     });
 
