@@ -145,7 +145,9 @@ const equipmentRout = require("./routes/equipment/equipmentRout");
 ////////////////////////////// coupon
 const couponRout = require("./routes/coupon/DataCouponRout");
  
- 
+ ////////////////////////////// Financial
+const FinancialRout = require("./routes/Financial/FinancialRout");
+
 app.use(express.json());
 // 1) مسار البناء الخاص بتطبيق React
 const reactBuildPath = path.join(__dirname, 'frontend_build');
@@ -341,10 +343,14 @@ app.use("/api84818dataexercise", exerciseRout);
 app.use("/api84818dataequipment", equipmentRout);
 ////////////////////////////// coupon
  app.use("/api84818dataecoupon", couponRout);
- 
+
+////////////////////////////// Financial
+app.use("/api84818datafinancial", FinancialRout);
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
 });
+
 
 
 
