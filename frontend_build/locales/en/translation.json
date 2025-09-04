@@ -1,5 +1,6 @@
 {
   "sidebar": {
+    "admimDashboard": "Admin Dashboard",
     "main_menu": "Main Menu",
     "content_management": "Content Management",
     "dashboard": "Dashboard",
@@ -7,6 +8,7 @@
     "coupons": "Coupon Management",
     "challenges": "Challenges Management",
     "exercise": "Exercise Management",
+    "equipment": "Equipment Management",
     "meals": "Meals Management",
     "feedback": "Feedback System",
     "plans": "Subscription Plans",
@@ -235,6 +237,63 @@
     "no_data": "No trainings found",
     "subtitle": "Manage and organize training exercises"
   },
+  "equipment_management": {
+    "title": "Equipment Management",
+    "subtitle": "Manage and organize gym equipment",
+    "add_equipment": "Add New Equipment",
+    "search_placeholder": "Search equipment...",
+    "total_count": "Total Count",
+    "equipment_count": "equipment",
+    "no_equipment": "No Equipment Found",
+    "no_equipment_desc": "No equipment found. Start by adding new equipment.",
+    "no_results": "No Results Found",
+    "no_results_desc": "No equipment found matching your search.",
+    "add_first_equipment": "Add First Equipment",
+    "loading_error": "Error Loading Equipment",
+    "loading_error_desc": "An error occurred while loading equipment. Please try again.",
+    "free": "Free",
+    "link": "Link",
+    "equipment_id": "Equipment ID",
+    "add_modal": {
+      "title": "Add New Equipment",
+      "name_ar_label": "Arabic Name",
+      "name_ar_placeholder": "Enter equipment name in Arabic",
+      "name_ar_required": "Arabic name is required",
+      "name_en_label": "English Name",
+      "name_en_placeholder": "Enter equipment name in English",
+      "name_en_required": "English name is required",
+      "price_label": "Price (USD)",
+      "price_placeholder": "0.00",
+      "price_required": "Price is required",
+      "price_invalid": "Price must be a valid number",
+      "price_hint": "Enter 0 for free equipment",
+      "url_label": "Equipment URL (Optional)",
+      "url_placeholder": "https://example.com",
+      "image_label": "Equipment Image",
+      "image_upload_ar": "Click to upload equipment image",
+      "image_upload_en": "Click to upload equipment image",
+      "image_required": "Equipment image is required",
+      "submit_button": "Add Equipment",
+      "submitting_button": "Adding...",
+      "cancel_button": "Cancel"
+    },
+    "delete_modal": {
+      "title": "Confirm Deletion",
+      "warning_title": "Warning: This action cannot be undone",
+      "warning_desc": "This equipment will be permanently deleted from the system. Make sure you want to proceed.",
+      "confirm_question": "Are you sure you want to delete this equipment?",
+      "confirm_hint": "This action cannot be undone",
+      "delete_button": "Delete Equipment",
+      "deleting_button": "Deleting...",
+      "cancel_button": "Cancel"
+    },
+    "toasts": {
+      "add_success": "Equipment added successfully!",
+      "add_error": "Failed to add equipment. Please try again.",
+      "delete_success": "Equipment deleted successfully!",
+      "delete_error": "Failed to delete equipment. Please try again."
+    }
+  },
   "add_training_form": {
     "title": "Add New Training",
     "description": "Enter the details for the new training to add it to the activity.",
@@ -256,6 +315,95 @@
       "image_required": "Training image is required",
       "image_size": "File size should be less than 5MB",
       "image_type": "Only JPEG, JPG and PNG files are accepted"
+    }
+  },
+  "offers": {
+    "page": {
+      "headerTitle": "Manage Subscription Plans",
+      "headerSubtitle": "Create and manage offers and subscription plans"
+    },
+    "dialogs": {
+      "add": {
+        "title": "Add New Offer",
+        "success": "Offer added successfully",
+        "error": "Error occurred while adding offer"
+      },
+      "edit": {
+        "title": "Edit Offer",
+        "success": "Offer updated successfully",
+        "error": "Error occurred while updating offer"
+      },
+      "delete": {
+        "title": "Confirm Delete",
+        "message": "Are you sure you want to delete the offer \"{{title}}\"?",
+        "warning": "This action cannot be undone."
+      }
+    },
+    "fields": {
+      "titleEn": "Name (English)",
+      "titleAr": "Name (Arabic)",
+      "price": "Price",
+      "discount": "Discount"
+    },
+    "placeholders": {
+      "titleEn": "Enter offer name in English",
+      "titleAr": "Enter offer name in Arabic",
+      "price": "0.00",
+      "discount": "0.00"
+    },
+    "validation": {
+      "requiredEn": "English name is required",
+      "requiredAr": "Arabic name is required",
+      "requiredPrice": "Price is required",
+      "invalidPrice": "Price must be a valid number greater than zero",
+      "invalidDiscount": "Discount must be a valid number"
+    },
+    "errors": {
+      "offerNotFound": "Offer not found",
+      "loadingFailed": "Failed to load offers"
+    },
+    "toasts": {
+      "updateSuccess": "Offer updated successfully",
+      "updateError": "Error occurred while updating offer",
+      "createSuccess": "Offer added successfully",
+      "createError": "Error occurred while adding offer",
+      "deleteSuccess": "Offer deleted successfully",
+      "deleteError": "Error occurred while deleting offer"
+    },
+    "actions": {
+      "addOffer": "Add New Offer",
+      "cancel": "Cancel",
+      "update": "Update",
+      "updating": "Updating...",
+      "submit": "Add",
+      "submitting": "Adding...",
+      "delete": "Delete",
+      "deleting": "Deleting..."
+    },
+    "table": {
+      "list": "Offers List",
+      "no": "Number",
+      "title": "Name",
+      "originalPrice": "Original Price",
+      "discount": "Discount",
+      "finalPrice": "Final Price"
+    },
+    "empty": {
+      "title": "No offers available",
+      "subtitle": "Start by adding a new offer to manage subscription plans"
+    },
+    "none": "None",
+    "free": "Free",
+    "stats": {
+      "totalOffers": "Total Offers",
+      "freeCount": "{{count}} Free",
+      "fromTotalOffers": "from total offers",
+      "totalDiscounts": "Total Discounts",
+      "discountLabel": "Discount",
+      "totalDiscountsDesc": "Total Discounts"
+    },
+    "errors": {
+      "loadingFailed": "Error loading data. Please try again."
     }
   },
   "common": {
@@ -361,6 +509,62 @@
     "description": "Try adjusting your search."
   },
   "close": "Close",
+  "equipment_management": {
+    "title": "Equipment Management",
+    "subtitle": "Manage and organize exercise equipment and sports tools",
+    "add_equipment": "Add New Equipment",
+    "add_first_equipment": "Add First Equipment",
+    "search_placeholder": "Search equipment...",
+    "total_count": "Total",
+    "equipment_count": "equipment",
+    "no_equipment": "No Equipment",
+    "no_equipment_desc": "Start by adding new equipment to manage sports equipment",
+    "no_results": "No Results",
+    "no_results_desc": "No equipment found matching your search",
+    "equipment_id": "Equipment ID",
+    "free": "Free",
+    "link": "Link",
+    "loading_error": "Error Loading Equipment",
+    "loading_error_desc": "An error occurred while loading equipment data",
+    "add_modal": {
+      "title": "Add New Equipment",
+      "name_ar_label": "Arabic Name",
+      "name_ar_placeholder": "Enter Arabic equipment name",
+      "name_ar_required": "Arabic name is required",
+      "name_en_label": "English Name",
+      "name_en_placeholder": "Enter English name",
+      "name_en_required": "English name is required",
+      "price_label": "Price (USD)",
+      "price_placeholder": "0.00",
+      "price_required": "Price is required",
+      "price_invalid": "Price must be a valid number",
+      "price_hint": "Enter 0 for free equipment",
+      "url_label": "Equipment URL (Optional)",
+      "url_placeholder": "https://example.com",
+      "image_label": "Equipment Image",
+      "image_required": "Equipment image is required",
+      "image_preview": "Image Preview:",
+      "submit_button": "Add Equipment",
+      "submitting_button": "Adding...",
+      "cancel_button": "Cancel"
+    },
+    "delete_modal": {
+      "title": "Confirm Delete",
+      "warning_title": "Warning: This action cannot be undone",
+      "warning_desc": "This equipment will be permanently deleted from the system. Make sure you want to proceed.",
+      "confirm_question": "Are you sure you want to delete this equipment?",
+      "confirm_hint": "Type \"delete\" in the field below to confirm",
+      "delete_button": "Delete Equipment",
+      "deleting_button": "Deleting...",
+      "cancel_button": "Cancel"
+    },
+    "toasts": {
+      "add_success": "Equipment added successfully!",
+      "add_error": "Failed to add equipment",
+      "delete_success": "Equipment deleted successfully!",
+      "delete_error": "Failed to delete equipment"
+    }
+  },
   "meals_tab": {
     "assign_new_meal": "Assign New Meal",
     "select_meal_plan": "Select Meal Plan",
@@ -392,5 +596,198 @@
       "friday": "Friday",
       "saturday": "Saturday"
     }
+  },
+  "finance": {
+    "title": "Financial Management",
+    "subtitle": "Comprehensive financial analytics and advanced reporting",
+    "loading": "Loading financial data...",
+    "error": {
+      "title": "Error Loading Data",
+      "message": "Unable to load financial data. Please try again.",
+      "retry": "Retry"
+    },
+    "actions": {
+      "refresh": "Refresh",
+      "export": "Export",
+      "clearFilters": "Clear Filters",
+      "view": "View"
+    },
+    "filters": {
+      "period": "Period",
+      "amountRange": "Amount Range",
+      "all": "All Amounts",
+      "low": "< $50",
+      "medium": "$50 - $200",
+      "high": "> $200",
+      "discount": "Discount",
+      "allDiscounts": "All",
+      "withDiscount": "With Discount",
+      "noDiscount": "No Discount"
+    },
+    "periods": {
+      "thisMonth": "This Month",
+      "lastMonth": "Last Month",
+      "thisYear": "This Year",
+      "lastYear": "Last Year"
+    },
+    "views": {
+      "overview": "Overview",
+      "details": "Details",
+      "analytics": "Analytics"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "details": "Details",
+      "analytics": "Analytics"
+    },
+    "comparison": {
+      "toggle": "Compare"
+    },
+    "stats": {
+      "title": "Financial Overview",
+      "subtitle": "Key performance indicators and metrics",
+      "totalRevenue": "Total Revenue",
+      "netRevenue": "Net Revenue",
+      "totalTransactions": "Total Transactions",
+      "averageOrderValue": "Average Order Value",
+      "uniqueUsers": "Unique Users",
+      "revenuePerUser": "Revenue per User",
+      "discountRate": "Discount Rate",
+      "goalAchievement": "Goal Achievement",
+      "conversionRate": "Conversion Rate",
+      "vsPrevious": "vs previous period",
+      "transactions": "transactions",
+      "perTransaction": "per transaction",
+      "customers": "customers",
+      "perCustomer": "per customer",
+      "totalDiscounts": "total discounts",
+      "target": "Target",
+      "discounted": "discounted"
+    },
+    "charts": {
+      "revenueChart": "Revenue Chart",
+      "zoom": "Zoom",
+      "reset": "Reset",
+      "currentRevenue": "Current Revenue",
+      "previousRevenue": "Previous Period",
+      "movingAverage": "Moving Average",
+      "totalRevenue": "Total Revenue",
+      "averageRevenue": "Average Revenue",
+      "highestRevenue": "Highest Revenue",
+      "lowestRevenue": "Lowest Revenue"
+    },
+    "payments": {
+      "title": "Payment Details",
+      "subtitle": "Detailed view of all transactions",
+      "search": "Search payments...",
+      "noData": "No payments found",
+      "details": "Payment Details"
+    },
+    "table": {
+      "id": "ID",
+      "user": "User",
+      "amount": "Amount",
+      "discount": "Discount",
+      "netAmount": "Net Amount",
+      "date": "Date",
+      "actions": "Actions",
+      "userId": "User",
+      "noDiscount": "No discount"
+    },
+    "details": {
+      "offer": "Offer ID",
+      "coupon": "Coupon ID",
+      "noCoupon": "None",
+      "grossAmount": "Gross Amount",
+      "discount": "Discount",
+      "netAmount": "Net Amount",
+      "date": "Payment Date"
+    },
+    "pagination": {
+      "showing": "Showing",
+      "of": "of",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "alerts": {
+      "title": "Financial Alerts",
+      "dismissAll": "Dismiss All",
+      "summary": "Alert Summary",
+      "success": "Success",
+      "warnings": "Warnings",
+      "errors": "Errors",
+      "info": "Info",
+      "goalAchieved": "Goal achieved!",
+      "goalBehind": "Behind target",
+      "decline": "Declining",
+      "growth": "Growing",
+      "highDiscount": "High discount rate",
+      "milestone": {
+        "title": "Revenue Milestone!",
+        "message": "Congratulations! You've reached $10,000 in revenue.",
+        "toast": "Milestone achieved!"
+      },
+      "unusual": {
+        "title": "Unusual Activity Detected",
+        "message": "Payment volume changed by {change}%. This might indicate a promotional campaign or system issue."
+      },
+      "weekend": {
+        "title": "Strong Weekend Performance",
+        "message": "Weekend revenue is significantly higher than usual."
+      },
+      "noActivity": {
+        "title": "No Transactions Today",
+        "message": "No payments have been processed today. Consider checking your payment systems."
+      },
+      "behindTarget": {
+        "title": "Behind Monthly Target",
+        "message": "You're {difference}% behind your expected monthly progress."
+      },
+      "viewDetails": "View Details",
+      "investigate": "Investigate",
+      "checkSystems": "Check Systems",
+      "viewStrategies": "View Growth Strategies"
+    },
+    "insights": {
+      "title": "Key Insights",
+      "performance": "Performance Highlights",
+      "opportunities": "Areas for Improvement",
+      "revenueGrowth": "Revenue increased by",
+      "userGrowth": "User base grew by",
+      "aovGrowth": "Average order value improved by",
+      "highDiscounts": "Consider optimizing discount strategy",
+      "revenueDecline": "Revenue needs attention",
+      "goalBehind": "Behind target - consider growth strategies",
+      "totalRevenue": "Total Revenue",
+      "totalTransactions": "Total Transactions",
+      "averageTransaction": "Average Transaction"
+    },
+    "analytics": {
+      "insights": "Key Insights"
+    },
+    "summary": {
+      "title": "Period Summary",
+      "monthly": "Monthly View",
+      "yearly": "Yearly View",
+      "totalRevenue": "Total Revenue"
+    },
+    "export": {
+      "success": "Data exported successfully",
+      "error": "Failed to export data"
+    },
+    "refresh": {
+      "success": "Data refreshed"
+    },
+    "goals": {
+      "target": "Target"
+    }
+  },
+  "logout": {
+    "button": "Logout",
+    "title": "Confirm Logout",
+    "description": "Are you sure you want to log out? You'll need to log in again.",
+    "current_user": "Current user: {{phone}}",
+    "cancel": "Cancel",
+    "confirm": "Log out"
   }
 }

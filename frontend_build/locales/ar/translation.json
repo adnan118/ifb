@@ -1,5 +1,6 @@
 {
   "sidebar": {
+    "admimDashboard": "لوحة التحكم",
     "main_menu": "القائمة الرئيسية",
     "content_management": "إدارة المحتوى",
     "dashboard": "لوحة التحكم",
@@ -7,6 +8,7 @@
     "coupons": "إدارة الكوبونات",
     "challenges": "إدارة التحديات",
     "exercise": "إدارة التمارين",
+    "equipment": "إدارة المعدات",
     "meals": "إدارة الوجبات",
     "feedback": "نظام الملاحظات",
     "plans": "خطط الاشتراك",
@@ -250,6 +252,63 @@
     "expired_coupons": "منتهية الصلاحية",
     "total_count": "إجمالي العدد"
   },
+  "equipment_management": {
+    "title": "إدارة المعدات",
+    "subtitle": "إدارة وتنظيم معدات الصالة الرياضية",
+    "add_equipment": "إضافة معدة جديدة",
+    "search_placeholder": "البحث في المعدات...",
+    "total_count": "إجمالي العدد",
+    "equipment_count": "معدة",
+    "no_equipment": "لا توجد معدات",
+    "no_equipment_desc": "لم يتم العثور على أي معدات. ابدأ بإضافة معدة جديدة.",
+    "no_results": "لا توجد نتائج",
+    "no_results_desc": "لم يتم العثور على معدات تطابق البحث.",
+    "add_first_equipment": "إضافة أول معدة",
+    "loading_error": "خطأ في تحميل المعدات",
+    "loading_error_desc": "حدث خطأ أثناء تحميل المعدات. يرجى المحاولة مرة أخرى.",
+    "free": "مجاني",
+    "link": "رابط",
+    "equipment_id": "معرف المعدة",
+    "add_modal": {
+      "title": "إضافة معدة جديدة",
+      "name_ar_label": "الاسم العربي",
+      "name_ar_placeholder": "أدخل الاسم العربي للمعدة",
+      "name_ar_required": "الاسم العربي مطلوب",
+      "name_en_label": "الاسم الإنجليزي",
+      "name_en_placeholder": "أدخل الاسم الإنجليزي للمعدة",
+      "name_en_required": "الاسم الإنجليزي مطلوب",
+      "price_label": "السعر (بالدولار)",
+      "price_placeholder": "0.00",
+      "price_required": "السعر مطلوب",
+      "price_invalid": "السعر يجب أن يكون رقم صحيح",
+      "price_hint": "أدخل 0 للمعدات المجانية",
+      "url_label": "رابط المعدة (اختياري)",
+      "url_placeholder": "https://example.com",
+      "image_label": "صورة المعدة",
+      "image_upload_ar": "انقر لتحميل صورة المعدة",
+      "image_upload_en": "Click to upload equipment image",
+      "image_required": "صورة المعدة مطلوبة",
+      "submit_button": "إضافة المعدة",
+      "submitting_button": "جاري الإضافة...",
+      "cancel_button": "إلغاء"
+    },
+    "delete_modal": {
+      "title": "تأكيد الحذف",
+      "warning_title": "تحذير: هذا الإجراء لا يمكن التراجع عنه",
+      "warning_desc": "سيتم حذف هذه المعدة نهائياً من النظام. تأكد من أنك تريد المتابعة.",
+      "confirm_question": "هل أنت متأكد من حذف هذه المعدة؟",
+      "confirm_hint": "هذا الإجراء لا يمكن التراجع عنه",
+      "delete_button": "حذف المعدة",
+      "deleting_button": "جاري الحذف...",
+      "cancel_button": "إلغاء"
+    },
+    "toasts": {
+      "add_success": "تمت إضافة المعدة بنجاح!",
+      "add_error": "فشل في إضافة المعدة. يرجى المحاولة مرة أخرى.",
+      "delete_success": "تم حذف المعدة بنجاح!",
+      "delete_error": "فشل في حذف المعدة. يرجى المحاولة مرة أخرى."
+    }
+  },
   "add_training_form": {
     "title": "إضافة تمرين جديد",
     "description": "أدخل تفاصيل التمرين الجديد لإضافته إلى النشاط.",
@@ -271,6 +330,95 @@
       "image_required": "صورة التمرين مطلوبة",
       "image_size": "يجب أن يكون حجم الملف أقل من 5 ميجابايت",
       "image_type": "يتم قبول ملفات JPEG و JPG و PNG فقط"
+    }
+  },
+  "offers": {
+    "page": {
+      "headerTitle": "إدارة خطط الاشتراك",
+      "headerSubtitle": "إنشاء وإدارة العروض وخطط الاشتراك"
+    },
+    "dialogs": {
+      "add": {
+        "title": "إضافة عرض جديد",
+        "success": "تم إضافة العرض بنجاح",
+        "error": "حدث خطأ أثناء إضافة العرض"
+      },
+      "edit": {
+        "title": "تعديل العرض",
+        "success": "تم تحديث العرض بنجاح",
+        "error": "حدث خطأ أثناء تحديث العرض"
+      },
+      "delete": {
+        "title": "تأكيد الحذف",
+        "message": "هل أنت متأكد من حذف العرض \"{{title}}\"؟",
+        "warning": "لا يمكن التراجع عن هذا الإجراء."
+      }
+    },
+    "fields": {
+      "titleEn": "الاسم (إنجليزي)",
+      "titleAr": "الاسم (عربي)",
+      "price": "السعر",
+      "discount": "الخصم"
+    },
+    "placeholders": {
+      "titleEn": "أدخل اسم العرض بالإنجليزية",
+      "titleAr": "أدخل اسم العرض بالعربية",
+      "price": "0.00",
+      "discount": "0.00"
+    },
+    "validation": {
+      "requiredEn": "الاسم الإنجليزي مطلوب",
+      "requiredAr": "الاسم العربي مطلوب",
+      "requiredPrice": "السعر مطلوب",
+      "invalidPrice": "يجب أن يكون السعر رقماً صحيحاً أكبر من صفر",
+      "invalidDiscount": "يجب أن يكون الخصم رقماً صحيحاً"
+    },
+    "errors": {
+      "offerNotFound": "العرض غير موجود",
+      "loadingFailed": "فشل في تحميل العروض"
+    },
+    "toasts": {
+      "updateSuccess": "تم تحديث العرض بنجاح",
+      "updateError": "حدث خطأ أثناء تحديث العرض",
+      "createSuccess": "تم إضافة العرض بنجاح",
+      "createError": "حدث خطأ أثناء إضافة العرض",
+      "deleteSuccess": "تم حذف العرض بنجاح",
+      "deleteError": "حدث خطأ أثناء حذف العرض"
+    },
+    "actions": {
+      "addOffer": "إضافة عرض جديد",
+      "cancel": "إلغاء",
+      "update": "تحديث",
+      "updating": "جاري التحديث...",
+      "submit": "إضافة",
+      "submitting": "جاري الإضافة...",
+      "delete": "حذف",
+      "deleting": "جاري الحذف..."
+    },
+    "table": {
+      "list": "قائمة العروض",
+      "no": "الرقم",
+      "title": "الاسم",
+      "originalPrice": "السعر الأصلي",
+      "discount": "الخصم",
+      "finalPrice": "السعر النهائي"
+    },
+    "empty": {
+      "title": "لا توجد عروض متاحة",
+      "subtitle": "ابدأ بإضافة عرض جديد لإدارة خطط الاشتراك"
+    },
+    "none": "لا يوجد",
+    "free": "مجاني",
+    "stats": {
+      "totalOffers": "إجمالي العروض",
+      "freeCount": "{{count}} مجاني",
+      "fromTotalOffers": "من إجمالي العروض",
+      "totalDiscounts": "إجمالي الخصومات",
+      "discountLabel": "خصم",
+      "totalDiscountsDesc": "إجمالي الخصومات"
+    },
+    "errors": {
+      "loadingFailed": "خطأ في تحميل البيانات. يرجى المحاولة مرة أخرى."
     }
   },
   "common": {
@@ -376,6 +524,62 @@
     "description": "حاول تعديل بحثك."
   },
   "close": "إغلاق",
+  "equipment_management": {
+    "title": "إدارة المعدات",
+    "subtitle": "إدارة وتنظيم معدات التمارين والأدوات الرياضية",
+    "add_equipment": "إضافة معدة جديدة",
+    "add_first_equipment": "إضافة أول معدة",
+    "search_placeholder": "البحث في المعدات...",
+    "total_count": "المجموع",
+    "equipment_count": "معدة",
+    "no_equipment": "لا توجد معدات",
+    "no_equipment_desc": "ابدأ بإضافة معدات جديدة لإدارة المعدات الرياضية",
+    "no_results": "لا توجد نتائج",
+    "no_results_desc": "لم يتم العثور على معدات تطابق البحث",
+    "equipment_id": "معرف المعدة",
+    "free": "مجاني",
+    "link": "رابط",
+    "loading_error": "خطأ في تحميل المعدات",
+    "loading_error_desc": "حدث خطأ أثناء تحميل بيانات المعدات",
+    "add_modal": {
+      "title": "إضافة معدة جديدة",
+      "name_ar_label": "الاسم العربي",
+      "name_ar_placeholder": "أدخل الاسم العربي للمعدة",
+      "name_ar_required": "الاسم العربي مطلوب",
+      "name_en_label": "الاسم الإنجليزي",
+      "name_en_placeholder": "Enter English name",
+      "name_en_required": "الاسم الإنجليزي مطلوب",
+      "price_label": "السعر (بالدولار)",
+      "price_placeholder": "0.00",
+      "price_required": "السعر مطلوب",
+      "price_invalid": "السعر يجب أن يكون رقم صحيح",
+      "price_hint": "أدخل 0 للمعدات المجانية",
+      "url_label": "رابط المعدة (اختياري)",
+      "url_placeholder": "https://example.com",
+      "image_label": "صورة المعدة",
+      "image_required": "صورة المعدة مطلوبة",
+      "image_preview": "معاينة الصورة:",
+      "submit_button": "إضافة المعدة",
+      "submitting_button": "جاري الإضافة...",
+      "cancel_button": "إلغاء"
+    },
+    "delete_modal": {
+      "title": "تأكيد الحذف",
+      "warning_title": "تحذير: هذا الإجراء لا يمكن التراجع عنه",
+      "warning_desc": "سيتم حذف هذه المعدة نهائياً من النظام. تأكد من أنك تريد المتابعة.",
+      "confirm_question": "هل أنت متأكد من حذف هذه المعدة؟",
+      "confirm_hint": "اكتب \"حذف\" في الحقل أدناه للتأكيد",
+      "delete_button": "حذف المعدة",
+      "deleting_button": "جاري الحذف...",
+      "cancel_button": "إلغاء"
+    },
+    "toasts": {
+      "add_success": "تم إضافة المعدة بنجاح!",
+      "add_error": "فشل في إضافة المعدة",
+      "delete_success": "تم حذف المعدة بنجاح!",
+      "delete_error": "فشل في حذف المعدة"
+    }
+  },
   "meals_tab": {
     "assign_new_meal": "تعيين وجبة جديدة",
     "select_meal_plan": "اختر خطة الوجبة",
@@ -407,5 +611,198 @@
       "friday": "الجمعة",
       "saturday": "السبت"
     }
+  },
+  "finance": {
+    "title": "الإدارة المالية",
+    "subtitle": "تحليلات مالية شاملة وتقارير متقدمة",
+    "loading": "جاري تحميل البيانات المالية...",
+    "error": {
+      "title": "خطأ في تحميل البيانات",
+      "message": "تعذر تحميل البيانات المالية. يرجى المحاولة مرة أخرى.",
+      "retry": "إعادة المحاولة"
+    },
+    "actions": {
+      "refresh": "تحديث",
+      "export": "تصدير",
+      "clearFilters": "مسح المرشحات",
+      "view": "عرض"
+    },
+    "filters": {
+      "period": "الفترة",
+      "amountRange": "نطاق المبلغ",
+      "all": "جميع المبالغ",
+      "low": "أقل من $50",
+      "medium": "$50 - $200",
+      "high": "أكثر من $200",
+      "discount": "الخصم",
+      "allDiscounts": "الكل",
+      "withDiscount": "مع خصم",
+      "noDiscount": "بدون خصم"
+    },
+    "periods": {
+      "thisMonth": "هذا الشهر",
+      "lastMonth": "الشهر الماضي",
+      "thisYear": "هذا العام",
+      "lastYear": "العام الماضي"
+    },
+    "views": {
+      "overview": "نظرة عامة",
+      "details": "التفاصيل",
+      "analytics": "التحليلات"
+    },
+    "tabs": {
+      "overview": "نظرة عامة",
+      "details": "التفاصيل",
+      "analytics": "التحليلات"
+    },
+    "comparison": {
+      "toggle": "مقارنة"
+    },
+    "stats": {
+      "title": "نظرة عامة مالية",
+      "subtitle": "مؤشرات الأداء الرئيسية والمقاييس",
+      "totalRevenue": "إجمالي الإيرادات",
+      "netRevenue": "صافي الإيرادات",
+      "totalTransactions": "إجمالي المعاملات",
+      "averageOrderValue": "متوسط قيمة الطلب",
+      "uniqueUsers": "المستخدمون الفريدون",
+      "revenuePerUser": "الإيراد لكل مستخدم",
+      "discountRate": "معدل الخصم",
+      "goalAchievement": "تحقيق الهدف",
+      "conversionRate": "معدل التحويل",
+      "vsPrevious": "مقابل الفترة السابقة",
+      "transactions": "معاملات",
+      "perTransaction": "لكل معاملة",
+      "customers": "عملاء",
+      "perCustomer": "لكل عميل",
+      "totalDiscounts": "إجمالي الخصومات",
+      "target": "الهدف",
+      "discounted": "مخصوم"
+    },
+    "charts": {
+      "revenueChart": "مخطط الإيرادات",
+      "zoom": "تكبير",
+      "reset": "إعادة تعيين",
+      "currentRevenue": "الإيرادات الحالية",
+      "previousRevenue": "الفترة السابقة",
+      "movingAverage": "المتوسط المتحرك",
+      "totalRevenue": "إجمالي الإيرادات",
+      "averageRevenue": "متوسط الإيرادات",
+      "highestRevenue": "أعلى إيرادات",
+      "lowestRevenue": "أقل إيرادات"
+    },
+    "payments": {
+      "title": "تفاصيل المدفوعات",
+      "subtitle": "عرض تفصيلي لجميع المعاملات",
+      "search": "البحث في المدفوعات...",
+      "noData": "لم يتم العثور على مدفوعات",
+      "details": "تفاصيل الدفع"
+    },
+    "table": {
+      "id": "المعرف",
+      "user": "المستخدم",
+      "amount": "المبلغ",
+      "discount": "الخصم",
+      "netAmount": "المبلغ الصافي",
+      "date": "التاريخ",
+      "actions": "الإجراءات",
+      "userId": "المستخدم",
+      "noDiscount": "بدون خصم"
+    },
+    "details": {
+      "offer": "معرف العرض",
+      "coupon": "معرف الكوبون",
+      "noCoupon": "لا يوجد",
+      "grossAmount": "المبلغ الإجمالي",
+      "discount": "الخصم",
+      "netAmount": "المبلغ الصافي",
+      "date": "تاريخ الدفع"
+    },
+    "pagination": {
+      "showing": "عرض",
+      "of": "من",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "alerts": {
+      "title": "التنبيهات المالية",
+      "dismissAll": "إخفاء الكل",
+      "summary": "ملخص التنبيهات",
+      "success": "نجاح",
+      "warnings": "تحذيرات",
+      "errors": "أخطاء",
+      "info": "معلومات",
+      "goalAchieved": "تم تحقيق الهدف!",
+      "goalBehind": "متأخر عن الهدف",
+      "decline": "في انخفاض",
+      "growth": "في نمو",
+      "highDiscount": "معدل خصم عالي",
+      "milestone": {
+        "title": "إنجاز في الإيرادات!",
+        "message": "تهانينا! لقد وصلت إلى $10,000 في الإيرادات.",
+        "toast": "تم تحقيق الإنجاز!"
+      },
+      "unusual": {
+        "title": "تم اكتشاف نشاط غير عادي",
+        "message": "تغير حجم المدفوعات بنسبة {change}%. قد يشير هذا إلى حملة ترويجية أو مشكلة في النظام."
+      },
+      "weekend": {
+        "title": "أداء قوي في نهاية الأسبوع",
+        "message": "إيرادات نهاية الأسبوع أعلى بكثير من المعتاد."
+      },
+      "noActivity": {
+        "title": "لا توجد معاملات اليوم",
+        "message": "لم يتم معالجة أي مدفوعات اليوم. فكر في فحص أنظمة الدفع الخاصة بك."
+      },
+      "behindTarget": {
+        "title": "متأخر عن الهدف الشهري",
+        "message": "أنت متأخر بنسبة {difference}% عن التقدم الشهري المتوقع."
+      },
+      "viewDetails": "عرض التفاصيل",
+      "investigate": "تحقيق",
+      "checkSystems": "فحص الأنظمة",
+      "viewStrategies": "عرض استراتيجيات النمو"
+    },
+    "insights": {
+      "title": "الرؤى الرئيسية",
+      "performance": "أبرز الأداء",
+      "opportunities": "مجالات التحسين",
+      "revenueGrowth": "زادت الإيرادات بنسبة",
+      "userGrowth": "نمت قاعدة المستخدمين بنسبة",
+      "aovGrowth": "تحسن متوسط قيمة الطلب بنسبة",
+      "highDiscounts": "فكر في تحسين استراتيجية الخصم",
+      "revenueDecline": "الإيرادات تحتاج إلى اهتمام",
+      "goalBehind": "متأخر عن الهدف - فكر في استراتيجيات النمو",
+      "totalRevenue": "إجمالي الإيرادات",
+      "totalTransactions": "إجمالي المعاملات",
+      "averageTransaction": "متوسط المعاملة"
+    },
+    "analytics": {
+      "insights": "الرؤى الرئيسية"
+    },
+    "summary": {
+      "title": "ملخص الفترة",
+      "monthly": "عرض شهري",
+      "yearly": "عرض سنوي",
+      "totalRevenue": "إجمالي الإيرادات"
+    },
+    "export": {
+      "success": "تم تصدير البيانات بنجاح",
+      "error": "فشل في تصدير البيانات"
+    },
+    "refresh": {
+      "success": "تم تحديث البيانات"
+    },
+    "goals": {
+      "target": "الهدف"
+    }
+  },
+  "logout": {
+    "button": "تسجيل الخروج",
+    "title": "تأكيد تسجيل الخروج",
+    "description": "هل أنت متأكد من تسجيل الخروج؟ ستحتاج إلى إدخال بيانات تسجيل الدخول مرة أخرى.",
+    "current_user": "المستخدم الحالي: {{phone}}",
+    "cancel": "إلغاء",
+    "confirm": "تسجيل الخروج"
   }
 }
