@@ -7,19 +7,19 @@ const {
       const { feedbacks_id, feedbacks_user_id, feedbacks_body } = req.body;
 
       // Get current date
-      const currentDate = new Date().toISOString().split("T")[0]; // Format: YYYY-MM-DD
-
+const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
       const updateFeedbackData = {
         feedbacks_user_id: feedbacks_user_id,
         feedbacks_body: feedbacks_body,
         feedbacks_date: currentDate,
       };
 
-      const result = await updateData(
-        "feedbacks",
-        updateFeedbackData,
-        `feedbacks_id = ${feedbacks_id}`
-      );
+const result = await updateData(
+  "feedbacks",
+  updateFeedbackData,
+  "feedbacks_id = ?",
+  [feedbacks_id]
+);
 
       if (result.status === "success") {
         res.json({
@@ -43,4 +43,5 @@ const {
     }
   }
   
+
   module.exports = { updateDataFeedback };
