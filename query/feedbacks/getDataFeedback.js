@@ -1,10 +1,10 @@
 const {
-  getData,
+  getAllData,
 } = require("../../controllers/functions");
 
 async function getDataFeedback(req, res) {
   try {
-    const result = await getData("feedbacks", "feedbacks_id, feedbacks_user_id, feedbacks_body, feedbacks_date");
+    const result = await getAllData("feedbacks");
 
     if (result.status === "success") {
       res.json({
@@ -26,5 +26,6 @@ async function getDataFeedback(req, res) {
     });
   }
 }
+
 
 module.exports = { getDataFeedback }; 
