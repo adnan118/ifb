@@ -103,7 +103,7 @@
     "total_trainees": "إجمالي المتدربات",
     "active_members": "الأعضاء النشطات",
     "this_month": "هذا الشهر",
-    "this_month_trainees": "المتدربين الذين انضموا هذا الشهر",
+    "this_month_trainees": "متدربين  انضموا هذا الشهر",
     "avg_weight": "متوسط الوزن",
     "search_placeholder": "ابحث عن متدرب..."
   },
@@ -358,7 +358,7 @@
       "titleEn": "الاسم (إنجليزي)",
       "titleAr": "الاسم (عربي)",
       "price": "السعر",
-      "discount": "الخصم"
+      "discount": " الخصم بالنسبة المئوية "
     },
     "placeholders": {
       "titleEn": "أدخل اسم العرض بالإنجليزية",
@@ -797,6 +797,28 @@
       "target": "الهدف"
     }
   },
+  "admin": {
+    "payment_form": "تسجيل دفعة مالية",
+    "payment_form_date": "تاريخ الانتهاء "
+  },
+  "offer": {
+    "price": "السعر الأساسي",
+    "offer_discount": "خصم الأوفر",
+    "coupon_discount": "خصم الكوبون",
+    "final_price": "السعر النهائي للدفع"
+  },
+  "form": {
+    "amount": "المبلغ قبل الخصم",
+    "amount_net": "المبلغ النهائي بعد الخصم",
+    "save_payment": "حفظ الدفعة"
+  },
+  "confirm": {
+    "title": "تأكيد عملية الدفع",
+    "description": "هل أنت متأكد من متابعة حفظ هذه الدفعة؟ لا يمكن التراجع عن العملية بعد التأكيد.",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد الدفع"
+  },
+  "error": "حدث خطأ ما",
   "logout": {
     "button": "تسجيل الخروج",
     "title": "تأكيد تسجيل الخروج",
@@ -804,5 +826,10 @@
     "current_user": "المستخدم الحالي: {{phone}}",
     "cancel": "إلغاء",
     "confirm": "تسجيل الخروج"
+  },
+
+  "subscription": {
+    "active_title": "الاشتراك فعال",
+    "expiry": "تاريخ انتهاء الاشتراك"
   }
 }

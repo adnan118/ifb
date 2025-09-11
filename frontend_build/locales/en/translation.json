@@ -235,7 +235,8 @@
   "trainings_management": {
     "title": "Activity Trainings",
     "no_data": "No trainings found",
-    "subtitle": "Manage and organize training exercises"
+    "subtitle": "Manage and organize training exercises",
+    "search_placeholder": "Search for trainings..."
   },
   "equipment_management": {
     "title": "Equipment Management",
@@ -343,7 +344,7 @@
       "titleEn": "Name (English)",
       "titleAr": "Name (Arabic)",
       "price": "Price",
-      "discount": "Discount"
+      "discount": "Discount %"
     },
     "placeholders": {
       "titleEn": "Enter offer name in English",
@@ -782,6 +783,28 @@
       "target": "Target"
     }
   },
+  "admin": {
+    "payment_form": "Record Payment",
+    "payment_form_date": "expired date"
+  },
+  "offer": {
+    "price": "Base Price",
+    "offer_discount": "Offer Discount",
+    "coupon_discount": "Coupon Discount",
+    "final_price": "Final Price"
+  },
+  "form": {
+    "amount": "Amount Before Discount",
+    "amount_net": "Final Amount After Discount",
+    "save_payment": "Save Payment"
+  },
+  "confirm": {
+    "title": "Confirm Payment",
+    "description": "Are you sure you want to save this payment? This action cannot be undone.",
+    "cancel": "Cancel",
+    "confirm": "Confirm Payment"
+  },
+  "error": "Something went wrong",
   "logout": {
     "button": "Logout",
     "title": "Confirm Logout",
@@ -789,5 +812,9 @@
     "current_user": "Current user: {{phone}}",
     "cancel": "Cancel",
     "confirm": "Log out"
+  },
+  "subscription": {
+    "active_title": "Active subscription",
+    "expiry": "expired date"
   }
 }
