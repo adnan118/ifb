@@ -169,12 +169,15 @@ app.get('/v', (req, res) => {
  
 
 // 4) دعم المسارات الفرعية لـ React Router
+ 
 app.get('*', (req, res) => {
-  // إذا كان الملف المطلوب موجوداً كـ static فسيتم خدمته قبل هذا المسار
-  // وإلا فسنعيد index.html ليعالج العميل من جانب React
-  res.sendFile(path.join(reactBuildPath, 'index.html'));
-  res.sendFile(path.join(reactBuildPathV, 'index.html'));
+  if(req.path.startsWith('/v')) {
+    res.sendFile(path.join(reactBuildPathV, 'index.html'));
+  } else {
+    res.sendFile(path.join(reactBuildPath, 'index.html'));
+  }
 });
+
 /*
 app.get("/", (req, res) => {
   // قراءة ملف HTML منفصل
@@ -359,6 +362,7 @@ app.use("/api84818datafinancial", FinancialRout);
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
 });
+
 
 
 
