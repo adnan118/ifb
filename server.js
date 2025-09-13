@@ -152,14 +152,19 @@ const FinancialRout = require("./routes/Financial/FinancialRout");
   app.use(express.json());
 // 1) مسار البناء الخاص بتطبيق React
 const reactBuildPath = path.join(__dirname, 'frontend_build');
+const reactBuildPathV = path.join(__dirname, 'frontend_build_v');
 
 // 2) خدمة الملفات الثابتة لـ React
 app.use(express.static(reactBuildPath));
+app.use(express.static(reactBuildPathV));
  
 
 // 3) توجيه الجذر إلى React
 app.get('/', (req, res) => {
   res.sendFile(path.join(reactBuildPath, 'index.html'));
+});
+app.get('/v', (req, res) => {
+  res.sendFile(path.join(reactBuildPathV, 'index.html'));
 });
  
 
@@ -168,6 +173,7 @@ app.get('*', (req, res) => {
   // إذا كان الملف المطلوب موجوداً كـ static فسيتم خدمته قبل هذا المسار
   // وإلا فسنعيد index.html ليعالج العميل من جانب React
   res.sendFile(path.join(reactBuildPath, 'index.html'));
+  res.sendFile(path.join(reactBuildPathV, 'index.html'));
 });
 /*
 app.get("/", (req, res) => {
@@ -353,6 +359,7 @@ app.use("/api84818datafinancial", FinancialRout);
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
 });
+
 
 
 
