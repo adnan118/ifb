@@ -155,9 +155,19 @@ const reactBuildPath = path.join(__dirname, 'frontend_build');
 // 2) خدمة الملفات الثابتة لـ React
 app.use(express.static(reactBuildPath));
 
+// 1) مسار البناء الخاص بتطبيق React
+const reactBuildPath2 = path.join(__dirname, 'uploadvideo');
+
+// 2) خدمة الملفات الثابتة لـ React
+app.use(express.static(reactBuildPath2));
+
 // 3) توجيه الجذر إلى React
 app.get('/', (req, res) => {
   res.sendFile(path.join(reactBuildPath, 'index.html'));
+});
+// 3) توجيه الجذر إلى React
+app.get('/uploadvideo', (req, res) => {
+  res.sendFile(path.join(reactBuildPath2, 'index.html'));
 });
 
 // 4) دعم المسارات الفرعية لـ React Router
@@ -350,6 +360,7 @@ app.use("/api84818datafinancial", FinancialRout);
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
 });
+
 
 
 
