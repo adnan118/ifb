@@ -149,32 +149,26 @@ const couponRout = require("./routes/coupon/DataCouponRout");
 const FinancialRout = require("./routes/Financial/FinancialRout");
 
 app.use(express.json());
-// 1) مسار البناء الخاص بتطبيق React
-const reactBuildPath = path.join(__dirname, 'frontend_build');
-
-// 2) خدمة الملفات الثابتة لـ React
+ // خدمة الملفات الثابتة
 app.use(express.static(reactBuildPath));
+app.use('/uploadvideo', express.static(reactBuildPath2)); // ضع prefix لتفادي التعارض
 
-// 1) مسار البناء الخاص بتطبيق React
-const reactBuildPath2 = path.join(__dirname, 'uploadvideo');
-
-// 2) خدمة الملفات الثابتة لـ React
-app.use(express.static(reactBuildPath2));
-
-// 3) توجيه الجذر إلى React
+// مسارات root المخصصة
 app.get('/', (req, res) => {
   res.sendFile(path.join(reactBuildPath, 'index.html'));
 });
-// 3) توجيه الجذر إلى React
+
 app.get('/uploadvideo', (req, res) => {
   res.sendFile(path.join(reactBuildPath2, 'index.html'));
 });
 
-// 4) دعم المسارات الفرعية لـ React Router
+// لتعامل مع كل المسارات الأخرى: 
+// إذا كان الطلب يبدأ بـ /uploadvideo نعيد index داخل uploadvideo، وإلا نعيد index لواجهة الفرونت
 app.get('*', (req, res) => {
-  // إذا كان الملف المطلوب موجوداً كـ static فسيتم خدمته قبل هذا المسار
-  // وإلا فسنعيد index.html ليعالج العميل من جانب React
-  res.sendFile(path.join(reactBuildPath, 'index.html'));
+  if (req.path.startsWith('/uploadvideo')) {
+    return res.sendFile(path.join(reactBuildPath2, 'index.html'));
+  }
+  return res.sendFile(path.join(reactBuildPath, 'index.html'));
 });
 /*
 app.get("/", (req, res) => {
@@ -360,6 +354,7 @@ app.use("/api84818datafinancial", FinancialRout);
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
 });
+
 
 
 
