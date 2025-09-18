@@ -307,7 +307,7 @@ app.use("/api84818datar", updatePDR);
 app.use("/api84818datar", getPDR);
 
 //goal
-app.use("/api84818datar", DataGoalsRout);
+app.use("/api/api84818datar", DataGoalsRout);
 
 //gender
 app.use("/api84818datar", DataGenderRout);
@@ -392,3 +392,4 @@ app.use("/api84818datafinancial", FinancialRout);
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
 });
+
