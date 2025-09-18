@@ -15,7 +15,7 @@ const path = require("path");
 
 
 // Serve static files from the 'query' directory
-app.use('/query', express.static(path.join(__dirname, 'query'))); // Custom route for user images with fallback to default
+app.use('/api/query', express.static(path.join(__dirname, 'query'))); // Custom route for user images with fallback to default
 app.get('/query/auth/userImages/images/:filename', (req, res) => { const filePath = path.join(__dirname, 'query/auth/userImages/images', req.params.filename);
 app.use('/api/query/food/foodImages/images', express.static(path.join(__dirname, 'query', 'food', 'foodImages', 'images')));
 
@@ -360,6 +360,7 @@ app.use("/api84818datafinancial", FinancialRout);
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
 });
+
 
 
 
