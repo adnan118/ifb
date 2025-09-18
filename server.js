@@ -284,112 +284,113 @@ app.get("/api-info", (req, res) => {
 });
 
 //auth
-app.use("/api84818auth", registerUserRoute);
-app.use("/api84818auth", loginUserRoute);
-app.use("/api84818auth", verifyUserRoute);
-app.use("/api84818auth", fgpasswordRout);
-app.use("/api84818auth", UpdateUserProfileRout);
-app.use("/api84818auth", getUserDataRout);
-app.use("/api84818auth", DeleteUserRout);
-
+app.use("/api/api84818auth", registerUserRoute);
+app.use("/api/api84818auth", loginUserRoute);
+app.use("/api/api84818auth", verifyUserRoute);
+app.use("/api/api84818auth", fgpasswordRout);
+app.use("/api/api84818auth", UpdateUserProfileRout);
+app.use("/api/api84818auth", getUserDataRout);
+app.use("/api/api84818auth", DeleteUserRout);
+/*
 // Aliases for frontend paths under /api/auth
-app.use("/api/auth", registerUserRoute);
+app.use("/auth", registerUserRoute);
 app.use("/api/auth", loginUserRoute);
 app.use("/api/auth", verifyUserRoute);
 app.use("/api/auth", fgpasswordRout);
 app.use("/api/auth", UpdateUserProfileRout);
 app.use("/api/auth", getUserDataRout);
-app.use("/api/auth", DeleteUserRout);
+app.use("/api/auth", DeleteUserRout);*/
 
 //PersonalDataRegister
-app.use("/api84818datar", insertPersonalDataRegisterRout);
-app.use("/api84818datar", updatePDR);
-app.use("/api84818datar", getPDR);
+app.use("/api/api84818datar", insertPersonalDataRegisterRout);
+app.use("/api/api84818datar", updatePDR);
+app.use("/api/api84818datar", getPDR);
 
 //goal
 app.use("/api/api84818datar", DataGoalsRout);
 
 //gender
-app.use("/api84818datar", DataGenderRout);
+app.use("/api/api84818datar", DataGenderRout);
 
 //typicalday
-app.use("/api84818datar", DataTypicaldayRout);
+app.use("/api/api84818datar", DataTypicaldayRout);
 
 //specialprograms
-app.use("/api84818datar", DataSpecialProgramsRout);
+app.use("/api/api84818datar", DataSpecialProgramsRout);
 
 //specialevent
-app.use("/api84818datar", DataSpecialEventRout);
+app.use("/api/api84818datar", DataSpecialEventRout);
 
 //restnight
-app.use("/api84818datar", DataRestNightRout);
+app.use("/api/api84818datar", DataRestNightRout);
 
 //physicallyactive
-app.use("/api84818datar", DataPhysicallyActiveRout);
+app.use("/api/api84818datar", DataPhysicallyActiveRout);
 
 //offers
-app.use("/api84818datar", DataOffersRout);
+app.use("/api/api84818datar", DataOffersRout);
 
 //lastidealweight
-app.use("/api84818datar", DataLastIdealWeightRout);
+app.use("/api/api84818datar", DataLastIdealWeightRout);
 
 //energylevels
-app.use("/api84818datar", DataEnergyLevelsRout);
+app.use("/api/api84818datar", DataEnergyLevelsRout);
 
 //diettype
-app.use("/api84818datar", DataDietTypeRout);
+app.use("/api/api84818datar", DataDietTypeRout);
 
 //dailywater
-app.use("/api84818datar", DataDailyWaterRout);
+app.use("/api/api84818datar", DataDailyWaterRout);
 
 //bodytype
-app.use("/api84818datar", DataBodyTypeRout);
+app.use("/api/api84818datar", DataBodyTypeRout);
 
 //badhabits
-app.use("/api84818datar", DataBadHabitsRout);
+app.use("/api/api84818datar", DataBadHabitsRout);
 
 //areasattention
-app.use("/api84818datar", DataAreasAttentionRout);
+app.use("/api/api84818datar", DataAreasAttentionRout);
 
 //activities
-app.use("/api84818datar", DataActivitiesRout);
+app.use("/api/api84818datar", DataActivitiesRout);
 
 //profile
-app.use("/api84818dataUser", GetProfileRout);
+app.use("/api/api84818dataUser", GetProfileRout);
 
 //Analytics
-app.use("/api84818dataAnaly", GetDataStepsRout);
+app.use("/api/api84818dataAnaly", GetDataStepsRout);
 
 // Food
-app.use("/api84818datafood", DataFoodRout);
+app.use("/api/api84818datafood", DataFoodRout);
 
 // challenges
-app.use("/api84818datachallenges", DatachallengesRout);
+app.use("/api/api84818datachallenges", DatachallengesRout);
 
 // chapter
-app.use("/api84818datachapter", chapterRout);
+app.use("/api/api84818datachapter", chapterRout);
 
 ////////////////////////////// mealFood
-app.use("/api84818datamealfood", mealFoodRout);
+app.use("/api/api84818datamealfood", mealFoodRout);
 
 //////////////////////////// feedbacks
-app.use("/api84818datafeedback", feedbacksRout);
+app.use("/api/api84818datafeedback", feedbacksRout);
 
 //////////////////////////// trainings
-app.use("/api84818datatrainings", trainingsRout);
+app.use("/api/api84818datatrainings", trainingsRout);
 
 //////////////////////////// exercise
-app.use("/api84818dataexercise", exerciseRout);
+app.use("/api/api84818dataexercise", exerciseRout);
 
 //////////////////////////// equipmentRout
-app.use("/api84818dataequipment", equipmentRout);
+app.use("/api/api84818dataequipment", equipmentRout);
 ////////////////////////////// coupon
-app.use("/api84818dataecoupon", couponRout);
+app.use("/api/api84818dataecoupon", couponRout);
 
 ////////////////////////////// Financial
-app.use("/api84818datafinancial", FinancialRout);
+app.use("/api/api84818datafinancial", FinancialRout);
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
 });
+
 
