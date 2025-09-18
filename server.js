@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql2/promise");
 const { getConnection } = require("./controllers/db");
-const fs = require('fs');
+const fs = require("fs");
 
 const app = express();
 
@@ -13,63 +13,88 @@ app.use(express.json());
 const PORT = process.env.PORT || 3118;
 const path = require("path");
 
-
-// Serve static files from the 'query' directory
-app.use('/api/query', express.static(path.join(__dirname, 'query'))); // Custom route for user images with fallback to default
-app.get('/api/query/auth/userImages/images/:filename', (req, res) => { const filePath = path.join(__dirname, 'query/auth/userImages/images', req.params.filename);
-app.use('/api/query/food/foodImages/images', express.static(path.join(__dirname, 'query', 'food', 'foodImages', 'images')));
+// Serve static files from the 'query' directory under /api/query
+app.use(
+  "/api/query",
+  express.static(path.join(__dirname, "query"), {
+    maxAge: "1y",
+    immutable: true,
+  })
+);
+// Custom route for user images with fallback to default
+app.get("/api/query/auth/userImages/images/:filename", (req, res) => {
+  const filePath = path.join(
+    __dirname,
+    "query",
+    "auth",
+    "userImages",
+    "images",
+    req.params.filename
+  );
 
   if (fs.existsSync(filePath)) {
-    res.sendFile(filePath);
-  } else if (req.params.filename === 'logo.png') {
-    // إذا طلب logo.png ولم توجد في images، ابحث في المجلد الأب userImages
-    const parentDirPath = path.join(__dirname, 'query/auth/userImages');
-    if (fs.existsSync(parentDirPath)) {
-      const files = fs.readdirSync(parentDirPath).filter(file => 
-        !file.startsWith('.') && 
-        (file.endsWith('.png') || file.endsWith('.jpg') || file.endsWith('.jpeg'))
-      );
-      
-      if (files.length > 0) {
-        const fallbackImagePath = path.join(parentDirPath, files[0]);
-        res.sendFile(fallbackImagePath);
-      } else {
-        // إذا لم توجد في userImages، ابحث في default-images
-        const defaultImagePath = path.join(__dirname, 'default-images/default-avatar.png');
-        if (fs.existsSync(defaultImagePath)) {
-          res.sendFile(defaultImagePath);
-        } else {
-          res.status(404).json({ error: 'No default image available' });
-        }
-      }
-    } else {
-      res.status(404).json({ error: 'No user images directory found' });
-    }
-  } else {
-    // إذا لم توجد الصورة في images، ابحث في المجلد الأب userImages
-    const parentDirPath = path.join(__dirname, 'query/auth/userImages');
-    const parentFilePath = path.join(parentDirPath, req.params.filename);
-    
-    if (fs.existsSync(parentFilePath)) {
-      res.sendFile(parentFilePath);
-    } else {
-      res.status(404).json({ 
-        error: 'File not found', 
-        requestedFile: req.params.filename,
-        searchedPaths: [
-          path.join(__dirname, 'query/auth/userImages/images', req.params.filename),
-          path.join(__dirname, 'query/auth/userImages', req.params.filename)
-        ]
-      });
-    }
+    return res.sendFile(filePath);
   }
-}); 
+
+  if (req.params.filename === "logo.png") {
+    // إذا طلب logo.png ولم توجد في images، ابحث في المجلد الأب userImages
+    const parentDirPath = path.join(__dirname, "query", "auth", "userImages");
+    if (fs.existsSync(parentDirPath)) {
+      const files = fs
+        .readdirSync(parentDirPath)
+        .filter(
+          (file) =>
+            !file.startsWith(".") &&
+            (file.endsWith(".png") ||
+              file.endsWith(".jpg") ||
+              file.endsWith(".jpeg"))
+        );
+
+      if (files.length > 0) {
+        return res.sendFile(path.join(parentDirPath, files[0]));
+      }
+    }
+    const defaultImagePath = path.join(
+      __dirname,
+      "default-images",
+      "default-avatar.png"
+    );
+    if (fs.existsSync(defaultImagePath)) {
+      return res.sendFile(defaultImagePath);
+    }
+    return res.status(404).json({ error: "No default image available" });
+  }
+
+  // إذا لم توجد الصورة في images، ابحث في المجلد الأب userImages
+  const parentDirPath = path.join(__dirname, "query", "auth", "userImages");
+  const parentFilePath = path.join(parentDirPath, req.params.filename);
+
+  if (fs.existsSync(parentFilePath)) {
+    return res.sendFile(parentFilePath);
+  }
+
+  return res.status(404).json({
+    error: "File not found",
+    requestedFile: req.params.filename,
+    searchedPaths: [
+      path.join(
+        __dirname,
+        "query",
+        "auth",
+        "userImages",
+        "images",
+        req.params.filename
+      ),
+      path.join(__dirname, "query", "auth", "userImages", req.params.filename),
+    ],
+  });
+});
 ////////////////////////////// auth
 const loginUserRoute = require("./routes/authRoutes/LoginUserRout");
 const registerUserRoute = require("./routes/authRoutes/RegisterUserRout");
 const verifyUserRoute = require("./routes/authRoutes/VfcRout");
 const fgpasswordRout = require("./routes/authRoutes/FgpasswordRout");
-const getUserDataRout = require("./routes/authRoutes/userRout"); 
+const getUserDataRout = require("./routes/authRoutes/userRout");
 const UpdateUserProfileRout = require("./routes/authRoutes/UpdateUserProfileRout");
 const DeleteUserRout = require("./routes/authRoutes/DeleteUserRout");
 
@@ -77,7 +102,7 @@ const DeleteUserRout = require("./routes/authRoutes/DeleteUserRout");
 const insertPersonalDataRegisterRout = require("./routes/personaldata/personalDataRegisterRout");
 const updatePDR = require("./routes/personaldata/personalDataRegisterRout");
 const getPDR = require("./routes/personaldata/personalDataRegisterRout");
- 
+
 //goal
 const DataGoalsRout = require("./routes/managePersonalData/goal/DataGoalsRout");
 //gender
@@ -134,7 +159,7 @@ const feedbacksRout = require("./routes/feedbacks/feedbacksRout");
 
 ////////////////////////////// trainings
 const trainingsRout = require("./routes/trainings/trainingsRout");
- 
+
 ////////////////////////////// exercise
 const exerciseRout = require("./routes/exercise/exerciseRout");
 
@@ -142,37 +167,35 @@ const exerciseRout = require("./routes/exercise/exerciseRout");
 const equipmentRout = require("./routes/equipment/equipmentRout");
 ////////////////////////////// coupon
 const couponRout = require("./routes/coupon/DataCouponRout");
- 
- ////////////////////////////// Financial
+
+////////////////////////////// Financial
 const FinancialRout = require("./routes/Financial/FinancialRout");
- 
- // خدمة الملفات الثابتة
-  app.use(express.json());
+
+// خدمة الملفات الثابتة
+app.use(express.json());
 // 1) مسار البناء الخاص بتطبيق React
-const reactBuildPath = path.join(__dirname, 'frontend_build');
-const reactBuildPathV = path.join(__dirname, 'frontend_build_v');
+const reactBuildPath = path.join(__dirname, "frontend_build");
+const reactBuildPathV = path.join(__dirname, "frontend_build_v");
 
 // 2) خدمة الملفات الثابتة لـ React
 app.use(express.static(reactBuildPath));
 app.use(express.static(reactBuildPathV));
- 
 
 // 3) توجيه الجذر إلى React
-app.get('/', (req, res) => {
-  res.sendFile(path.join(reactBuildPath, 'index.html'));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(reactBuildPath, "index.html"));
 });
-app.get('/v', (req, res) => {
-  res.sendFile(path.join(reactBuildPathV, 'index.html'));
+app.get("/v", (req, res) => {
+  res.sendFile(path.join(reactBuildPathV, "index.html"));
 });
- 
 
 // 4) دعم المسارات الفرعية لـ React Router
- 
-app.get('*', (req, res) => {
-  if(req.path.startsWith('/v')) {
-    res.sendFile(path.join(reactBuildPathV, 'index.html'));
+
+app.get("*", (req, res) => {
+  if (req.path.startsWith("/v")) {
+    res.sendFile(path.join(reactBuildPathV, "index.html"));
   } else {
-    res.sendFile(path.join(reactBuildPath, 'index.html'));
+    res.sendFile(path.join(reactBuildPath, "index.html"));
   }
 });
 
@@ -191,10 +214,10 @@ app.get("/", (req, res) => {
 
 // مسار إدارة قاعدة البيانات
 app.get("/db-admin", (req, res) => {
-  const dbAdminPath = path.join(__dirname, 'simple_db_admin.html');
-  
+  const dbAdminPath = path.join(__dirname, "simple_db_admin.html");
+
   if (fs.existsSync(dbAdminPath)) {
-    const htmlContent = fs.readFileSync(dbAdminPath, 'utf8');
+    const htmlContent = fs.readFileSync(dbAdminPath, "utf8");
     res.send(htmlContent);
   } else {
     res.status(404).json({ error: "Database admin page not found" });
@@ -208,7 +231,9 @@ app.get("/status", async (req, res) => {
 
     // الحصول على معلومات قاعدة البيانات
     const [tables] = await connection.execute("SHOW TABLES");
-    const [serverInfo] = await connection.execute("SELECT VERSION() as version, NOW() as current_datetime");
+    const [serverInfo] = await connection.execute(
+      "SELECT VERSION() as version, NOW() as current_datetime"
+    );
 
     await connection.end();
 
@@ -219,19 +244,19 @@ app.get("/status", async (req, res) => {
         connected: true,
         version: serverInfo[0].version,
         tables_count: tables.length,
-        current_time: serverInfo[0].current_datetime
+        current_time: serverInfo[0].current_datetime,
       },
       server: {
         port: PORT,
         environment: process.env.NODE_ENV || "development",
-        uptime: process.uptime()
-      }
+        uptime: process.uptime(),
+      },
     });
   } catch (error) {
     res.status(500).json({
       status: "error",
       message: "خطأ في الاتصال بقاعدة البيانات",
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -255,8 +280,8 @@ app.get("/api-info", (req, res) => {
       equipment: "/api84818dataequipment",
       coupon: "/api84818dataecoupon",
       analytics: "/api84818dataAnaly",
-      profile: "/api84818dataUser"
-    }
+      profile: "/api84818dataUser",
+    },
   });
 });
 
@@ -264,7 +289,7 @@ app.get("/api-info", (req, res) => {
 app.use("/api84818auth", registerUserRoute);
 app.use("/api84818auth", loginUserRoute);
 app.use("/api84818auth", verifyUserRoute);
-app.use("/api84818auth", fgpasswordRout); 
+app.use("/api84818auth", fgpasswordRout);
 app.use("/api84818auth", UpdateUserProfileRout);
 app.use("/api84818auth", getUserDataRout);
 app.use("/api84818auth", DeleteUserRout);
@@ -273,7 +298,7 @@ app.use("/api84818auth", DeleteUserRout);
 app.use("/api84818datar", insertPersonalDataRegisterRout);
 app.use("/api84818datar", updatePDR);
 app.use("/api84818datar", getPDR);
- 
+
 //goal
 app.use("/api84818datar", DataGoalsRout);
 
@@ -345,14 +370,14 @@ app.use("/api84818datafeedback", feedbacksRout);
 
 //////////////////////////// trainings
 app.use("/api84818datatrainings", trainingsRout);
- 
+
 //////////////////////////// exercise
 app.use("/api84818dataexercise", exerciseRout);
 
 //////////////////////////// equipmentRout
 app.use("/api84818dataequipment", equipmentRout);
 ////////////////////////////// coupon
- app.use("/api84818dataecoupon", couponRout);
+app.use("/api84818dataecoupon", couponRout);
 
 ////////////////////////////// Financial
 app.use("/api84818datafinancial", FinancialRout);
@@ -360,30 +385,3 @@ app.use("/api84818datafinancial", FinancialRout);
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
