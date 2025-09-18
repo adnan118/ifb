@@ -292,6 +292,15 @@ app.use("/api84818auth", UpdateUserProfileRout);
 app.use("/api84818auth", getUserDataRout);
 app.use("/api84818auth", DeleteUserRout);
 
+// Aliases for frontend paths under /api/auth
+app.use("/api/auth", registerUserRoute);
+app.use("/api/auth", loginUserRoute);
+app.use("/api/auth", verifyUserRoute);
+app.use("/api/auth", fgpasswordRout);
+app.use("/api/auth", UpdateUserProfileRout);
+app.use("/api/auth", getUserDataRout);
+app.use("/api/auth", DeleteUserRout);
+
 //PersonalDataRegister
 app.use("/api84818datar", insertPersonalDataRegisterRout);
 app.use("/api84818datar", updatePDR);
