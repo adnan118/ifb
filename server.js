@@ -189,14 +189,12 @@ app.get("/v", (req, res) => {
   res.sendFile(path.join(reactBuildPathV, "index.html"));
 });
 
-// 4) دعم المسارات الفرعية لـ React Router
-
-app.get("*", (req, res) => {
+// 4) دعم المسارات الفرعية لـ React Router - استثناء مسارات /api/ من الالتقاط العام
+app.get(/^\/(?!api\/).*/, (req, res) => {
   if (req.path.startsWith("/v")) {
-    res.sendFile(path.join(reactBuildPathV, "index.html"));
-  } else {
-    res.sendFile(path.join(reactBuildPath, "index.html"));
+    return res.sendFile(path.join(reactBuildPathV, "index.html"));
   }
+  return res.sendFile(path.join(reactBuildPath, "index.html"));
 });
 
 /*
