@@ -19,13 +19,13 @@ app.use('/api/query', express.static(path.join(__dirname, 'query')));
 
  // Custom route for user images with fallback to default
 app.get('/api/query/auth/userImages/images/:filename', (req, res) => {
-  const filePath = path.join(__dirname, 'query/auth/userImages/images', req.params.filename);
+  const filePath = path.join(__dirname, '/apiquery/auth/userImages/images', req.params.filename);
   
   if (fs.existsSync(filePath)) {
     res.sendFile(filePath);
   } else if (req.params.filename === 'logo.png') {
     // إذا طلب logo.png ولم توجد في images، ابحث في المجلد الأب userImages
-    const parentDirPath = path.join(__dirname, 'query/auth/userImages');
+    const parentDirPath = path.join(__dirname, '/api/query/auth/userImages');
     if (fs.existsSync(parentDirPath)) {
       const files = fs.readdirSync(parentDirPath).filter(file => 
         !file.startsWith('.') && 
@@ -49,7 +49,7 @@ app.get('/api/query/auth/userImages/images/:filename', (req, res) => {
     }
   } else {
     // إذا لم توجد الصورة في images، ابحث في المجلد الأب userImages
-    const parentDirPath = path.join(__dirname, 'query/auth/userImages');
+    const parentDirPath = path.join(__dirname, '/api/query/auth/userImages');
     const parentFilePath = path.join(parentDirPath, req.params.filename);
     
     if (fs.existsSync(parentFilePath)) {
@@ -59,8 +59,8 @@ app.get('/api/query/auth/userImages/images/:filename', (req, res) => {
         error: 'File not found', 
         requestedFile: req.params.filename,
         searchedPaths: [
-          path.join(__dirname, 'query/auth/userImages/images', req.params.filename),
-          path.join(__dirname, 'query/auth/userImages', req.params.filename)
+          path.join(__dirname, '/api/query/auth/userImages/images', req.params.filename),
+          path.join(__dirname, '/api/query/auth/userImages', req.params.filename)
         ]
       });
     }
@@ -362,6 +362,7 @@ app.use("/api84818datafinancial", FinancialRout);
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
 });
+
 
 
 
