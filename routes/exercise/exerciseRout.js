@@ -7,7 +7,7 @@ const {
  
 const {
   updateDataExercise,
-  
+  uploadFiles: updateUploadFiles
 } = require("../../query/exercise/updateDataExercise");
  
 const { getDataExercise } = require("../../query/exercise/getDataExercise");
@@ -23,8 +23,7 @@ router.post(
 
 router.post(
   "/updateDataExercise",
-  uploadFiles,
- 
+  updateUploadFiles,
   updateDataExercise
 );
  
