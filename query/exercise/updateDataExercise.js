@@ -37,11 +37,16 @@ const uploadFiles = (req, res, next) => {
 // دالة لتحديث بيانات التمرين
 async function updateDataExercise(req, res) {
   try {
-    const exercise_img_file = req.files["exercise_img"]
+    // إضافة logs للتتبع
+    console.log("🔄 بدء عملية تحديث التمرين");
+    console.log("📝 البيانات المستلمة:", req.body);
+    console.log("📁 الملفات المرفوعة:", req.files ? Object.keys(req.files) : "لا توجد ملفات");
+
+    const exercise_img_file = req.files && req.files["exercise_img"]
       ? req.files["exercise_img"][0]
       : null;
     
-    const exercise_video_file = req.files["exercise_video"]
+    const exercise_video_file = req.files && req.files["exercise_video"]
       ? req.files["exercise_video"][0]
       : null;
 
@@ -62,23 +67,44 @@ async function updateDataExercise(req, res) {
       exercise_tipsAr,
     } = req.body;
 
+    // التحقق من وجود المعاملات الأساسية
+    if (!exercise_id) {
+      console.log("❌ معرف التمرين مفقود");
+      return res.status(400).json({
+        status: "failure",
+        message: "Exercise ID is required",
+      });
+    }
+
+    console.log(`🔍 محاولة تحديث التمرين رقم: ${exercise_id}`);
+
     // استعلام للحصول على البيانات القديمة
+    console.log("📖 جاري استرجاع البيانات القديمة...");
     const oldExerciseData = await getData("exercise", "exercise_id = ?", [exercise_id]);
+    console.log("📊 نتيجة استرجاع البيانات:", oldExerciseData);
+
+    // التحقق من وجود التمرين
+    if (!oldExerciseData || oldExerciseData.status !== "success" || !oldExerciseData.data) {
+      console.log("❌ التمرين غير موجود في قاعدة البيانات");
+      return res.status(404).json({
+        status: "failure",
+        message: "Exercise not found",
+      });
+    }
 
     // تأكد من أن البيانات موجودة داخل الكائن
-    const old_exercise_img = oldExerciseData && oldExerciseData.status === "success" && oldExerciseData.data
-      ? oldExerciseData.data.exercise_img
-      : null;
+    const old_exercise_img = oldExerciseData.data.exercise_img || "img.png";
+    const old_exercise_video = oldExerciseData.data.exercise_video || null;
+    
+    console.log(`🖼️  الصورة القديمة: ${old_exercise_img}`);
+    console.log(`🎥 الفيديو القديم: ${old_exercise_video}`);
 
-    const old_exercise_video = oldExerciseData && oldExerciseData.status === "success" && oldExerciseData.data
-      ? oldExerciseData.data.exercise_video
-      : null;
-
-    let exercise_img_path = old_exercise_img || "img.png";
-    let exercise_video_path = old_exercise_video || null;
+    let exercise_img_path = old_exercise_img;
+    let exercise_video_path = old_exercise_video;
 
     // معالجة الصورة الجديدة
     if (exercise_img_file) {
+      console.log(`📤 رفع صورة جديدة: ${exercise_img_file.filename}`);
       const newFileName = exercise_img_file.filename;
       if (newFileName !== old_exercise_img) {
         // حذف الصورة القديمة إن وجدت
@@ -86,14 +112,18 @@ async function updateDataExercise(req, res) {
           const oldImagePath = path.join(process.cwd(), "query/exercise/exerciseFiles/images", old_exercise_img);
           if (fs.existsSync(oldImagePath)) {
             fs.unlinkSync(oldImagePath);
+            console.log(`🗑️  تم حذف الصورة القديمة: ${oldImagePath}`);
           }
         }
         exercise_img_path = newFileName;
       }
+    } else {
+      console.log("📷 لم يتم رفع صورة جديدة - الاحتفاظ بالصورة القديمة");
     }
 
     // معالجة الفيديو الجديد
     if (exercise_video_file) {
+      console.log(`📤 رفع فيديو جديد: ${exercise_video_file.filename}`);
       const newFileName = exercise_video_file.filename;
       if (newFileName !== old_exercise_video) {
         // حذف الفيديو القديم إن وجد
@@ -101,30 +131,36 @@ async function updateDataExercise(req, res) {
           const oldVideoPath = path.join(process.cwd(), "query/exercise/exerciseFiles/videos", old_exercise_video);
           if (fs.existsSync(oldVideoPath)) {
             fs.unlinkSync(oldVideoPath);
+            console.log(`🗑️  تم حذف الفيديو القديم: ${oldVideoPath}`);
           }
         }
         exercise_video_path = newFileName;
       }
+    } else {
+      console.log("🎥 لم يتم رفع فيديو جديد - الاحتفاظ بالفيديو القديم");
     }
 
     // تحديث البيانات في قاعدة البيانات
     const updateExerciseData = {
-      exercise_idTraining,
-      exercise_nameEn,
-      exercise_nameAr,
-      exercise_equipment,
-      exercise_duration,
-      exercise_Kcal,
+      exercise_idTraining: exercise_idTraining || oldExerciseData.data.exercise_idTraining,
+      exercise_nameEn: exercise_nameEn || oldExerciseData.data.exercise_nameEn,
+      exercise_nameAr: exercise_nameAr || oldExerciseData.data.exercise_nameAr,
+      exercise_equipment: exercise_equipment || oldExerciseData.data.exercise_equipment,
+      exercise_duration: exercise_duration || oldExerciseData.data.exercise_duration,
+      exercise_Kcal: exercise_Kcal || oldExerciseData.data.exercise_Kcal,
       exercise_img: exercise_img_path,
       exercise_video: exercise_video_path,
-      exercise_musclesTargeted,
-      exercise_stepHowDoingEn,
-      exercise_stepHowDoingAr,
-      exercise_commonMistakesEn,
-      exercise_commonMistakesAr,
-      exercise_tipsEn,
-      exercise_tipsAr,
+      exercise_musclesTargeted: exercise_musclesTargeted || oldExerciseData.data.exercise_musclesTargeted,
+      exercise_stepHowDoingEn: exercise_stepHowDoingEn || oldExerciseData.data.exercise_stepHowDoingEn,
+      exercise_stepHowDoingAr: exercise_stepHowDoingAr || oldExerciseData.data.exercise_stepHowDoingAr,
+      exercise_commonMistakesEn: exercise_commonMistakesEn || oldExerciseData.data.exercise_commonMistakesEn,
+      exercise_commonMistakesAr: exercise_commonMistakesAr || oldExerciseData.data.exercise_commonMistakesAr,
+      exercise_tipsEn: exercise_tipsEn || oldExerciseData.data.exercise_tipsEn,
+      exercise_tipsAr: exercise_tipsAr || oldExerciseData.data.exercise_tipsAr,
     };
+
+    console.log("💾 البيانات المراد تحديثها:", updateExerciseData);
+    console.log("🔄 جاري تحديث قاعدة البيانات...");
 
     const result = await updateData(
       "exercise",
@@ -133,22 +169,38 @@ async function updateDataExercise(req, res) {
       [exercise_id]
     );
 
+    console.log("📊 نتيجة التحديث:", result);
+
     if (result.status === "success") {
+      console.log("✅ تم تحديث التمرين بنجاح");
       res.json({
         status: "success",
         message: "Exercise data updated successfully.",
+        data: {
+          exercise_id,
+          updated_fields: Object.keys(updateExerciseData)
+        }
       });
     } else {
+      console.log("❌ فشل في تحديث التمرين:", result.message);
       res.status(500).json({
         status: "failure",
-        message: "Failed to update exercise data.",
+        message: result.message || "Failed to update exercise data.",
       });
     }
   } catch (error) {
-    console.error("Error updating exercise data: ", error);
+    console.error("💥 خطأ في تحديث بيانات التمرين:", error);
+    console.error("📍 تفاصيل الخطأ:", {
+      message: error.message,
+      stack: error.stack,
+      body: req.body,
+      files: req.files ? Object.keys(req.files) : "لا توجد ملفات"
+    });
+    
     res.status(500).json({
       status: "failure",
       message: "There is a problem updating exercise data",
+      error_details: error.message
     });
   }
 }
