@@ -21,14 +21,27 @@ const uploadFiles = (req, res, next) => {
     if (err) {
       console.error("Upload error:", err);
       let msg = "حدث خطأ في الرفع";
+      let statusCode = 400;
+      
       if (err.code === "LIMIT_UNEXPECTED_FILE") {
         msg = `اسم الحقل غير متوقع: ${err.field}`;
       } else if (err.message === "EXT") {
         msg = "ملف غير مسموح به";
       } else if (err.code === "LIMIT_FILE_SIZE") {
-        msg = "حجم الملف كبير جداً";
+        msg = "حجم الملف كبير جداً. الحد الأقصى: 100MB للفيديو، 20MB للصور";
+      } else if (err.code === "ECONNRESET" || err.code === "ENOTFOUND") {
+        msg = "انقطع الاتصال أثناء رفع الملف";
+        statusCode = 408;
+      } else if (err.message && err.message.includes("413")) {
+        msg = "حجم الملف كبير جداً. تحقق من إعدادات nginx";
+        statusCode = 413;
       }
-      return res.status(400).json({ error: msg });
+      
+      return res.status(statusCode).json({ 
+        error: msg,
+        code: err.code,
+        details: process.env.NODE_ENV === 'development' ? err.message : undefined
+      });
     }
     next();
   });
