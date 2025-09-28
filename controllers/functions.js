@@ -217,7 +217,10 @@ const createMulterConfig = (uploadPath, isVideo = false) => {
 
   return multer({
     storage: storage,
-    limits: { fileSize: isVideo ? 100 * 1024 * 1024 : 20 * 1024 * 1024 }, // 100MB for video, 20MB for images
+    limits: { 
+      fileSize: isVideo ? 50 * 1024 * 1024 : 10 * 1024 * 1024,  // Reduced: 50MB for video, 10MB for images
+      fieldSize: 25 * 1024 * 1024  // 25MB for field data
+    },
     fileFilter: (req, file, cb) => {
       if (file.fieldname === "exercise_video") {
         return videoFilter(req, file, cb);
