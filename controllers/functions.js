@@ -100,23 +100,51 @@ async function insertData(table, data, json = true) {
 // دالة لتحديث البيانات
 async function updateData(table, data, where, values, json = true) {
   const connection = await getConnection(); // الحصول على الاتصال
-  const setClause = Object.keys(data)
-    .map((key) => `${mysql.escapeId(key)} = ?`)
-    .join(", ");
-
-  const query = `UPDATE ${mysql.escapeId(
-    table
-  )} SET ${setClause} WHERE ${where}`;
-
+  
   try {
-    await connection.execute(query, [...Object.values(data), ...values]);
+    const setClause = Object.keys(data)
+      .map((key) => `${mysql.escapeId(key)} = ?`)
+      .join(", ");
+
+    const query = `UPDATE ${mysql.escapeId(
+      table
+    )} SET ${setClause} WHERE ${where}`;
+
+    console.log("🔄 SQL Query:", query);
+    console.log("📊 Data values:", Object.values(data));
+    console.log("🎯 Where values:", values);
+    
+    const [result] = await connection.execute(query, [...Object.values(data), ...values]);
+    
+    console.log("✅ Update result:", {
+      affectedRows: result.affectedRows,
+      changedRows: result.changedRows,
+      insertId: result.insertId
+    });
+    
     await connection.end();
 
-    return json ? { status: "success" } : null;
+    return json ? { 
+      status: "success", 
+      affectedRows: result.affectedRows,
+      changedRows: result.changedRows 
+    } : null;
   } catch (error) {
-    console.error("Database query error: ", error);
+    console.error("💥 Database update error:", {
+      message: error.message,
+      code: error.code,
+      sqlState: error.sqlState,
+      table,
+      data,
+      where,
+      values
+    });
     await connection.end();
-    return { status: "failure", message: "هناك مشكلة في تحديث البيانات" };
+    return { 
+      status: "failure", 
+      message: error.message,
+      error_code: error.code
+    };
   }
 }
 
