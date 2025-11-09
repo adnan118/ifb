@@ -16,4 +16,18 @@ async function getConnection() {
 
 module.exports = { getConnection };
 
+/*
+المحاولة 1:
+
+اسم المستخدم: root
+
+كلمة المرور: ifb118
+
+المحاولة 2:
+
+اسم المستخدم: pma_user
+
+كلمة المرور: pma123
+
+*/
 
