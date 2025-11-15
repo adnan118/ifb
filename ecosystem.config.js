@@ -9,7 +9,7 @@ module.exports = {
       env: {
         NODE_ENV: "development",
         PORT: 3118,
-        DB_HOST: "localhost",
+        DB_HOST: "127.0.0.1",
         DB_USER: "pma_user",
         DB_PASSWORD: "pma123",
         DB_NAME: "ib",
@@ -18,7 +18,7 @@ module.exports = {
       env_production: {
         NODE_ENV: "production",
         PORT: 3118,
-        DB_HOST: "localhost",
+        DB_HOST: "127.0.0.1",
         DB_USER: "pma_user",
         DB_PASSWORD: "pma123",
         DB_NAME: "ib",
