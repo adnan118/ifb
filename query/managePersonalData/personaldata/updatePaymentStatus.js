@@ -406,7 +406,4 @@ async function updatePaymentStatus(req, res) {
 }
 
 module.exports = { updatePaymentStatus };
-
-module.exports = {
-  updatePaymentStatus,
-};
+ 
