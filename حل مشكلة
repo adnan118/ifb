@@ -1,0 +1,44 @@
+## تشخيص المشكلة والحل
+
+### المشكلة الأساسية:
+تم حل المشكلة بنجاح، ولكن دعني أوضح ما كان يحدث:
+
+1. **الملفات الخاطئة في دليل Nginx**: 
+   - كان الدليل `/var/www/idealbody25.online/` يحتوي على ملفات Vite الافتراضية بدلاً من تطبيق React الفعلي
+   - ملف [index.html](file://c:\Users\Lenovo\Desktop\ifb-main\frontend_build_v\index.html) كان يشير إلى ملفات JavaScript و CSS خاطئة
+
+2. **مسار غير صحيح في الأمر**:
+   - الأمر `sudo cp -r /path/to/correct/frontend_build/* /var/www/idealbody25.online/` كان يحتوي على مسار	placeholder غير موجود فعليًا
+   - كان يجب استبدال `/path/to/correct/frontend_build` بالمسار الفعلي
+
+### الحل المطبق:
+
+1. **تحديد المسار الصحيح**:
+   ```bash
+   find / -type d -name "frontend_build" 2>/dev/null | grep -v node_modules
+   ```
+   وهذا أظهر المسارات الصحيحة:
+   - `/fatemaifb/frontend_build`
+   - `/root/ifb/frontend_build`
+
+2. **نسخ الملفات الصحيحة**:
+   ```bash
+   sudo cp -r /fatemaifb/frontend_build/* /var/www/idealbody25.online/
+   ```
+
+3. **تعيين الأذونات الصحيحة**:
+   ```bash
+   sudo chown -R www-data:www-data /var/www/idealbody25.online
+   sudo chmod -R 755 /var/www/idealbody25.online
+   ```
+
+4. **التحقق من النتيجة**:
+   - تم التأكد من أن ملف [index.html](file://c:\Users\Lenovo\Desktop\ifb-main\frontend_build_v\index.html) يحتوي الآن على التكوين الصحيح لتطبيق React
+   - تم إعادة تحميل تكوين Nginx بنجاح
+
+### النتيجة:
+الآن يتم عرض واجهات الموقع بشكل صحيح عند الوصول إلى:
+- https://idealbody25.online/dashboard
+- https://idealbody25.online/login
+
+بدلاً من الشاشة السوداء التي كانت تظهر سابقًا.
