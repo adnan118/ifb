@@ -87,11 +87,14 @@ async function updatePDR(req, res) {
     else
       updatedUserData.personalData_offers_id = currentData.personalData_offers_id;
       
-    // Add diet type update - Fixed to properly handle numeric values including 0
-    if (personalData_dietType_id !== '')
+    // Add diet type update - Handle empty strings and invalid values properly
+    if (personalData_dietType_id != '' && personalData_dietType_id != null && personalData_dietType_id != undefined && personalData_dietType_id != 'null') {
+      // Only update if it's a valid value (not empty string, null, or 'null')
       updatedUserData.personalData_dietType_id = personalData_dietType_id;
-    else
+    } else {
+      // Keep the current value if no valid update value is provided
       updatedUserData.personalData_dietType_id = currentData.personalData_dietType_id;
+    }
 
     // تنفيذ عملية التحديث
     const result = await updateData(
