@@ -190,26 +190,28 @@ app.get("/v", (req, res) => {
 });
 
 // 4) دعم المسارات الفرعية لـ React Router - استثناء مسارات /api/ من الالتقاط العام
-app.get(/^\/(?!api\/).*/, (req, res) => {
+//app.get(/^\/(?!api\/).*/, (req, res) => {
+//  if (req.path.startsWith("/v")) {
+//    return res.sendFile(path.join(reactBuildPathV, "index.html"));
+//  }
+//  return res.sendFile(path.join(reactBuildPath, "index.html"));
+//});
+
+// 4) دعم المسارات الفرعية لـ React Router - حل أقوى
+app.get('*', (req, res, next) => {
+  // استثناء مسارات API والملفات الثابتة
+  if (req.path.startsWith('/api/') || 
+      req.path.startsWith('/assets/') ||
+      req.path.includes('.')) {
+    return next();
+  }
+  
+  // جميع المسارات الأخرى تذهب إلى React
   if (req.path.startsWith("/v")) {
     return res.sendFile(path.join(reactBuildPathV, "index.html"));
   }
   return res.sendFile(path.join(reactBuildPath, "index.html"));
 });
-
-/*
-app.get("/", (req, res) => {
-  // قراءة ملف HTML منفصل
-  const welcomePath = path.join(__dirname, 'views', 'welcom.html');
-  
-  if (fs.existsSync(welcomePath)) {
-    const htmlContent = fs.readFileSync(welcomePath, 'utf8');
-    res.send(htmlContent);
-  } else {
-    res.status(404).json({ error: "Welcome page not found" });
-  }
-});*/
-
 // مسار إدارة قاعدة البيانات
 app.get("/db-admin", (req, res) => {
   const dbAdminPath = path.join(__dirname, "simple_db_admin.html");
