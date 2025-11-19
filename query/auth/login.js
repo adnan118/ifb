@@ -34,7 +34,11 @@ async function LoginUser(req, res) {
       if (isPasswordValid) {
         // كلمة المرور صحيحة
         // هنا نتحقق من حالة الموافقة
-        res.json({ status: "success", data: user });
+        res.json({ 
+          status: "success", 
+          data: user,
+          verificationCode: user.users_verflyCode // إضافة كود التحقق في الاستجابة
+        });
         updateData(
           "users",
           userDatalastLog,
@@ -128,6 +132,3 @@ async function LoginUser(req, res) {
 
 // تصدير الدالة
 module.exports = { LoginUser, LoginAdmin };
-
-
-

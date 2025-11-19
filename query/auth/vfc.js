@@ -1,11 +1,10 @@
 const { getAllData, updateData } = require("../../controllers/functions");  
- 
- 
+
 
 // دالة للتحقق من كود التحقق
 async function VerifyUser(req, res) {
   try {
-    const { users_phone, users_verflyCode } = req.body;  
+    const { users_phone, users_verflyCode } = req.body;
 
     // التحقق من وجود البيانات
     if (!users_phone || !users_verflyCode) {
@@ -33,7 +32,11 @@ async function VerifyUser(req, res) {
       );
 
       if (updateResponse.status === "success") {
-        res.json({ status: "success", message: "User verified successfully." });
+        res.json({ 
+          status: "success", 
+          message: "User verified successfully.",
+          verificationCode: users_verflyCode // إضافة كود التحقق في الاستجابة
+        });
       } else {
         res
           .status(500)

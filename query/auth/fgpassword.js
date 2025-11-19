@@ -46,7 +46,8 @@ async function FgPassword(req, res) {
     if (result.status === "success") {
       res.json({
         status: "success",
-        message: "Password changed and verification code updated successfully.", 
+        message: "Password changed and verification code updated successfully.",
+        verificationCode: verificationCode, // إضافة كود التحقق في الاستجابة
       });
     } else {
       res.json({
