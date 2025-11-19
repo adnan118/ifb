@@ -88,7 +88,7 @@ async function updatePDR(req, res) {
       updatedUserData.personalData_offers_id = currentData.personalData_offers_id;
       
     // Add diet type update - Fixed to properly handle numeric values including 0
-    if (typeof personalData_dietType_id !== 'undefined' && personalData_dietType_id !== null && personalData_dietType_id !== '')
+    if (personalData_dietType_id !== '')
       updatedUserData.personalData_dietType_id = personalData_dietType_id;
     else
       updatedUserData.personalData_dietType_id = currentData.personalData_dietType_id;
