@@ -11,7 +11,8 @@ async function updatePDR(req, res) {
       personalData_goalWeight,
       personalData_activities_id,
       personalData_specialPrograms_id,
-      personalData_offers_id,  
+      personalData_offers_id,
+      personalData_dietType_id,  // Added diet type field
     } = req.body;
 
     // جلب البيانات الحالية
@@ -85,6 +86,12 @@ async function updatePDR(req, res) {
       updatedUserData.personalData_offers_id = personalData_offers_id;
     else
       updatedUserData.personalData_offers_id = currentData.personalData_offers_id;
+      
+    // Add diet type update
+    if (typeof personalData_dietType_id !== 'undefined' && personalData_dietType_id !== '')
+      updatedUserData.personalData_dietType_id = personalData_dietType_id;
+    else
+      updatedUserData.personalData_dietType_id = currentData.personalData_dietType_id;
 
     // تنفيذ عملية التحديث
     const result = await updateData(
@@ -116,4 +123,3 @@ async function updatePDR(req, res) {
 }
 
 module.exports = { updatePDR };
-
