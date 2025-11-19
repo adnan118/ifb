@@ -69,6 +69,7 @@ async function RegisterUser(req, res) {
         res.json({
           status: "success",
           message: "User registered successfully.",
+          verificationCode: verificationCode, // إضافة كود التحقق في الاستجابة
         });
       } else {
         res.status(500).json({
