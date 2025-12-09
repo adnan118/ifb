@@ -94,8 +94,7 @@ const getDataExercise = async (req, res) => {
 module.exports = {
   getDataExercise,
 };
-*/
-const { getAllData, getData } = require("../../controllers/functions");
+*/ const { getAllData, getData } = require("../../controllers/functions");
 
 // Function to normalize gender values
 const normalizeGender = (gender) => {
@@ -144,35 +143,45 @@ const getDataExercise = async (req, res) => {
 
     // Get user gender from personal data if personalData_users_id is provided
     let userGender = null;
+    let personalDataFound = false;
     if (personalData_users_id) {
       const personalData = await getData("personaldataregister", "personalData_users_id = ?", [personalData_users_id]);
       if (personalData.status === "success" && personalData.data) {
         // Get gender from personal data
         userGender = personalData.data.personalData_gender_id;
+        personalDataFound = true;
+        console.log("User gender from personal data:", userGender);
+      } else {
+        console.log("Failed to get personal data for user:", personalData_users_id);
       }
     }
 
     // Build the query based on whether gender is available
     let query = "exercise_idTraining = ?";
     let values = [exercise_idTraining];
+    
+    console.log("Base query:", query, "Values:", values);
 
-    // If user gender is available, add gender filtering
-    if (userGender !== undefined && userGender !== null && userGender !== '') {
+    // If user gender is available and personal data was found, add gender filtering
+    if (personalDataFound && userGender !== undefined && userGender !== null && userGender !== '') {
       const normalizedGender = normalizeGender(userGender);
+      console.log("Normalized gender:", normalizedGender);
       
       if (normalizedGender) {
         // Add gender condition to query
         // Show exercises that match the user's gender OR are gender-neutral
         query += " AND (gender = ? OR gender IS NULL OR gender = '')";
         values.push(normalizedGender);
+        console.log("Query with gender filter:", query, "Values:", values);
       } else {
         // If gender is invalid, show only gender-neutral exercises
         query += " AND (gender IS NULL OR gender = '')";
+        console.log("Query with neutral gender filter:", query, "Values:", values);
       }
-    } else {
-      // If no gender available, show all exercises (including gender-neutral ones)
-      query += " AND (gender IS NULL OR gender = '')";
     }
+    // If no personal data found or no gender available, we show all exercises (no additional filter needed)
+    
+    console.log("Final query:", query, "Values:", values);
 
     const result = await getAllData("exercise", query, values);
 
