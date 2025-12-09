@@ -336,7 +336,9 @@ async function updateDataExercise(req, res) {
       exercise_tipsEn,
       exercise_tipsAr,
       // Add gender field
-      gender
+      gender,
+      // Add equipment weights field
+      exercise_equipment_weights
     } = req.body;
 
     // التحقق من وجود المعاملات الأساسية
@@ -366,7 +368,7 @@ async function updateDataExercise(req, res) {
 
     // تأكد من أن البيانات موجودة داخل الكائن
     const old_exercise_img = oldExerciseData.data.exercise_img || "img.png";
-    const old_exercise_video = oldExerciseData.data.exercise_video || null;
+    const old_exercise_video = oldExerciseData.data.exercise_video || "";
     
     console.log(`🖼️  الصورة القديمة: ${old_exercise_img}`);
     console.log(`🎥 الفيديو القديم: ${old_exercise_video}`);
@@ -429,6 +431,31 @@ async function updateDataExercise(req, res) {
       }
     }
 
+    // Process equipment weights for update
+    let processedEquipmentWeights = undefined;
+    // Only update equipment weights if it's explicitly provided in the request
+    if (exercise_equipment_weights !== undefined) {
+      if (exercise_equipment_weights === null || exercise_equipment_weights === '') {
+        // If explicitly set to null or empty, use empty string
+        processedEquipmentWeights = '';
+      } else {
+        // Process the equipment weights value
+        if (typeof exercise_equipment_weights === 'object') {
+          processedEquipmentWeights = JSON.stringify(exercise_equipment_weights);
+        } else if (typeof exercise_equipment_weights === 'string') {
+          // Validate if it's valid JSON
+          try {
+            JSON.parse(exercise_equipment_weights);
+            processedEquipmentWeights = exercise_equipment_weights;
+          } catch (e) {
+            processedEquipmentWeights = exercise_equipment_weights;
+          }
+        } else {
+          processedEquipmentWeights = exercise_equipment_weights.toString();
+        }
+      }
+    }
+
     // تحديث البيانات في قاعدة البيانات
     const updateExerciseData = {
       exercise_idTraining: exercise_idTraining || oldExerciseData.data.exercise_idTraining,
@@ -447,7 +474,9 @@ async function updateDataExercise(req, res) {
       exercise_tipsEn: exercise_tipsEn || oldExerciseData.data.exercise_tipsEn,
       exercise_tipsAr: exercise_tipsAr || oldExerciseData.data.exercise_tipsAr,
       // Add gender field if provided
-      ...(gender !== undefined && { gender: processedGender })
+      ...(gender !== undefined && { gender: processedGender }),
+      // Add equipment weights field if provided
+      ...(exercise_equipment_weights !== undefined && { exercise_equipment_weights: processedEquipmentWeights })
     };
 
     console.log("💾 البيانات المراد تحديثها:", updateExerciseData);
