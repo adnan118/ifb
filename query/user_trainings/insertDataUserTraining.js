@@ -1,4 +1,4 @@
-
+/*
 const { insertData } = require("../../controllers/functions");
 
 // دالة لتنسيق التاريخ ليتوافق مع MySQL
@@ -54,6 +54,81 @@ async function insertDataUserTraining(req, res) {
 
 module.exports = { insertDataUserTraining };
 
+*/
+const { insertData } = require("../../controllers/functions");
+
+// دالة لتنسيق التاريخ ليتوافق مع MySQL
+function formatDateToMySQL(date) {
+  return date.toISOString().slice(0, 19).replace("T", " ");
+}
+
+async function insertDataUserTraining(req, res) {
+  try {
+    const { user_id, training_id, daysOfWeek_id, equipment_weights } = req.body;
+
+    // التحقق من وجود البيانات المطلوبة
+    if (!user_id || !training_id || !daysOfWeek_id) {
+      return res.status(400).json({
+        status: "failure",
+        message: "Missing required fields: user_id, training_id, daysOfWeek_id",
+      });
+    }
+
+    // Process equipment weights - store as JSON string or empty string
+    let processedEquipmentWeights = '';
+    if (equipment_weights) {
+      if (typeof equipment_weights === 'object') {
+        processedEquipmentWeights = JSON.stringify(equipment_weights);
+      } else if (typeof equipment_weights === 'string') {
+        // Validate if it's valid JSON
+        try {
+          JSON.parse(equipment_weights);
+          processedEquipmentWeights = equipment_weights;
+        } catch (e) {
+          processedEquipmentWeights = equipment_weights;
+        }
+      } else {
+        processedEquipmentWeights = equipment_weights.toString();
+      }
+    }
+
+    // إعداد بيانات الإدخال
+    const insertUserTrainingData = {
+      user_id: user_id,
+      training_id: training_id,
+      daysOfWeek_id: daysOfWeek_id,
+      active: 1, // افتراضي 1 (نشط)
+      assigned_at: formatDateToMySQL(new Date()), // الوقت الحالي
+      // Add equipment weights field
+      equipment_weights: processedEquipmentWeights
+    };
+
+    const result = await insertData("user_trainings", insertUserTrainingData);
+
+    if (result.status === "success") {
+      res.status(201).json({
+        status: "success",
+        message: "User training assigned successfully.",
+        data: insertUserTrainingData,  
+      });
+    } else {
+      res.status(500).json({
+        status: "failure",
+        message: "Failed to assign user training.",
+        dbError: result.message 
+      });
+    }
+  } catch (error) {
+    console.error("Error inserting user training data: ", error);
+    res.status(500).json({
+      status: "failure",
+      message: "There is a problem assigning user training",
+      error: error.message,
+    }); 
+  }
+}
+
+module.exports = { insertDataUserTraining };
 
 
 
