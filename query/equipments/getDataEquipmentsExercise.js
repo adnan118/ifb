@@ -138,39 +138,11 @@ const getAllEquipmentsExercise = async (req, res) => {
         const [equipments] = await connection.execute(query, equipmentIds);
         console.log("Equipment query result:", equipments ? equipments.length : 0, "items found");
         
-        // Process equipment with weights if available in exercises
-        const processedEquipments = equipments.map(equipment => {
-          // Find the exercise that uses this equipment to get weight info
-          for (const exercise of exercisesResult.data) {
-            // Check if this exercise has equipment weights data
-            if (exercise.exercise_equipment_weights) {
-              try {
-                let weightsData;
-                // Try to parse equipment weights
-                if (typeof exercise.exercise_equipment_weights === 'string') {
-                  weightsData = JSON.parse(exercise.exercise_equipment_weights);
-                } else {
-                  weightsData = exercise.exercise_equipment_weights;
-                }
-                
-                // If weights data is an object and contains this equipment ID
-                if (weightsData && typeof weightsData === 'object' && weightsData[equipment.equipments_id]) {
-                  equipment.weight = weightsData[equipment.equipments_id];
-                  break;
-                }
-              } catch (parseErr) {
-                console.log("Error parsing equipment weights for exercise ID:", exercise.exercise_id, parseErr);
-              }
-            }
-          }
-          return equipment;
-        });
-        
-        // Return the equipment data with weights
+        // Return the equipment data
         res.status(200).json({
           status: "success",
           message: "Equipment fetched successfully",
-          data: processedEquipments || [],
+          data: equipments || [],
         });
       } catch (dbError) {
         console.error("Database query error:", dbError);
