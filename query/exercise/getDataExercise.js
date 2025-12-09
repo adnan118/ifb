@@ -185,7 +185,28 @@ const getDataExercise = async (req, res) => {
 
     const result = await getAllData("exercise", query, values);
 
-    if (result.status === "success") {
+    // Process the equipment weights data before sending response
+    if (result.status === "success" && result.data) {
+      // Parse equipment weights if they exist
+      const processedData = result.data.map(exercise => {
+        if (exercise.exercise_equipment_weights) {
+          try {
+            // Try to parse as JSON
+            exercise.exercise_equipment_weights_parsed = JSON.parse(exercise.exercise_equipment_weights);
+          } catch (e) {
+            // If not valid JSON, keep as string
+            exercise.exercise_equipment_weights_parsed = exercise.exercise_equipment_weights;
+          }
+        }
+        return exercise;
+      });
+
+      res.status(200).json({
+        status: "success",
+        message: "Exercises fetched successfully",
+        data: processedData,
+      });
+    } else if (result.status === "success") {
       res.status(200).json({
         status: "success",
         message: "Exercises fetched successfully",
