@@ -111,7 +111,7 @@ async function insertDataExercise(req, res) {
 // تصدير الدالة
 module.exports = { insertDataExercise, uploadFiles }; 
 */
-const {
+ const {
   insertData,
   createMulterConfig
 } = require("../../controllers/functions");
@@ -214,9 +214,10 @@ async function insertDataExercise(req, res) {
       ? exercise_img_file.filename
       : req.body.exercise_img || "img.png";
 
+    // Handle exercise_video - use empty string instead of null to avoid constraint violation
     const exercise_video_path = exercise_video_file
       ? exercise_video_file.filename
-      : req.body.exercise_video || null;
+      : req.body.exercise_video || '';
 
     // Process gender value
     let processedGender = null;
@@ -255,7 +256,7 @@ async function insertDataExercise(req, res) {
       exercise_duration,
       exercise_Kcal,
       exercise_img: exercise_img_path,
-      exercise_video: exercise_video_path,
+      exercise_video: exercise_video_path,  // Use empty string instead of null
       exercise_musclesTargeted,
       exercise_stepHowDoingEn,
       exercise_stepHowDoingAr,
