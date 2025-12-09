@@ -40,8 +40,7 @@ const getDataExercise = async (req, res) => {
 module.exports = {
   getDataExercise,
 };
-*/
-const { getAllData, getData } = require("../../controllers/functions");
+*/const { getAllData, getData } = require("../../controllers/functions");
 
 // Function to normalize gender values
 const normalizeGender = (gender) => {
@@ -49,22 +48,29 @@ const normalizeGender = (gender) => {
   
   // Handle numeric gender IDs
   if (typeof gender === 'number') {
-    if (gender === 1) return 'Male';
-    if (gender === 2) return 'FeMale';
+    if (gender === 1) return 1;
+    if (gender === 2) return 2;
     return null;
   }
   
   // Handle string gender values
-  const normalized = gender.toString().toLowerCase().trim();
+  const genderStr = gender.toString().trim();
+  
+  // Handle numeric strings
+  if (genderStr === '1') return 1;
+  if (genderStr === '2') return 2;
+  
+  // Handle other string variations
+  const normalized = genderStr.toLowerCase();
   
   // Handle different forms of female
-  if (['female', 'femal', 'أنثى', 'انثى', 'feMale', 'female'].includes(normalized)) {
-    return 'FeMale';
+  if (['female', 'femal', 'أنثى', 'انثى', 'female'].includes(normalized)) {
+    return 2;
   }
   
   // Handle different forms of male
   if (['male', 'ذكر', 'male'].includes(normalized)) {
-    return 'Male';
+    return 1;
   }
   
   return null;
@@ -91,11 +97,16 @@ const getDataExercise = async (req, res) => {
       
       if (normalizedGender) {
         // Add gender condition to query
-        // Note: This assumes there's a 'gender' column in the exercise table
-        // If the column doesn't exist, this query will need to be adjusted
+        // Show exercises that match the specified gender OR are gender-neutral
         query += " AND (gender = ? OR gender IS NULL OR gender = '')";
         values.push(normalizedGender);
+      } else {
+        // If gender is provided but invalid, show only gender-neutral exercises
+        query += " AND (gender IS NULL OR gender = '')";
       }
+    } else {
+      // If no gender specified, show all exercises (including gender-neutral ones)
+      query += " AND (gender IS NULL OR gender = '')";
     }
 
     const result = await getAllData("exercise", query, values);
