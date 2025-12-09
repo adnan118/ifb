@@ -204,7 +204,9 @@ async function insertDataExercise(req, res) {
       exercise_tipsEn,
       exercise_tipsAr,
       // Add gender field
-      gender
+      gender,
+      // Add equipment weights field
+      exercise_equipment_weights
     } = req.body;
 
     // تحديد مسارات الصور والفيديو بناءً على الملفات المرفوعة
@@ -226,6 +228,24 @@ async function insertDataExercise(req, res) {
       processedGender = '';
     }
 
+    // Process equipment weights - store as JSON string or empty string
+    let processedEquipmentWeights = '';
+    if (exercise_equipment_weights) {
+      if (typeof exercise_equipment_weights === 'object') {
+        processedEquipmentWeights = JSON.stringify(exercise_equipment_weights);
+      } else if (typeof exercise_equipment_weights === 'string') {
+        // Validate if it's valid JSON
+        try {
+          JSON.parse(exercise_equipment_weights);
+          processedEquipmentWeights = exercise_equipment_weights;
+        } catch (e) {
+          processedEquipmentWeights = exercise_equipment_weights;
+        }
+      } else {
+        processedEquipmentWeights = exercise_equipment_weights.toString();
+      }
+    }
+
     // إدخال البيانات في قاعدة البيانات
     const insertExerciseData = {
       exercise_idTraining,
@@ -244,7 +264,9 @@ async function insertDataExercise(req, res) {
       exercise_tipsEn,
       exercise_tipsAr,
       // Add gender field - use empty string instead of null to avoid constraint violation
-      gender: processedGender
+      gender: processedGender,
+      // Add equipment weights field
+      exercise_equipment_weights: processedEquipmentWeights
     };
 
     const result = await insertData("exercise", insertExerciseData);
