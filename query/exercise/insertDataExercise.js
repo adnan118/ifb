@@ -150,22 +150,29 @@ const normalizeGender = (gender) => {
   
   // Handle numeric gender IDs
   if (typeof gender === 'number') {
-    if (gender === 1) return 'Male';
-    if (gender === 2) return 'FeMale';
+    if (gender === 1) return 1;
+    if (gender === 2) return 2;
     return null;
   }
   
   // Handle string gender values
-  const normalized = gender.toString().toLowerCase().trim();
+  const genderStr = gender.toString().trim();
+  
+  // Handle numeric strings
+  if (genderStr === '1') return 1;
+  if (genderStr === '2') return 2;
+  
+  // Handle other string variations
+  const normalized = genderStr.toLowerCase();
   
   // Handle different forms of female
-  if (['female', 'femal', 'أنثى', 'انثى', 'feMale', 'female'].includes(normalized)) {
-    return 'FeMale';
+  if (['female', 'femal', 'أنثى', 'انثى', 'female'].includes(normalized)) {
+    return 2;
   }
   
   // Handle different forms of male
   if (['male', 'ذكر', 'male'].includes(normalized)) {
-    return 'Male';
+    return 1;
   }
   
   return null;
@@ -209,6 +216,16 @@ async function insertDataExercise(req, res) {
       ? exercise_video_file.filename
       : req.body.exercise_video || null;
 
+    // Process gender value
+    let processedGender = null;
+    if (gender !== undefined && gender !== null && gender !== '') {
+      processedGender = normalizeGender(gender);
+    }
+    // If no gender provided or invalid, set to empty string to avoid NULL constraint violation
+    if (processedGender === null) {
+      processedGender = '';
+    }
+
     // إدخال البيانات في قاعدة البيانات
     const insertExerciseData = {
       exercise_idTraining,
@@ -226,8 +243,8 @@ async function insertDataExercise(req, res) {
       exercise_commonMistakesAr,
       exercise_tipsEn,
       exercise_tipsAr,
-      // Add gender field if provided
-      ...(gender !== undefined && gender !== null && gender !== '' && { gender: normalizeGender(gender) })
+      // Add gender field - use empty string instead of null to avoid constraint violation
+      gender: processedGender
     };
 
     const result = await insertData("exercise", insertExerciseData);
