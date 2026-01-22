@@ -1,4 +1,4 @@
-
+ 
 const { insertData } = require("../../controllers/functions");
 
 // دالة لتنسيق التاريخ ليتوافق مع MySQL
@@ -53,12 +53,4 @@ async function insertDataUserTraining(req, res) {
 
 
 module.exports = { insertDataUserTraining };
-
-
-
-
-
-
-
-
-
+ 

@@ -72,6 +72,4 @@ async function updateDataUserTraining(req, res) {
 }
 
 
-module.exports = { updateDataUserTraining };
-
-
+module.exports = { updateDataUserTraining }; 

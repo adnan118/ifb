@@ -42,7 +42,3 @@ module.exports = {
   getDataUserTrainingsByUserId,
 
 };
-
-
-
-
