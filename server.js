@@ -171,6 +171,9 @@ const couponRout = require("./routes/coupon/DataCouponRout");
 ////////////////////////////// Financial
 const FinancialRout = require("./routes/Financial/FinancialRout");
 
+////////////////////////////// readyTrainingTables
+const readyTrainingTablesRout = require("./routes/readyTrainingTables/readyTrainingTablesRout");
+
 // خدمة الملفات الثابتة
 app.use(express.json());
 // 1) مسار البناء الخاص بتطبيق React
@@ -279,6 +282,7 @@ app.get("/api-info", (req, res) => {
       coupon: "/api84818dataecoupon",
       analytics: "/api84818dataAnaly",
       profile: "/api84818dataUser",
+      ready_training_tables: "/api84818datareadytables",
     },
   });
 });
@@ -388,6 +392,9 @@ app.use("/api/api84818dataecoupon", couponRout);
 
 ////////////////////////////// Financial
 app.use("/api/api84818datafinancial", FinancialRout);
+
+////////////////////////////// readyTrainingTables
+app.use("/api/api84818datareadytables", readyTrainingTablesRout);
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on Port:${PORT}`);
