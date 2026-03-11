@@ -23,8 +23,9 @@ async function updateTrainingTable(req, res) {
 
     const result = await updateData(
       "training_tables",
-      `table_id = ${table_id}`,
-      updateDataTable
+      updateDataTable,
+      "table_id = ?",
+      [table_id]
     );
 
     if (result.status === "success") {
@@ -82,8 +83,9 @@ async function updateMealInTable(req, res) {
 
     const result = await updateData(
       "training_table_meals",
-      `meal_id = ${meal_id}`,
-      updateDataMeal
+      updateDataMeal,
+      "meal_id = ?",
+      [meal_id]
     );
 
     if (result.status === "success") {
