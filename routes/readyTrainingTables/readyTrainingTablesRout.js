@@ -20,6 +20,19 @@ const {
   deleteTrainingTable 
 } = require("../../query/readyTrainingTables/updateDeleteTrainingTable");
 
+// User Training Table Assignment APIs
+const { assignTrainingTableToUser } = require("../../query/readyTrainingTables/assignTrainingTableToUser");
+const { 
+  getUserTrainingTables, 
+  getAllUserTrainingTables,
+  getUserTableMeals 
+} = require("../../query/readyTrainingTables/getUserTrainingTable");
+const { 
+  updateUserTrainingTable, 
+  removeUserTrainingTable,
+  deactivateUserTrainingTable
+} = require("../../query/readyTrainingTables/updateDeleteUserTrainingTable");
+
 const router = express.Router();
 
 // ========================================
@@ -38,6 +51,29 @@ router.post("/getMealsByTableId", getMealsByTableId);
 router.post("/getAllMealsWithTables", getAllMealsWithTables);
 router.post("/updateMealInTable", updateMealInTable);
 router.post("/deleteMealFromTable", deleteMealFromTable);
+
+// ========================================
+// User Training Table Assignment Routes
+// ========================================
+
+// Assign training table to user
+router.post("/assignTrainingTableToUser", assignTrainingTableToUser);
+
+// Get user's assigned tables
+router.post("/getUserTrainingTables", getUserTrainingTables);
+
+// Get all user-table assignments
+router.post("/getAllUserTrainingTables", getAllUserTrainingTables);
+
+// Get meals for a specific user's table
+router.post("/getUserTableMeals", getUserTableMeals);
+
+// Update user table assignment
+router.post("/updateUserTrainingTable", updateUserTrainingTable);
+
+// Remove/deactivate user table assignment
+router.post("/removeUserTrainingTable", removeUserTrainingTable);
+router.post("/deactivateUserTrainingTable", deactivateUserTrainingTable);
 
 // ========================================
 // Old Routes (Backward Compatibility)
