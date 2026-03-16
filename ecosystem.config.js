@@ -14,6 +14,8 @@ module.exports = {
         DB_PASSWORD: "pma123",
         DB_NAME: "ib",
         DB_PORT: 3306,
+        TIMEZONE: 'Asia/Damascus',
+
       },
       env_production: {
         NODE_ENV: "production",
@@ -23,6 +25,8 @@ module.exports = {
         DB_PASSWORD: "pma123",
         DB_NAME: "ib",
         DB_PORT: 3306,
+        TIMEZONE: 'Asia/Damascus',
+
       },
     },
   ],
