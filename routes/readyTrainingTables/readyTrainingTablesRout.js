@@ -1,3 +1,70 @@
+
+const express = require("express");
+// START ADDED: admin-only protection for ready training tables routes
+const { requireAdmin } = require("../../middleware/auth");
+// END ADDED: admin-only protection for ready training tables routes
+
+const { insertDataReadyTable } = require("../../query/readyTrainingTables/insertDataReadyTable");
+const { getDataReadyTables } = require("../../query/readyTrainingTables/getDataReadyTable");
+const { updateDataReadyTable } = require("../../query/readyTrainingTables/updateDataReadyTable");
+const { deleteDataReadyTable } = require("../../query/readyTrainingTables/deleteDataReadyTable");
+
+const { insertTrainingTable, insertMealToTable } = require("../../query/readyTrainingTables/insertTrainingTable");
+const {
+  getTrainingTables,
+  getMealsByTableId,
+  getAllMealsWithTables,
+} = require("../../query/readyTrainingTables/getTrainingTable");
+const {
+  updateTrainingTable,
+  updateMealInTable,
+  deleteMealFromTable,
+  deleteTrainingTable,
+} = require("../../query/readyTrainingTables/updateDeleteTrainingTable");
+
+const { assignTrainingTableToUser } = require("../../query/readyTrainingTables/assignTrainingTableToUser");
+const {
+  getUserTrainingTables,
+  getAllUserTrainingTables,
+  getUserTableMeals,
+} = require("../../query/readyTrainingTables/getUserTrainingTable");
+const {
+  updateUserTrainingTable,
+  removeUserTrainingTable,
+  deactivateUserTrainingTable,
+} = require("../../query/readyTrainingTables/updateDeleteUserTrainingTable");
+
+const router = express.Router();
+
+// START ADDED: protect all ready training tables routes with bearer token
+router.post("/insertTrainingTable", requireAdmin, insertTrainingTable);
+router.post("/getTrainingTables", requireAdmin, getTrainingTables);
+router.post("/updateTrainingTable", requireAdmin, updateTrainingTable);
+router.post("/deleteTrainingTable", requireAdmin, deleteTrainingTable);
+
+router.post("/insertMealToTable", requireAdmin, insertMealToTable);
+router.post("/getMealsByTableId", requireAdmin, getMealsByTableId);
+router.post("/getAllMealsWithTables", requireAdmin, getAllMealsWithTables);
+router.post("/updateMealInTable", requireAdmin, updateMealInTable);
+router.post("/deleteMealFromTable", requireAdmin, deleteMealFromTable);
+
+router.post("/assignTrainingTableToUser", requireAdmin, assignTrainingTableToUser);
+router.post("/getUserTrainingTables", requireAdmin, getUserTrainingTables);
+router.post("/getAllUserTrainingTables", requireAdmin, getAllUserTrainingTables);
+router.post("/getUserTableMeals", requireAdmin, getUserTableMeals);
+router.post("/updateUserTrainingTable", requireAdmin, updateUserTrainingTable);
+router.post("/removeUserTrainingTable", requireAdmin, removeUserTrainingTable);
+router.post("/deactivateUserTrainingTable", requireAdmin, deactivateUserTrainingTable);
+
+router.post("/insertDataReadyTable", requireAdmin, insertDataReadyTable);
+router.post("/getDataReadyTables", requireAdmin, getDataReadyTables);
+router.post("/updateDataReadyTable", requireAdmin, updateDataReadyTable);
+router.post("/deleteDataReadyTable", requireAdmin, deleteDataReadyTable);
+// END ADDED: protect all ready training tables routes with bearer token
+
+module.exports = router;
+
+/*
 const express = require('express');
 
 // Old API (for backward compatibility - can be removed later)
@@ -84,3 +151,4 @@ router.post("/updateDataReadyTable", updateDataReadyTable);
 router.post("/deleteDataReadyTable", deleteDataReadyTable);
 
 module.exports = router;
+*/
