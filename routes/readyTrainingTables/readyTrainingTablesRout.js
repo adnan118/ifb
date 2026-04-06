@@ -51,7 +51,7 @@ router.post("/assignTrainingTableToUser", requireAdmin, assignTrainingTableToUse
 router.post("/getUserTrainingTables", requireAuth, getUserTrainingTables);
 router.post("/getAllUserTrainingTables", requireAdmin, getAllUserTrainingTables);
 router.post("/getUserTableMeals", requireAuth, getUserTableMeals);
-router.post("/updateUserTrainingTable", requireAdmin, updateUserTrainingTable);
+router.post("/updateUserTrainingTable", requireAuth, updateUserTrainingTable);
 router.post("/removeUserTrainingTable", requireAdmin, removeUserTrainingTable);
 router.post("/deactivateUserTrainingTable", requireAdmin, deactivateUserTrainingTable);
 
