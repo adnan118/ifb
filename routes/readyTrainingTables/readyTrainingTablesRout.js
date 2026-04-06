@@ -1,7 +1,6 @@
-
 const express = require("express");
 // START ADDED: admin-only protection for ready training tables routes
-const { requireAdmin } = require("../../middleware/auth");
+const { requireAdmin, requireAuth } = require("../../middleware/auth");
 // END ADDED: admin-only protection for ready training tables routes
 
 const { insertDataReadyTable } = require("../../query/readyTrainingTables/insertDataReadyTable");
@@ -38,26 +37,26 @@ const router = express.Router();
 
 // START ADDED: protect all ready training tables routes with bearer token
 router.post("/insertTrainingTable", requireAdmin, insertTrainingTable);
-router.post("/getTrainingTables", requireAdmin, getTrainingTables);
+router.post("/getTrainingTables", getTrainingTables);
 router.post("/updateTrainingTable", requireAdmin, updateTrainingTable);
 router.post("/deleteTrainingTable", requireAdmin, deleteTrainingTable);
 
 router.post("/insertMealToTable", requireAdmin, insertMealToTable);
-router.post("/getMealsByTableId", requireAdmin, getMealsByTableId);
-router.post("/getAllMealsWithTables", requireAdmin, getAllMealsWithTables);
+router.post("/getMealsByTableId", getMealsByTableId);
+router.post("/getAllMealsWithTables", getAllMealsWithTables);
 router.post("/updateMealInTable", requireAdmin, updateMealInTable);
 router.post("/deleteMealFromTable", requireAdmin, deleteMealFromTable);
 
 router.post("/assignTrainingTableToUser", requireAdmin, assignTrainingTableToUser);
-router.post("/getUserTrainingTables", requireAdmin, getUserTrainingTables);
+router.post("/getUserTrainingTables", requireAuth, getUserTrainingTables);
 router.post("/getAllUserTrainingTables", requireAdmin, getAllUserTrainingTables);
-router.post("/getUserTableMeals", requireAdmin, getUserTableMeals);
+router.post("/getUserTableMeals", requireAuth, getUserTableMeals);
 router.post("/updateUserTrainingTable", requireAdmin, updateUserTrainingTable);
 router.post("/removeUserTrainingTable", requireAdmin, removeUserTrainingTable);
 router.post("/deactivateUserTrainingTable", requireAdmin, deactivateUserTrainingTable);
 
 router.post("/insertDataReadyTable", requireAdmin, insertDataReadyTable);
-router.post("/getDataReadyTables", requireAdmin, getDataReadyTables);
+router.post("/getDataReadyTables", getDataReadyTables);
 router.post("/updateDataReadyTable", requireAdmin, updateDataReadyTable);
 router.post("/deleteDataReadyTable", requireAdmin, deleteDataReadyTable);
 // END ADDED: protect all ready training tables routes with bearer token
