@@ -1,7 +1,7 @@
 // routes/routes.js
 const express = require("express");
 // START ADDED: admin-only protection for bulk personal data route
-const { requireAdmin } = require("../../middleware/auth");
+const { requireAdmin, requireAuth } = require("../../middleware/auth");
 // END ADDED: admin-only protection for bulk personal data route
 const {
   insertPersonalDataRegister,
@@ -19,11 +19,9 @@ const {
   getAllUsersPDR,
 } = require("../../query/managePersonalData/personaldata/getAllUsersPDR");
 
-
 const {
   deletePersonalData,
 } = require("../../query/managePersonalData/personaldata/deletePersonalData");
-
 
 const {
   updatePaymentStatus,
@@ -31,24 +29,16 @@ const {
 
 const router = express.Router();
 
-
-
-
-
-router.post("/insertPersonalDataRegister", insertPersonalDataRegister);
-router.post("/updatePDR", updatePDR);
-router.post("/getPDR", getPDR);
+router.post("/insertPersonalDataRegister", requireAuth, insertPersonalDataRegister);
+router.post("/updatePDR", requireAuth, updatePDR);
+router.post("/getPDR", requireAuth, getPDR);
 // START ADDED: protect bulk personal data listing with bearer token
 router.post("/getAllUsersPDR", requireAdmin, getAllUsersPDR);
 // END ADDED: protect bulk personal data listing with bearer token
 
+router.post("/updatePaymentStatus", requireAuth, updatePaymentStatus);
+router.post("/deletePersonalData", requireAuth, deletePersonalData);
 
-// مسار تحديث حالة الدفع
-router.post("/updatePaymentStatus", updatePaymentStatus);
-// مسار حذف البيانات الشخصية
-router.post("/deletePersonalData", deletePersonalData);
-
-;
 module.exports = router;
 
 
