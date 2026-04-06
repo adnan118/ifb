@@ -1,4 +1,154 @@
 const { getAllData, updateData } = require("../../controllers/functions");
+const bcrypt = require("bcrypt");
+// START ADDED: JWT auth helpers
+const {
+  ACCESS_TOKEN_EXPIRES_IN,
+  createAccessToken,
+  sanitizeUser,
+} = require("../../controllers/authToken");
+// END ADDED: JWT auth helpers
+
+// START ADDED: build additive auth response payload
+function buildAuthPayload(user, role) {
+  const sanitizedUser = sanitizeUser(user);
+  const accessToken = createAccessToken({
+    id: sanitizedUser.users_id || sanitizedUser.id || sanitizedUser.phone,
+    role,
+    phone: sanitizedUser.users_phone || sanitizedUser.phone || null,
+  });
+
+  return {
+    data: sanitizedUser,
+    token: accessToken,
+    accessToken,
+    role,
+    expiresIn: ACCESS_TOKEN_EXPIRES_IN,
+  };
+}
+// END ADDED: build additive auth response payload
+
+async function LoginUser(req, res) {
+  try {
+    const { users_phone, users_password } = req.body;
+
+    if (!users_phone || !users_password) {
+      return res.status(400).json({
+        status: "failure",
+        message: "You must enter your phone and password.",
+      });
+    }
+
+    const userDatalastLog = {
+      last_log: new Date(),
+    };
+
+    const result = await getAllData("users", "users_phone = ?", [users_phone]);
+
+    if (result.status === "success" && result.data.length > 0) {
+      const user = result.data[0];
+      const isPasswordValid = await bcrypt.compare(
+        users_password,
+        user.users_password
+      );
+
+      if (isPasswordValid) {
+        // START ADDED: access token response for normal user login
+        const authPayload = buildAuthPayload(user, "user");
+
+        res.json({
+          status: "success",
+          data: authPayload.data,
+          token: authPayload.token,
+          accessToken: authPayload.accessToken,
+          role: authPayload.role,
+          expiresIn: authPayload.expiresIn,
+          verificationCode: user.users_verflyCode,
+        });
+        // END ADDED: access token response for normal user login
+
+        updateData("users", userDatalastLog, "users_phone = ?", [users_phone], false);
+      } else {
+        res.json({
+          status: "failure",
+          message: "User does not exist or password is incorrect.",
+        });
+      }
+    } else {
+      res.json({
+        status: "failure",
+        message: "User does not exist or phone is incorrect.",
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching data: ", error);
+    res.status(500).json({
+      status: "failure",
+      message: "There is a problem retrieving data",
+    });
+  }
+}
+
+async function LoginAdmin(req, res) {
+  try {
+    const { phone, password } = req.body;
+
+    if (!phone || !password) {
+      return res.status(400).json({
+        status: "failure",
+        message: "You must enter your phone and password.",
+      });
+    }
+
+    const userDatalastLog = {
+      last_log: new Date(),
+    };
+
+    const result = await getAllData("admin", "phone = ?", [phone]);
+
+    if (result.status === "success" && result.data.length > 0) {
+      const user = result.data[0];
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (isPasswordValid) {
+        // START ADDED: access token response for admin login
+        const authPayload = buildAuthPayload(user, "admin");
+
+        res.json({
+          status: "success",
+          data: authPayload.data,
+          token: authPayload.token,
+          accessToken: authPayload.accessToken,
+          role: authPayload.role,
+          expiresIn: authPayload.expiresIn,
+        });
+        // END ADDED: access token response for admin login
+
+        updateData("admin", userDatalastLog, "phone = ?", [phone], false);
+      } else {
+        res.json({
+          status: "failure",
+          message: "User does not exist or password is incorrect.",
+        });
+      }
+    } else {
+      res.json({
+        status: "failure",
+        message: "User does not exist or phone is incorrect.",
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching data: ", error);
+    res.status(500).json({
+      status: "failure",
+      message: "There is a problem retrieving data",
+    });
+  }
+}
+
+module.exports = { LoginUser, LoginAdmin };
+
+/*
+const { getAllData, updateData } = require("../../controllers/functions");
 const bcrypt = require("bcrypt"); // bcrypt: مكتبة تُستخدم لتشفير كلمات المرور والتحقق منها.
 
 // دالة لتسجيل الدخول
@@ -132,3 +282,4 @@ async function LoginUser(req, res) {
 
 // تصدير الدالة
 module.exports = { LoginUser, LoginAdmin };
+*/
