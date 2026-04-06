@@ -1,8 +1,7 @@
-
 // routes/routes.js
 const express = require("express");
 // START ADDED: admin-only protection for coupon management routes
-const { requireAdmin } = require("../../middleware/auth");
+const { requireAdmin, requireAuth } = require("../../middleware/auth");
 // END ADDED: admin-only protection for coupon management routes
 const { getDataCoupon } = require("../../query/coupon/getDataCoupon");
 const { deleteDataCoupon } = require("../../query/coupon/deleteDataCoupon");
@@ -27,7 +26,7 @@ router.post("/deleteDataCoupon", requireAdmin, deleteDataCoupon);
 router.post("/getAllCoupons", getAllCoupons);
 router.post("/insertDataCoupon", requireAdmin, insertDataCoupon);
 router.post("/updateDataCoupon", requireAdmin, updateDataCoupon);
-router.post("/useDataCoupon", requireAdmin, useDataCoupon);
+router.post("/useDataCoupon", requireAuth, useDataCoupon);
 // END ADDED: protect coupon write routes with bearer token
 
  
@@ -42,6 +41,7 @@ router.post("/useDataCouponUsage", requireAdmin, useDataCouponUsage);
 
 
 module.exports = router;
+
 
 
 
