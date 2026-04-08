@@ -341,7 +341,7 @@ const handleImageDeletion = (uploadPath, tableName, idField, coverImageField, ga
 استخدم كلمة المرور هذه بدلاً من كلمة مرور حساب Gmail في كودك.
 */
  
-const sentMail = async (to, cc,name, subjectTitle, verificationCode, logoUrl) => {
+async function sentMail(to, cc, name, subjectTitle, verificationCode, logoUrl) {
   const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -376,8 +376,8 @@ const sentMail = async (to, cc,name, subjectTitle, verificationCode, logoUrl) =>
     replyTo: "no-reply@yabro-co.com", // عنوان بريد إلكتروني غير مراقب
   };
 
-      await transporter.sendMail(mailOptions);
-};  
+  await transporter.sendMail(mailOptions);
+}
 // مثال على كيفية استخدام الدالة  
 // sentMail("recipient@example.com", "cc@example.com", "Subject", "This is the message body", "https://example.com/logo.png");  
 
@@ -432,6 +432,7 @@ module.exports = {
   handleVideoDeletion,
   createMulterConfig
 };
+
 
 
 
