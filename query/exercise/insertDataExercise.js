@@ -183,6 +183,8 @@ async function insertDataExercise(req, res) {
 // تصدير الدالة
 module.exports = { insertDataExercise, uploadFiles };
 */
+
+
 const {
   insertData,
   createMulterConfig
@@ -267,7 +269,7 @@ async function insertDataExercise(req, res) {
       exercise_duration,
       exercise_Kcal,
       exercise_rounds,
-      exercise_reps,
+      exercise_reps_per_round,
       exercise_musclesTargeted,
       exercise_stepHowDoingEn,
       exercise_stepHowDoingAr,
@@ -319,7 +321,10 @@ async function insertDataExercise(req, res) {
       exercise_duration,
       exercise_Kcal,
       exercise_rounds: parseOptionalInt(exercise_rounds),
-      exercise_reps: parseOptionalInt(exercise_reps),
+      exercise_reps_per_round:
+        exercise_reps_per_round === undefined || exercise_reps_per_round === null || exercise_reps_per_round === ""
+          ? null
+          : exercise_reps_per_round.toString(),
       exercise_img: exercise_img_path,
       exercise_video: exercise_video_path,
       exercise_musclesTargeted,
@@ -356,3 +361,6 @@ async function insertDataExercise(req, res) {
 }
 
 module.exports = { insertDataExercise, uploadFiles };
+
+
+
