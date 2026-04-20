@@ -306,6 +306,8 @@ async function updateDataExercise(req, res) {
 // تصدير الدالة
 module.exports = { updateDataExercise, uploadFiles };
 */
+
+
 const {
   updateData,
   createMulterConfig,
@@ -410,7 +412,7 @@ async function updateDataExercise(req, res) {
       exercise_duration,
       exercise_Kcal,
       exercise_rounds,
-      exercise_reps,
+      exercise_reps_per_round,
       exercise_musclesTargeted,
       exercise_stepHowDoingEn,
       exercise_stepHowDoingAr,
@@ -501,7 +503,12 @@ async function updateDataExercise(req, res) {
     }
 
     const processedExerciseRounds = parseOptionalInt(exercise_rounds);
-    const processedExerciseReps = parseOptionalInt(exercise_reps);
+    const processedExerciseRepsPerRound =
+      exercise_reps_per_round === undefined
+        ? undefined
+        : (exercise_reps_per_round === null || exercise_reps_per_round === ""
+            ? null
+            : exercise_reps_per_round.toString());
 
     const updateExerciseData = {
       exercise_idTraining: exercise_idTraining || oldExerciseData.data.exercise_idTraining,
@@ -522,7 +529,7 @@ async function updateDataExercise(req, res) {
       ...(gender !== undefined && { gender: processedGender }),
       ...(exercise_equipment_weights !== undefined && { exercise_equipment_weights: processedEquipmentWeights }),
       ...(exercise_rounds !== undefined && { exercise_rounds: processedExerciseRounds }),
-      ...(exercise_reps !== undefined && { exercise_reps: processedExerciseReps })
+      ...(exercise_reps_per_round !== undefined && { exercise_reps_per_round: processedExerciseRepsPerRound })
     };
 
     const result = await updateData(
@@ -558,3 +565,6 @@ async function updateDataExercise(req, res) {
 }
 
 module.exports = { updateDataExercise, uploadFiles };
+
+
+
