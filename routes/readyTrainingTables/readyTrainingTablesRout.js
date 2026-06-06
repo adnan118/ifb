@@ -1,6 +1,6 @@
 const express = require("express");
 // START ADDED: admin-only protection for ready training tables routes
-const { requireAdmin, requireAuth } = require("../../middleware/auth");
+const { requireAdmin, requireAuth, optionalAuth } = require("../../middleware/auth");
 // END ADDED: admin-only protection for ready training tables routes
 
 const { insertDataReadyTable } = require("../../query/readyTrainingTables/insertDataReadyTable");
@@ -48,9 +48,9 @@ router.post("/updateMealInTable", requireAdmin, updateMealInTable);
 router.post("/deleteMealFromTable", requireAdmin, deleteMealFromTable);
 
 router.post("/assignTrainingTableToUser", requireAdmin, assignTrainingTableToUser);
-router.post("/getUserTrainingTables", requireAuth, getUserTrainingTables);
+router.post("/getUserTrainingTables", optionalAuth, getUserTrainingTables);
 router.post("/getAllUserTrainingTables", requireAdmin, getAllUserTrainingTables);
-router.post("/getUserTableMeals", requireAuth, getUserTableMeals);
+router.post("/getUserTableMeals", optionalAuth, getUserTableMeals);
 router.post("/updateUserTrainingTable", requireAuth, updateUserTrainingTable);
 router.post("/removeUserTrainingTable", requireAdmin, removeUserTrainingTable);
 router.post("/deactivateUserTrainingTable", requireAdmin, deactivateUserTrainingTable);
