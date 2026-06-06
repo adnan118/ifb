@@ -88,6 +88,15 @@ async function LoginUser(req, res) {
         message: "User does not exist or phone is incorrect.",
       });
     }
+    console.log("LOGIN HIT", { body: req.body });
+
+console.log("LOGIN USER FOUND", { exists: !!user, userId: user?.id });
+
+console.log("LOGIN BEFORE RESPONSE", { phone: user?.users_phone });
+
+console.log("LOGIN BEFORE last_log UPDATE");
+
+console.log("LOGIN AFTER last_log UPDATE");
   } catch (error) {
     console.error("Error fetching data: ", error);
     res.status(500).json({
@@ -95,6 +104,15 @@ async function LoginUser(req, res) {
       message: "There is a problem retrieving data",
     });
   }
+  console.log("LOGIN HIT", { body: req.body });
+
+console.log("LOGIN USER FOUND", { exists: !!user, userId: user?.id });
+
+console.log("LOGIN BEFORE RESPONSE", { phone: user?.users_phone });
+
+console.log("LOGIN BEFORE last_log UPDATE");
+
+console.log("LOGIN AFTER last_log UPDATE");
 }
 
 async function LoginAdmin(req, res) {
