@@ -92,7 +92,7 @@ async function LoginUser(req, res) {
         const authPayload = buildAuthPayload(user, "user");
         const response = {
           status: "success",
-          data: authPayload.data,
+          data: user,
           token: authPayload.token,
           accessToken: authPayload.accessToken,
           role: authPayload.role,
@@ -211,7 +211,7 @@ async function LoginAdmin(req, res) {
         const authPayload = buildAuthPayload(user, "admin");
         const response = {
           status: "success",
-          data: authPayload.data,
+          data: user,
           token: authPayload.token,
           accessToken: authPayload.accessToken,
           role: authPayload.role,
