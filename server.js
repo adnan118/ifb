@@ -9,6 +9,18 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use((req, res, next) => {
+  console.log("REQ", req.method, req.originalUrl, {
+    body: req.body,
+    hasAuthHeader: !!req.headers.authorization,
+  });
+
+  res.on("finish", () => {
+    console.log("RES", req.method, req.originalUrl, res.statusCode);
+  });
+
+  next();
+});
 
 const PORT = process.env.PORT || 3118;
 const path = require("path");
