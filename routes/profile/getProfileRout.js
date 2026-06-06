@@ -1,7 +1,7 @@
 
 
 const express = require("express");
-const { requireAuth } = require("../../middleware/auth");
+const { optionalAuth } = require("../../middleware/auth");
 
 const {
   GetProfile,
@@ -9,7 +9,7 @@ const {
 
 const router = express.Router();
 
-router.post("/GetProfile", requireAuth, GetProfile);
+router.post("/GetProfile", optionalAuth, GetProfile);
 module.exports = router;
 
 /*
