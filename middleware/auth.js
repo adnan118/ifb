@@ -38,6 +38,24 @@ function requireAuth(req, res, next) {
   }
 }
 
+function optionalAuth(req, res, next) {
+  try {
+    const token = extractBearerToken(req);
+
+    if (!token) {
+      req.authUser = null;
+      return next();
+    }
+
+    const decodedToken = verifyAccessToken(token);
+    req.authUser = sanitizeUser(decodedToken);
+    return next();
+  } catch (error) {
+    req.authUser = null;
+    return next();
+  }
+}
+
 function requireAdmin(req, res, next) {
   requireAuth(req, res, () => {
     if (!req.authUser || req.authUser.role !== "admin") {
@@ -54,5 +72,6 @@ function requireAdmin(req, res, next) {
 module.exports = {
   requireAdmin,
   requireAuth,
+  optionalAuth,
 };
 // END ADDED: auth middleware for admin protection
