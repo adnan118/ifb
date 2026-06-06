@@ -54,8 +54,7 @@ async function LoginUser(req, res) {
       if (isPasswordValid) {
         // START ADDED: access token response for normal user login
         const authPayload = buildAuthPayload(user, "user");
-
-        res.json({
+        const response = {
           status: "success",
           data: authPayload.data,
           token: authPayload.token,
@@ -63,18 +62,28 @@ async function LoginUser(req, res) {
           role: authPayload.role,
           expiresIn: authPayload.expiresIn,
           verificationCode: user.users_verflyCode,
-        });
-        // END ADDED: access token response for normal user login
+        };
 
-        updateData("users", userDatalastLog, "users_phone = ?", [users_phone], false);
+        void updateData(
+          "users",
+          userDatalastLog,
+          "users_phone = ?",
+          [users_phone],
+          false
+        ).catch((updateError) => {
+          console.error("Failed to update user last_log:", updateError);
+        });
+
+        return res.json(response);
+        // END ADDED: access token response for normal user login
       } else {
-        res.json({
+        return res.json({
           status: "failure",
           message: "User does not exist or password is incorrect.",
         });
       }
     } else {
-      res.json({
+      return res.json({
         status: "failure",
         message: "User does not exist or phone is incorrect.",
       });
@@ -112,26 +121,31 @@ async function LoginAdmin(req, res) {
       if (isPasswordValid) {
         // START ADDED: access token response for admin login
         const authPayload = buildAuthPayload(user, "admin");
-
-        res.json({
+        const response = {
           status: "success",
           data: authPayload.data,
           token: authPayload.token,
           accessToken: authPayload.accessToken,
           role: authPayload.role,
           expiresIn: authPayload.expiresIn,
-        });
-        // END ADDED: access token response for admin login
+        };
 
-        updateData("admin", userDatalastLog, "phone = ?", [phone], false);
+        void updateData("admin", userDatalastLog, "phone = ?", [phone], false).catch(
+          (updateError) => {
+            console.error("Failed to update admin last_log:", updateError);
+          }
+        );
+
+        return res.json(response);
+        // END ADDED: access token response for admin login
       } else {
-        res.json({
+        return res.json({
           status: "failure",
           message: "User does not exist or password is incorrect.",
         });
       }
     } else {
-      res.json({
+      return res.json({
         status: "failure",
         message: "User does not exist or phone is incorrect.",
       });
