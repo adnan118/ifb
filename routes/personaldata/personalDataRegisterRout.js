@@ -1,7 +1,7 @@
 // routes/routes.js
 const express = require("express");
 // START ADDED: admin-only protection for bulk personal data route
-const { requireAdmin, requireAuth } = require("../../middleware/auth");
+const { requireAdmin, requireAuth, optionalAuth } = require("../../middleware/auth");
 // END ADDED: admin-only protection for bulk personal data route
 const {
   insertPersonalDataRegister,
@@ -31,7 +31,7 @@ const router = express.Router();
 
 router.post("/insertPersonalDataRegister", requireAuth, insertPersonalDataRegister);
 router.post("/updatePDR", requireAuth, updatePDR);
-router.post("/getPDR", requireAuth, getPDR);
+router.post("/getPDR", optionalAuth, getPDR);
 // START ADDED: protect bulk personal data listing with bearer token
 router.post("/getAllUsersPDR", requireAdmin, getAllUsersPDR);
 // END ADDED: protect bulk personal data listing with bearer token
