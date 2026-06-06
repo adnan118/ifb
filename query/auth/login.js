@@ -29,9 +29,19 @@ function buildAuthPayload(user, role) {
 
 async function LoginUser(req, res) {
   try {
+    console.log("LOGIN_USER_START", {
+      body: req.body,
+      hasPhone: !!req.body?.users_phone,
+      hasPassword: !!req.body?.users_password,
+    });
+
     const { users_phone, users_password } = req.body;
 
     if (!users_phone || !users_password) {
+      console.log("LOGIN_USER_VALIDATION_FAILED", {
+        hasPhone: !!users_phone,
+        hasPassword: !!users_password,
+      });
       return res.status(400).json({
         status: "failure",
         message: "You must enter your phone and password.",
@@ -43,13 +53,25 @@ async function LoginUser(req, res) {
     };
 
     const result = await getAllData("users", "users_phone = ?", [users_phone]);
+    console.log("LOGIN_USER_QUERY_RESULT", {
+      status: result?.status,
+      count: result?.data?.length ?? 0,
+    });
 
     if (result.status === "success" && result.data.length > 0) {
       const user = result.data[0];
+      console.log("LOGIN_USER_FOUND", {
+        userId: user?.users_id || user?.id || null,
+        phone: user?.users_phone || null,
+      });
+
       const isPasswordValid = await bcrypt.compare(
         users_password,
         user.users_password
       );
+      console.log("LOGIN_USER_PASSWORD_CHECK", {
+        isPasswordValid,
+      });
 
       if (isPasswordValid) {
         // START ADDED: access token response for normal user login
@@ -64,6 +86,10 @@ async function LoginUser(req, res) {
           verificationCode: user.users_verflyCode,
         };
 
+        console.log("LOGIN_USER_BEFORE_LAST_LOG_UPDATE", {
+          phone: users_phone,
+        });
+
         void updateData(
           "users",
           userDatalastLog,
@@ -74,52 +100,55 @@ async function LoginUser(req, res) {
           console.error("Failed to update user last_log:", updateError);
         });
 
+        console.log("LOGIN_USER_BEFORE_RESPONSE", {
+          role: response.role,
+          hasToken: !!response.token,
+        });
+
         return res.json(response);
         // END ADDED: access token response for normal user login
       } else {
+        console.log("LOGIN_USER_PASSWORD_INVALID", {
+          phone: users_phone,
+        });
         return res.json({
           status: "failure",
           message: "User does not exist or password is incorrect.",
         });
       }
     } else {
+      console.log("LOGIN_USER_NOT_FOUND", {
+        phone: users_phone,
+      });
       return res.json({
         status: "failure",
         message: "User does not exist or phone is incorrect.",
       });
     }
-    console.log("LOGIN HIT", { body: req.body });
-
-console.log("LOGIN USER FOUND", { exists: !!user, userId: user?.id });
-
-console.log("LOGIN BEFORE RESPONSE", { phone: user?.users_phone });
-
-console.log("LOGIN BEFORE last_log UPDATE");
-
-console.log("LOGIN AFTER last_log UPDATE");
   } catch (error) {
-    console.error("Error fetching data: ", error);
+    console.error("LOGIN_USER_ERROR", error?.stack || error);
     res.status(500).json({
       status: "failure",
       message: "There is a problem retrieving data",
     });
   }
-  console.log("LOGIN HIT", { body: req.body });
-
-console.log("LOGIN USER FOUND", { exists: !!user, userId: user?.id });
-
-console.log("LOGIN BEFORE RESPONSE", { phone: user?.users_phone });
-
-console.log("LOGIN BEFORE last_log UPDATE");
-
-console.log("LOGIN AFTER last_log UPDATE");
 }
 
 async function LoginAdmin(req, res) {
   try {
+    console.log("LOGIN_ADMIN_START", {
+      body: req.body,
+      hasPhone: !!req.body?.phone,
+      hasPassword: !!req.body?.password,
+    });
+
     const { phone, password } = req.body;
 
     if (!phone || !password) {
+      console.log("LOGIN_ADMIN_VALIDATION_FAILED", {
+        hasPhone: !!phone,
+        hasPassword: !!password,
+      });
       return res.status(400).json({
         status: "failure",
         message: "You must enter your phone and password.",
@@ -131,10 +160,22 @@ async function LoginAdmin(req, res) {
     };
 
     const result = await getAllData("admin", "phone = ?", [phone]);
+    console.log("LOGIN_ADMIN_QUERY_RESULT", {
+      status: result?.status,
+      count: result?.data?.length ?? 0,
+    });
 
     if (result.status === "success" && result.data.length > 0) {
       const user = result.data[0];
+      console.log("LOGIN_ADMIN_FOUND", {
+        userId: user?.admin_id || user?.id || null,
+        phone: user?.phone || null,
+      });
+
       const isPasswordValid = await bcrypt.compare(password, user.password);
+      console.log("LOGIN_ADMIN_PASSWORD_CHECK", {
+        isPasswordValid,
+      });
 
       if (isPasswordValid) {
         // START ADDED: access token response for admin login
@@ -148,28 +189,43 @@ async function LoginAdmin(req, res) {
           expiresIn: authPayload.expiresIn,
         };
 
+        console.log("LOGIN_ADMIN_BEFORE_LAST_LOG_UPDATE", {
+          phone,
+        });
+
         void updateData("admin", userDatalastLog, "phone = ?", [phone], false).catch(
           (updateError) => {
             console.error("Failed to update admin last_log:", updateError);
           }
         );
 
+        console.log("LOGIN_ADMIN_BEFORE_RESPONSE", {
+          role: response.role,
+          hasToken: !!response.token,
+        });
+
         return res.json(response);
         // END ADDED: access token response for admin login
       } else {
+        console.log("LOGIN_ADMIN_PASSWORD_INVALID", {
+          phone,
+        });
         return res.json({
           status: "failure",
           message: "User does not exist or password is incorrect.",
         });
       }
     } else {
+      console.log("LOGIN_ADMIN_NOT_FOUND", {
+        phone,
+      });
       return res.json({
         status: "failure",
         message: "User does not exist or phone is incorrect.",
       });
     }
   } catch (error) {
-    console.error("Error fetching data: ", error);
+    console.error("LOGIN_ADMIN_ERROR", error?.stack || error);
     res.status(500).json({
       status: "failure",
       message: "There is a problem retrieving data",
