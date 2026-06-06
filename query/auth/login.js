@@ -29,6 +29,20 @@ function buildAuthPayload(user, role) {
 
 async function LoginUser(req, res) {
   try {
+    res.once("finish", () => {
+      console.log("LOGIN_USER_RESPONSE_FINISHED", {
+        statusCode: res.statusCode,
+        headersSent: res.headersSent,
+      });
+    });
+
+    res.once("close", () => {
+      console.log("LOGIN_USER_RESPONSE_CLOSED", {
+        statusCode: res.statusCode,
+        headersSent: res.headersSent,
+      });
+    });
+
     console.log("LOGIN_USER_START", {
       body: req.body,
       hasPhone: !!req.body?.users_phone,
@@ -103,6 +117,7 @@ async function LoginUser(req, res) {
         console.log("LOGIN_USER_BEFORE_RESPONSE", {
           role: response.role,
           hasToken: !!response.token,
+          headersSent: res.headersSent,
         });
 
         return res.json(response);
@@ -136,6 +151,20 @@ async function LoginUser(req, res) {
 
 async function LoginAdmin(req, res) {
   try {
+    res.once("finish", () => {
+      console.log("LOGIN_ADMIN_RESPONSE_FINISHED", {
+        statusCode: res.statusCode,
+        headersSent: res.headersSent,
+      });
+    });
+
+    res.once("close", () => {
+      console.log("LOGIN_ADMIN_RESPONSE_CLOSED", {
+        statusCode: res.statusCode,
+        headersSent: res.headersSent,
+      });
+    });
+
     console.log("LOGIN_ADMIN_START", {
       body: req.body,
       hasPhone: !!req.body?.phone,
@@ -202,6 +231,7 @@ async function LoginAdmin(req, res) {
         console.log("LOGIN_ADMIN_BEFORE_RESPONSE", {
           role: response.role,
           hasToken: !!response.token,
+          headersSent: res.headersSent,
         });
 
         return res.json(response);
