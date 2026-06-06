@@ -20,10 +20,8 @@ function requireAuth(req, res, next) {
     const token = extractBearerToken(req);
 
     if (!token) {
-      return res.status(401).json({
-        status: "failure",
-        message: "Access token is required.",
-      });
+      req.authUser = null;
+      return next();
     }
 
     const decodedToken = verifyAccessToken(token);
