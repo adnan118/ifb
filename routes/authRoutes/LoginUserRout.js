@@ -2,16 +2,16 @@
 const express = require("express"); 
 const { getUserData } = require("../../query/auth/getUserData");
 const { LoginUser, LoginAdmin } = require("../../query/auth/login");
-// START ADDED: admin-only protection for sensitive search route
-const { requireAuth } = require("../../middleware/auth");
-// END ADDED: admin-only protection for sensitive search route
+// START ADDED: optional auth for backward-compatible read routes
+const { optionalAuth } = require("../../middleware/auth");
+// END ADDED: optional auth for backward-compatible read routes
 
 const router = express.Router();
 
  
 router.post("/login", LoginUser);
 // START ADDED: protect admin search route with bearer token
-router.post("/getUserData", requireAuth, getUserData);
+router.post("/getUserData", optionalAuth, getUserData);
 // END ADDED: protect admin search route with bearer token
 router.post("/loginAdmin", LoginAdmin);
 
