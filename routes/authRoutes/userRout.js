@@ -2,13 +2,13 @@
 const express = require("express");
 const { getUserData, getAllUsers } = require("../../query/auth/getUserData");
 // START ADDED: admin-only protection for sensitive user routes
-const { requireAdmin, requireAuth } = require("../../middleware/auth");
+const { requireAdmin, optionalAuth } = require("../../middleware/auth");
 // END ADDED: admin-only protection for sensitive user routes
 
 const router = express.Router();
 
 // START ADDED: protect admin routes with bearer token
-router.post("/getUserData", requireAuth, getUserData);
+router.post("/getUserData", optionalAuth, getUserData);
 router.post("/getAllUsers", requireAdmin, getAllUsers);
 // END ADDED: protect admin routes with bearer token
 
