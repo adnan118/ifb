@@ -88,6 +88,19 @@ async function LoginUser(req, res) {
       });
 
       if (isPasswordValid) {
+          // الحساب غير مفعل بعد (لم يتم التحقق من OTP): لا نمنح جلسة/توكن،
+  // نعيد البيانات مع verificationCode ليتوجه العميل لصفحة التحقق.
+  if (String(user.users_approve) !== "1") {
+    console.log("LOGIN_USER_NOT_APPROVED", {
+      phone: users_phone,
+      users_approve: user.users_approve,
+    });
+    return res.json({
+      status: "success",
+      data: user,
+      verificationCode: user.users_verflyCode,
+    });
+  }
         // START ADDED: access token response for normal user login
         const authPayload = buildAuthPayload(user, "user");
         const response = {
