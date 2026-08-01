@@ -53,6 +53,7 @@ async function RegisterUser(req, res) {
       users_img: "logo.png",
       users_name: "user",
       users_verflyCode: verificationCode, // إضافة كود التحقق هنا
+      users_approve: "0", // حساب غير مفعل حتى يتم التحقق من كود OTP
     };
 
     if (checkUser.status === "success" && checkUser.data.length > 0) {
