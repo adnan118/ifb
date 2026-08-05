@@ -1,35 +1,86 @@
-const { getAllData, getData } = require("../../controllers/functions");
+const { getAllData, getData, getAllDataPaginated } = require("../../controllers/functions");
 const mysql = require("mysql2/promise");
 const { getConnection } = require("../../controllers/db");
 
+// حد عرض التدريبات للخطط المجانية أو المنتهية الصلاحية
+const FREE_PLAN_LIMIT = 3;
+
 /**
- * دالة جلب التمارين للمستخدم بناءً على حالة الأوفر
- * إذا كان لدى المستخدم أوفر فعال (خصم لا يساوي 0) ولم تنتهِ صلاحيته يتم جلب التمارين المخصصة له من user_trainings
- * إذا لم يكن لديه أوفر، أو الخصم = 0، أو كانت صلاحية الأوفر منتهية يتم جلب التمارين العامة من جدول trainings
+ * دالة إرسال قائمة تدريبات مع ترقيم صفحات مع حد أقصى 3 عناصر للخطط غير النشطة
+ */
+async function sendTrainingPage(res, table, where, values, orderBy, page, planStatus) {
+  const safePage = Math.max(1, parseInt(page, 10) || 1);
+  const effectiveLimit = FREE_PLAN_LIMIT;
+  const offset = (safePage - 1) * effectiveLimit;
+
+  if (offset >= FREE_PLAN_LIMIT) {
+    return res.status(200).json({
+      status: "success",
+      message: "Trainings fetched successfully",
+      data: [],
+      page: safePage,
+      limit: effectiveLimit,
+      total: 0,
+      hasMore: false,
+      planStatus,
+      freeLimit: FREE_PLAN_LIMIT,
+    });
+  }
+
+  const result = await getAllDataPaginated(table, where, values, safePage, effectiveLimit, orderBy);
+  if (result.status !== "success") {
+    return res.status(500).json({
+      status: "failure",
+      message: result.message || "Error fetching trainings",
+    });
+  }
+
+  return res.status(200).json({
+    status: "success",
+    message: "Trainings fetched successfully",
+    data: result.data,
+    page: result.page,
+    limit: effectiveLimit,
+    total: result.total,
+    hasMore: false,
+    planStatus,
+    freeLimit: FREE_PLAN_LIMIT,
+  });
+}
+
+/**
+ * دالة جلب التمارين للمستخدم بناءً على حالة الأوفر مع دعم الترقيم (Pagination)
+ * إذا كانت الخطة نشطة (أوفر ساري) يتم جلب التمارين المخصصة له من user_trainings مع ترقيم كامل
+ * إذا كانت الخطة مجانية أو منتهية الصلاحية يتم جلب التمارين العامة مع عرض 3 عناصر فقط
  * @param req - يجب أن يحتوي على personalData_users_id دائماً، و training_activities_id إذا لم يكن هناك أوفر
  */
 const getDataTraining = async (req, res) => {
   try {
     const { training_activities_id, trainings_id, personalData_users_id } =
       req.body;
+    const page = Math.max(1, parseInt(req.body.page, 10) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(req.body.limit, 10) || 10));
 
-    // تحقق من صحة المعلمات وإرجاع جميع التدريبات مع اسم الحقل الخاطئ إذا كانت هناك أخطاء
+    // التحقق من صحة المعلمات وإرجاع جميع التدريبات مع اسم الحقل الخاطئ إذا كانت هناك أخطاء
     const validationErrors = [];
-    
+
     // التحقق من معرف المستخدم
     if (personalData_users_id === undefined || personalData_users_id === null || personalData_users_id === "") {
-      validationErrors.push("personalData_users_id");
+      // مستخدم ضيف -> خطة مجانية -> جلب عام مع حد 3 عناصر فقط
+      const whereClause = training_activities_id ? "training_activities_id = ?" : null;
+      const values = training_activities_id ? [training_activities_id] : null;
+      return sendTrainingPage(res, "trainings", whereClause, values, "trainings_id", page, "free");
     } else if (isNaN(personalData_users_id) || personalData_users_id <= 0) {
       validationErrors.push("personalData_users_id");
     }
-    
-    // التحقق من معرف النشاط التدريبي (إذا لم يكن المستخدم لديه عرض فعال)
+
+    // التحقق من معرف النشاط التدريبي
     if (training_activities_id !== undefined && training_activities_id !== null && training_activities_id !== "") {
       if (isNaN(training_activities_id) || training_activities_id <= 0) {
         validationErrors.push("training_activities_id");
       }
     }
-    
+
     // التحقق من معرفات التدريبات
     if (trainings_id !== undefined && trainings_id !== null) {
       if (!Array.isArray(trainings_id)) {
@@ -53,7 +104,11 @@ const getDataTraining = async (req, res) => {
         message: "Invalid parameters provided",
         errorFields: validationErrors,
         allTrainings: allTrainingsResult.status === "success" ? allTrainingsResult.data : [],
-        data: allTrainingsResult.status === "success" ? allTrainingsResult.data : []
+        data: allTrainingsResult.status === "success" ? allTrainingsResult.data : [],
+        page,
+        limit,
+        hasMore: false,
+        planStatus: "free",
       });
     }
 
@@ -66,7 +121,6 @@ const getDataTraining = async (req, res) => {
     }
 
     // 1. جلب بيانات المستخدم من جدول personaldataregister
-    // الهدف: معرفة رقم الأوفر والبيانات المرتبطة به للمستخدم
     const userDataResult = await getData(
       "personaldataregister",
       "personalData_users_id = ?",
@@ -80,7 +134,8 @@ const getDataTraining = async (req, res) => {
     }
 
     const offers_id = userDataResult.data.personalData_offers_id;
-    const personalData_expOffer = userDataResult.data.personalData_expOffer; // تاريخ انتهاء صلاحيية الأوفر (إن وجد)
+    const personalData_expOffer = userDataResult.data.personalData_expOffer; // تاريخ انتهاء صلاحية الأوفر (إن وجد)
+    const activities_id = userDataResult.data.personalData_activities_id;
 
     // 2. جلب بيانات الأوفر من جدول offers لمعرفة قيمة الخصم
     let offers_discount = 0;
@@ -100,14 +155,19 @@ const getDataTraining = async (req, res) => {
       }
     }
 
- 
-    // 3. تحديد منطق الجلب بناءً على حالة الأوفر وصلاحيته
+    // 3. تحديد حالة الخطة
     //offers_id = 2 ->  Training & Diet
     //offers_id = 3 ->  Training
-    if (offers_discount && offers_discount !== 0 && !isOfferExpired && (offers_id === 2 || offers_id === 3)) {
-      // --- المستخدم لديه أوفر فعال وغير منتهي ---
-      // نجلب التمارين المخصصة له من جدول user_trainings
-      // نتجاهل شرط training_activities_id (أي نجلب كل التمارين المخصصة له)
+    const hasTrainingPlan = offers_discount && offers_discount !== 0 && (offers_id === 2 || offers_id === 3);
+    let planStatus = "free";
+    if (hasTrainingPlan) {
+      planStatus = isOfferExpired ? "expired" : "active";
+    }
+
+    // 4. تنفيذ الجلب حسب حالة الخطة
+    if (planStatus === "active") {
+      // --- المستخدم لديه خطة فعالة وغير منتهية ---
+      // نجلب التمارين المخصصة له من جدول user_trainings مع ترقيم
       let sql = `SELECT ut.*, t.* FROM user_trainings ut
         JOIN trainings t ON ut.training_id = t.trainings_id
         WHERE ut.user_id = ?`;
@@ -123,16 +183,42 @@ const getDataTraining = async (req, res) => {
         sql += ` AND ut.training_id IN (${inClause})`;
         values.push(...trainings_id);
       }
+
+      let countSql = "SELECT COUNT(*) AS total FROM user_trainings ut WHERE ut.user_id = ?";
+      let countValues = [personalData_users_id];
+      if (
+        trainings_id &&
+        Array.isArray(trainings_id) &&
+        trainings_id.length > 0 &&
+        !trainings_id.includes(0)
+      ) {
+        const inClause = trainings_id.map(() => "?").join(",");
+        countSql += ` AND ut.training_id IN (${inClause})`;
+        countValues.push(...trainings_id);
+      }
+
       // تنفيذ الاستعلام مباشرة باستخدام mysql2
       const connection = await getConnection();
       try {
-        const [results] = await connection.execute(sql, values);
+        const [countRows] = await connection.execute(countSql, countValues);
+        const total = countRows[0].total;
+        const offset = (page - 1) * limit;
+        const [results] = await connection.execute(
+          `${sql} ORDER BY t.trainings_id LIMIT ${limit} OFFSET ${offset}`,
+          values
+        );
         await connection.end();
+
         // إرجاع النتائج للمستخدم
         res.status(200).json({
           status: "success",
           message: "User trainings fetched successfully (خصم فعال)",
           data: results,
+          page,
+          limit,
+          total,
+          hasMore: offset + results.length < total,
+          planStatus,
         });
       } catch (error) {
         await connection.end();
@@ -144,9 +230,8 @@ const getDataTraining = async (req, res) => {
         });
       }
     } else {
-      // --- لا يوجد أوفر، أو الخصم = 0، أو الأوفر منتهي الصلاحية ---
+      // --- خطة مجانية أو منتهية الصلاحية -> جلب عام مع حد 3 عناصر ---
       // استخدم personalData_activities_id من بيانات المستخدم
-      const activities_id = userDataResult.data.personalData_activities_id;
       if (!activities_id) {
         return res.status(400).json({
           status: "failure",
@@ -174,20 +259,7 @@ const getDataTraining = async (req, res) => {
           values.push(...trainingsArray);
         }
       }
-      // جلب التمارين العامة
-      const result = await getAllData("trainings", whereClause, values);
-      if (result.status === "success") {
-        res.status(200).json({
-          status: "success",
-          message: "Trainings fetched successfully (بدون خصم)",
-          data: result.data,
-        });
-      } else {
-        res.status(500).json({
-          status: "failure",
-          message: result.message || "Error fetching trainings",
-        });
-      }
+      return sendTrainingPage(res, "trainings", whereClause, values, "trainings_id", page, planStatus);
     }
   } catch (error) {
     // معالجة أي خطأ غير متوقع
