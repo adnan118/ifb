@@ -43,6 +43,58 @@ async function getAllData(table, where = null, values = null, json = true) {
     return { status: "failure", message: "There is a problem retrieving data" }; // رسالة الخطأ
   }
 }
+ // دالة لاسترجاع بيانات مع ترقيم الصفحات (Pagination)
+async function getAllDataPaginated(
+  table,
+  where = null,
+  values = null,
+  page = 1,
+  limit = 10,
+  orderBy = null
+) {
+  const connection = await getConnection(); // الحصول على الاتصال
+
+  const safePage = Math.max(1, parseInt(page, 10) || 1);
+  const safeLimit = Math.min(100, Math.max(1, parseInt(limit, 10) || 10));
+
+  // بناء شرط WHERE
+  const whereClause = where ? ` WHERE ${where}` : "";
+  const queryValues = values ? values : [];
+
+  try {
+    // استعلام عدد النتائج الكلي
+    const [countRows] = await connection.execute(
+      `SELECT COUNT(*) AS total FROM ${table}${whereClause}`,
+      queryValues
+    );
+    const total = countRows[0].total;
+
+    // بناء استعلام الصفحة الحالية
+    let query = `SELECT * FROM ${table}${whereClause}`;
+    if (orderBy) {
+      query += ` ORDER BY ${orderBy}`;
+    }
+    const offset = (safePage - 1) * safeLimit;
+    query += ` LIMIT ${safeLimit} OFFSET ${offset}`;
+
+    const [results] = await connection.execute(query, queryValues);
+    await connection.end();
+
+    return {
+      status: "success",
+      data: results,
+      total,
+      page: safePage,
+      limit: safeLimit,
+      hasMore: offset + results.length < total,
+    };
+  } catch (error) {
+    console.error("Database query error: ", error);
+    await connection.end();
+    return { status: "failure", message: "There is a problem retrieving data" };
+  }
+}
+
  // دالة لاسترجاع بيانات فردية
 async function getData(table, where = null, values = null, json = true) { 
   const connection = await getConnection(); // الحصول على الاتصال
@@ -421,6 +473,7 @@ const handleVideoDeletion = (uploadPath, videoFileName) => {
 // تصدير الدوال
 module.exports = {
   getAllData,
+  getAllDataPaginated,
   getData,
   insertData,
   updateData,
