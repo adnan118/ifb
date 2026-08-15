@@ -1,16 +1,21 @@
 const { getConnection } = require("../../../controllers/db");
 const {
-  ensureMultiSelectTables,
   loadMultiSelectForPersonalData,
 } = require("./personalDataMultiSelect");
 
 async function getPDR(req, res) {
   let connection;
   try {
-    const { personalData_users_id } = req.body;
-    connection = await getConnection();
+    const { personalData_users_id } = req.body || {};
 
-    await ensureMultiSelectTables(connection);
+    if (!Number.isInteger(Number(personalData_users_id)) || Number(personalData_users_id) <= 0) {
+      return res.status(400).json({
+        status: "failure",
+        message: "personalData_users_id is required.",
+      });
+    }
+
+    connection = await getConnection();
 
     const [rows] = await connection.execute(
       "SELECT * FROM personaldataregister WHERE personalData_users_id = ? LIMIT 1",
@@ -18,9 +23,9 @@ async function getPDR(req, res) {
     );
 
     if (!rows || rows.length === 0) {
-      return res.status(500).json({
+      return res.status(404).json({
         status: "failure",
-        message: "Failed to get data.",
+        message: "Personal data was not found.",
       });
     }
 
