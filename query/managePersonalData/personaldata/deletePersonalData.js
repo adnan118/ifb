@@ -7,78 +7,99 @@ const {
 // دالة لحذف البيانات الشخصية للمستخدم
 async function deletePersonalData(req, res) {
   try {
-    const { personalData_users_id } = req.body;
+    const { personalData_users_id } = req.body || {};
     
     // التحقق من وجود معرف المستخدم
-    if (!personalData_users_id) {
+    if (!Number.isInteger(Number(personalData_users_id)) || Number(personalData_users_id) <= 0) {
       return res.status(400).json({
         status: "failure",
         message: "You must provide the user's ID.",
       });
     }
 
+    const requestedUserId = Number(personalData_users_id);
+
     // الحصول على البيانات الشخصية قبل حذفها
     const personalDataResult = await getData(
       "personaldataregister", 
       "personalData_users_id = ?", 
-      [personalData_users_id]
+      [requestedUserId]
     );
-    
-    if (personalDataResult.status === "success" && personalDataResult.data) {
+
+    const personalDataExists =
+      personalDataResult.status === "success" && personalDataResult.data;
+
+    if (personalDataResult.status !== "success" && personalDataResult.message !== "No Data") {
+      return res.status(500).json({
+        status: "failure",
+        message: "Failed to read personal data before deletion.",
+      });
+    }
+
+    if (personalDataExists) {
       // حذف البيانات الشخصية من الجدول الرئيسي
       const deleteResult = await deleteData(
         "personaldataregister", 
         "personalData_users_id = ?", 
-        [personalData_users_id]
+        [requestedUserId]
       );
 
-      if (deleteResult.status === "success") {
-        // حذف بيانات تتبع الوزن المرتبطة بالمستخدم
-        await deleteData(
-          "trakingweight", 
-          "trakingWeight_user_id = ?", 
-          [personalData_users_id]
-        );
-
-        // تحديث حالة المستخدم في جدول المستخدمين
-        const updateUserData = {
-          users_haveoldaccount: 0,
-          users_name: null,
-        };
-        
-        await updateData(
-          "users", 
-          updateUserData, 
-          "users_id = ?", 
-          [personalData_users_id]
-        );
-
-        res.json({
-          status: "success",
-          message: "Personal data deleted successfully.",
-          data: {
-            personalData_users_id,
-            personalData_username: personalDataResult.data.personalData_username,
-            deleted_records: {
-              personal_data: true,
-              tracking_weight: true,
-              user_status_updated: true
-            }
-          },
-        });
-      } else {
+      if (deleteResult.status !== "success") {
         res.status(500).json({
           status: "failure",
           message: "Failed to delete personal data.",
         });
+        return;
       }
-    } else {
-      // البيانات الشخصية غير موجودة
-      res.status(404).json({
+    }
+
+    // This deletion is idempotent: an account may not have completed its
+    // personal-data setup, or a previous deletion may have already removed it.
+    const trackingWeightDeleteResult = await deleteData(
+      "trakingweight",
+      "trakingWeight_user_id = ?",
+      [requestedUserId]
+    );
+
+    if (trackingWeightDeleteResult.status !== "success") {
+      return res.status(500).json({
         status: "failure",
-        message: "Personal data not found for the provided user ID.",
+        message: "Failed to delete tracking data.",
       });
     }
+
+    const userUpdateResult = await updateData(
+      "users",
+      {
+        users_haveoldaccount: 0,
+        users_name: null,
+      },
+      "users_id = ?",
+      [requestedUserId]
+    );
+
+    if (userUpdateResult.status !== "success") {
+      return res.status(500).json({
+        status: "failure",
+        message: "Failed to update the user account.",
+      });
+    }
+
+    res.json({
+      status: "success",
+      message: personalDataExists
+        ? "Personal data deleted successfully."
+        : "Personal data was already deleted or was not created.",
+      data: {
+        personalData_users_id: requestedUserId,
+        personalData_username: personalDataResult.data?.personalData_username ?? null,
+        deleted_records: {
+          personal_data: personalDataExists,
+          tracking_weight: true,
+          user_status_updated: true,
+        },
+      },
+    });
   } catch (error) {
     console.error("Error deleting personal data: ", error);
     res.status(500).json({
