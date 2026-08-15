@@ -27,6 +27,10 @@ const {
   updatePaymentStatus,
 } = require("../../query/managePersonalData/personaldata/updatePaymentStatus");
 
+const {
+  changeUserPlan,
+} = require("../../query/managePersonalData/personaldata/changeUserPlan");
+
 const router = express.Router();
 
 router.post("/insertPersonalDataRegister", requireAuth, insertPersonalDataRegister);
@@ -37,6 +41,7 @@ router.post("/getAllUsersPDR", requireAdmin, getAllUsersPDR);
 // END ADDED: protect bulk personal data listing with bearer token
 
 router.post("/updatePaymentStatus", requireAuth, updatePaymentStatus);
+router.post("/changeUserPlan", requireAuth, changeUserPlan);
 router.post("/deletePersonalData", requireAuth, deletePersonalData);
 
 module.exports = router;
