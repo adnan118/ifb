@@ -2,6 +2,8 @@ const {
   deleteData,
   getData
 } = require("../../controllers/functions");
+const { getConnection } = require("../../controllers/db");
+const mysql = require("mysql2");
 const path = require("path");
 const fs = require("fs");
 
@@ -72,6 +74,8 @@ async function deleteUser(req, res) {
 
 // دالة لحذف المستخدم باستخدام ID
 async function deleteUserById(req, res) {
+  let connection;
+  let imagePath;
   try {
     const { users_id } = req.body;
     
@@ -87,23 +91,52 @@ async function deleteUserById(req, res) {
     const userData = await getData("users", "users_id = ?", [users_id]);
     
     if (userData.status === "success" && userData.data) {
-      // حذف صورة المستخدم إذا كانت موجودة وليست الصورة الافتراضية
+      // Keep the image until the database transaction succeeds.
       if (userData.data.users_img && userData.data.users_img !== "img.png") {
-        const imagePath = path.join(
+        imagePath = path.join(
           process.cwd(),
           "query/auth/userImages/images",
           userData.data.users_img
         );
-        if (fs.existsSync(imagePath)) {
-          fs.unlinkSync(imagePath);
-          console.log("تم حذف صورة المستخدم:", imagePath);
-        }
       }
 
-      // حذف المستخدم من قاعدة البيانات
-      const result = await deleteData("users", "users_id = ?", [users_id]);
+      connection = await getConnection();
+      await connection.beginTransaction();
 
-      if (result.status === "success") {
+      // Delete all direct foreign-key dependants before deleting the user.
+      // This keeps account deletion working when new user-owned tables are added.
+      const [references] = await connection.execute(
+        `SELECT TABLE_NAME, COLUMN_NAME
+         FROM information_schema.KEY_COLUMN_USAGE
+         WHERE REFERENCED_TABLE_SCHEMA = DATABASE()
+           AND REFERENCED_TABLE_NAME = 'users'
+           AND REFERENCED_COLUMN_NAME = 'users_id'`
+      );
+
+      for (const reference of references) {
+        const tableName = mysql.escapeId(reference.TABLE_NAME);
+        const columnName = mysql.escapeId(reference.COLUMN_NAME);
+        await connection.execute(
+          `DELETE FROM ${tableName} WHERE ${columnName} = ?`,
+          [users_id]
+        );
+      }
+
+      const [result] = await connection.execute(
+        "DELETE FROM users WHERE users_id = ?",
+        [users_id]
+      );
+
+      if (result.affectedRows === 1) {
+        await connection.commit();
+        try {
+          if (imagePath && fs.existsSync(imagePath)) {
+            fs.unlinkSync(imagePath);
+            console.log("تم حذف صورة المستخدم:", imagePath);
+          }
+        } catch (imageError) {
+          console.error("Could not delete user image:", imageError);
+        }
         res.json({
           status: "success",
           message: "User and associated data deleted successfully.",
@@ -114,6 +147,7 @@ async function deleteUserById(req, res) {
           },
         });
       } else {
+        await connection.rollback();
         res.status(500).json({
           status: "failure",
           message: "Failed to delete user data.",
@@ -127,11 +161,18 @@ async function deleteUserById(req, res) {
       });
     }
   } catch (error) {
+    if (connection) {
+      try { await connection.rollback(); } catch (_) {}
+    }
     console.error("Error deleting user data: ", error);
     res.status(500).json({
       status: "failure",
       message: "There is a problem deleting user data",
     });
+  } finally {
+    if (connection) {
+      try { await connection.end(); } catch (_) {}
+    }
   }
 }
 
