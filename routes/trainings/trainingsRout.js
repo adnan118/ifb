@@ -20,6 +20,15 @@ const {
   updateAvailabilityTraining,
 } = require("../../query/trainings/updateAvailabilityTraining");
 const { getTrainingsByActivityId } = require("../../query/trainings/getTrainingsByActivityId");
+const {
+  insertTrainingPhaseExercise,
+  updateTrainingPhaseExercise,
+  deleteTrainingPhaseExercise,
+  getTrainingPhaseExerciseLibrary,
+  assignTrainingPhaseExercise,
+  unassignTrainingPhaseExercise,
+  getTrainingPhaseExercises,
+} = require("../../query/training_phase_exercises/trainingPhaseExercises");
 
 const { insertDataUserTraining } = require("../../query/user_trainings/insertDataUserTraining");
 const { updateDataUserTraining } = require("../../query/user_trainings/updateDataUserTraining");
@@ -46,6 +55,39 @@ router.post("/updateUserTraining", requireAdmin, updateDataUserTraining);
 router.post("/deleteUserTraining", requireAdmin, deleteDataUserTraining);
 // END ADDED: protect user training write routes with bearer token
 router.post("/getUserTrainings", getDataUserTrainingsByUserId);
+
+// Reusable warmup/cooldown library. Exercises are created once, then assigned
+// to any number of trainings through the assignment endpoints.
+router.post(
+  "/insertTrainingPhaseExercise",
+  requireAdmin,
+  insertTrainingPhaseExercise
+);
+router.post(
+  "/updateTrainingPhaseExercise",
+  requireAdmin,
+  updateTrainingPhaseExercise
+);
+router.post(
+  "/deleteTrainingPhaseExercise",
+  requireAdmin,
+  deleteTrainingPhaseExercise
+);
+router.post(
+  "/assignTrainingPhaseExercise",
+  requireAdmin,
+  assignTrainingPhaseExercise
+);
+router.post(
+  "/unassignTrainingPhaseExercise",
+  requireAdmin,
+  unassignTrainingPhaseExercise
+);
+router.post(
+  "/getTrainingPhaseExerciseLibrary",
+  getTrainingPhaseExerciseLibrary
+);
+router.post("/getTrainingPhaseExercises", getTrainingPhaseExercises);
 
 module.exports = router;
 
