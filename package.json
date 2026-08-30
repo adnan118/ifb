@@ -5,7 +5,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "migrate:exercise-localization": "node scripts/migrate-exercise-localization-and-phases.js",
+    "migrate:training-phases": "node scripts/migrate-exercise-localization-and-phases.js"
   },
   "engines": {
     "node": "18.x"
