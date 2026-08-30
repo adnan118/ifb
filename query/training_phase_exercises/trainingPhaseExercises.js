@@ -1,6 +1,41 @@
 const { getConnection } = require("../../controllers/db");
+const { createMulterConfig } = require("../../controllers/functions");
 
 const PHASE_TYPES = new Set(["warmup", "cooldown"]);
+
+const uploadTrainingPhaseFiles = (req, res, next) => {
+  const upload = createMulterConfig(
+    "query/exercise/exerciseFiles",
+    true
+  ).fields([
+    { name: "exercise_img", maxCount: 1 },
+    { name: "exercise_video", maxCount: 1 },
+  ]);
+
+  upload(req, res, (error) => {
+    if (!error) return next();
+
+    let message = "File upload failed";
+    if (error.code === "LIMIT_FILE_SIZE") {
+      message = "Uploaded file is too large";
+    } else if (error.code === "LIMIT_UNEXPECTED_FILE") {
+      message = `Unexpected file field: ${error.field}`;
+    } else if (error.message === "EXT") {
+      message = "Unsupported file extension";
+    }
+
+    return res.status(400).json({
+      status: "failure",
+      message,
+      code: error.code,
+    });
+  });
+};
+
+const uploadedFileName = (req, fieldName) =>
+  req.files && req.files[fieldName] && req.files[fieldName][0]
+    ? req.files[fieldName][0].filename
+    : null;
 
 const cleanText = (value) =>
   value === undefined || value === null ? "" : value.toString().trim();
@@ -63,8 +98,10 @@ const insertTrainingPhaseExercise = async (req, res) => {
         durationSeconds,
         instructions.arabic,
         instructions.english,
-        cleanText(req.body.exercise_img),
-        cleanText(req.body.exercise_video),
+        uploadedFileName(req, "exercise_img") ||
+          cleanText(req.body.exercise_img),
+        uploadedFileName(req, "exercise_video") ||
+          cleanText(req.body.exercise_video),
       ]
     );
 
@@ -156,12 +193,14 @@ const updateTrainingPhaseExercise = async (req, res) => {
         durationSeconds,
         instructions.arabic,
         instructions.english,
-        req.body.exercise_img === undefined
+        uploadedFileName(req, "exercise_img") ||
+          (req.body.exercise_img === undefined
           ? existing.exercise_img || ""
-          : cleanText(req.body.exercise_img),
-        req.body.exercise_video === undefined
+          : cleanText(req.body.exercise_img)),
+        uploadedFileName(req, "exercise_video") ||
+          (req.body.exercise_video === undefined
           ? existing.exercise_video || ""
-          : cleanText(req.body.exercise_video),
+          : cleanText(req.body.exercise_video)),
         exerciseId,
       ]
     );
@@ -359,6 +398,7 @@ const getTrainingPhaseExercises = async (req, res) => {
 };
 
 module.exports = {
+  uploadTrainingPhaseFiles,
   insertTrainingPhaseExercise,
   updateTrainingPhaseExercise,
   deleteTrainingPhaseExercise,
