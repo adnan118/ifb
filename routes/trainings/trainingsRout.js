@@ -28,6 +28,7 @@ const {
   assignTrainingPhaseExercise,
   unassignTrainingPhaseExercise,
   getTrainingPhaseExercises,
+  uploadTrainingPhaseFiles,
 } = require("../../query/training_phase_exercises/trainingPhaseExercises");
 
 const { insertDataUserTraining } = require("../../query/user_trainings/insertDataUserTraining");
@@ -61,11 +62,13 @@ router.post("/getUserTrainings", getDataUserTrainingsByUserId);
 router.post(
   "/insertTrainingPhaseExercise",
   requireAdmin,
+  uploadTrainingPhaseFiles,
   insertTrainingPhaseExercise
 );
 router.post(
   "/updateTrainingPhaseExercise",
   requireAdmin,
+  uploadTrainingPhaseFiles,
   updateTrainingPhaseExercise
 );
 router.post(
