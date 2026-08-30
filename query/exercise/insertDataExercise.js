@@ -251,6 +251,27 @@ const parseOptionalInt = (value) => {
   return Number.isNaN(parsed) ? null : parsed;
 };
 
+const DEFAULT_TARGETED_MUSCLES_AR = "العضلات المستهدفة غير محددة";
+const DEFAULT_TARGETED_MUSCLES_EN = "Target muscles not specified";
+
+const normalizeLocalizedTargets = (arabicValue, englishValue) => {
+  const arabic = arabicValue === undefined || arabicValue === null
+    ? ""
+    : arabicValue.toString().trim();
+  const english = englishValue === undefined || englishValue === null
+    ? ""
+    : englishValue.toString().trim();
+
+  if (arabic && english) return { arabic, english };
+  if (arabic) return { arabic, english: arabic };
+  if (english) return { arabic: english, english };
+
+  return {
+    arabic: DEFAULT_TARGETED_MUSCLES_AR,
+    english: DEFAULT_TARGETED_MUSCLES_EN,
+  };
+};
+
 async function insertDataExercise(req, res) {
   try {
     const exercise_img_file = req.files["exercise_img"]
@@ -271,6 +292,7 @@ async function insertDataExercise(req, res) {
       exercise_rounds,
       exercise_reps_per_round,
       exercise_musclesTargeted,
+      exercise_musclesTargetedEn,
       exercise_stepHowDoingEn,
       exercise_stepHowDoingAr,
       exercise_commonMistakesEn,
@@ -280,6 +302,11 @@ async function insertDataExercise(req, res) {
       gender,
       exercise_equipment_weights
     } = req.body;
+
+    const targetedMuscles = normalizeLocalizedTargets(
+      exercise_musclesTargeted,
+      exercise_musclesTargetedEn
+    );
 
     const exercise_img_path = exercise_img_file
       ? exercise_img_file.filename
@@ -327,7 +354,8 @@ async function insertDataExercise(req, res) {
           : exercise_reps_per_round.toString(),
       exercise_img: exercise_img_path,
       exercise_video: exercise_video_path,
-      exercise_musclesTargeted,
+      exercise_musclesTargeted: targetedMuscles.arabic,
+      exercise_musclesTargetedEn: targetedMuscles.english,
       exercise_stepHowDoingEn,
       exercise_stepHowDoingAr,
       exercise_commonMistakesEn,

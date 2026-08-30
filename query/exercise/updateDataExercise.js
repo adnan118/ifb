@@ -389,6 +389,32 @@ const parseOptionalInt = (value) => {
   return Number.isNaN(parsed) ? null : parsed;
 };
 
+const DEFAULT_TARGETED_MUSCLES_AR = "العضلات المستهدفة غير محددة";
+const DEFAULT_TARGETED_MUSCLES_EN = "Target muscles not specified";
+
+const normalizeLocalizedTargets = (
+  arabicValue,
+  englishValue,
+  fallbackArabic,
+  fallbackEnglish
+) => {
+  const arabic = arabicValue === undefined || arabicValue === null
+    ? ""
+    : arabicValue.toString().trim();
+  const english = englishValue === undefined || englishValue === null
+    ? ""
+    : englishValue.toString().trim();
+
+  if (arabic && english) return { arabic, english };
+  if (arabic) return { arabic, english: arabic };
+  if (english) return { arabic: english, english };
+
+  return {
+    arabic: (fallbackArabic || DEFAULT_TARGETED_MUSCLES_AR).toString().trim(),
+    english: (fallbackEnglish || DEFAULT_TARGETED_MUSCLES_EN).toString().trim(),
+  };
+};
+
 async function updateDataExercise(req, res) {
   try {
     console.log("Starting exercise update");
@@ -414,6 +440,7 @@ async function updateDataExercise(req, res) {
       exercise_rounds,
       exercise_reps_per_round,
       exercise_musclesTargeted,
+      exercise_musclesTargetedEn,
       exercise_stepHowDoingEn,
       exercise_stepHowDoingAr,
       exercise_commonMistakesEn,
@@ -510,6 +537,12 @@ async function updateDataExercise(req, res) {
             ? null
             : exercise_reps_per_round.toString());
 
+    const targetedMuscles = normalizeLocalizedTargets(
+      exercise_musclesTargeted,
+      exercise_musclesTargetedEn,
+      oldExerciseData.data.exercise_musclesTargeted,
+      oldExerciseData.data.exercise_musclesTargetedEn
+    );
     const updateExerciseData = {
       exercise_idTraining: exercise_idTraining || oldExerciseData.data.exercise_idTraining,
       exercise_nameEn: exercise_nameEn || oldExerciseData.data.exercise_nameEn,
@@ -519,7 +552,8 @@ async function updateDataExercise(req, res) {
       exercise_Kcal: exercise_Kcal || oldExerciseData.data.exercise_Kcal,
       exercise_img: exercise_img_path,
       exercise_video: exercise_video_path,
-      exercise_musclesTargeted: exercise_musclesTargeted || oldExerciseData.data.exercise_musclesTargeted,
+      exercise_musclesTargeted: targetedMuscles.arabic,
+      exercise_musclesTargetedEn: targetedMuscles.english,
       exercise_stepHowDoingEn: exercise_stepHowDoingEn || oldExerciseData.data.exercise_stepHowDoingEn,
       exercise_stepHowDoingAr: exercise_stepHowDoingAr || oldExerciseData.data.exercise_stepHowDoingAr,
       exercise_commonMistakesEn: exercise_commonMistakesEn || oldExerciseData.data.exercise_commonMistakesEn,
