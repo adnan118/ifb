@@ -1,5 +1,6 @@
 // routes/routes.js
 const express = require("express");
+const { requireAuth } = require("../../middleware/auth");
  
 
 const {
@@ -9,6 +10,6 @@ const {
 
 const router = express.Router();
 
-router.post("/updateProfile", uploadImages, updateUserData);
+router.post("/updateProfile", requireAuth, uploadImages, updateUserData);
 
 module.exports = router;
