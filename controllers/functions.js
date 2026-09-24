@@ -229,7 +229,7 @@ async function deleteData(table, where, values, json = true) {
  
 
 const fileFilter = (req, file, cb) => {
-  const allowedExt = [".jpg", ".png", ".svg"];
+  const allowedExt = [".jpg", ".jpeg", ".png", ".svg"];
   const ext = path.extname(file.originalname).toLowerCase();
   if (allowedExt.includes(ext)) {
     cb(null, true);
