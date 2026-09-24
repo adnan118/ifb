@@ -31,6 +31,16 @@ const {
   changeUserPlan,
 } = require("../../query/managePersonalData/personaldata/changeUserPlan");
 
+const {
+  approvePlanChangeRequest,
+  cancelPlanChangeRequest,
+  createPlanChangeRequest,
+  getMyPlanChangeRequests,
+  getPlanChangeRequestsForAdmin,
+  getSelectableOffers,
+  rejectPlanChangeRequest,
+} = require("../../query/managePersonalData/planChangeRequests/planChangeRequests");
+
 const router = express.Router();
 
 router.post("/insertPersonalDataRegister", requireAuth, insertPersonalDataRegister);
@@ -40,8 +50,19 @@ router.post("/getPDR", optionalAuth, getPDR);
 router.post("/getAllUsersPDR", requireAdmin, getAllUsersPDR);
 // END ADDED: protect bulk personal data listing with bearer token
 
-router.post("/updatePaymentStatus", requireAuth, updatePaymentStatus);
-router.post("/changeUserPlan", requireAuth, changeUserPlan);
+router.post("/updatePaymentStatus", requireAdmin, updatePaymentStatus);
+router.post("/changeUserPlan", requireAdmin, changeUserPlan);
+
+// User-facing program-change flow. These endpoints never expose prices.
+router.post("/getSelectableOffers", requireAuth, getSelectableOffers);
+router.post("/createPlanChangeRequest", requireAuth, createPlanChangeRequest);
+router.post("/getMyPlanChangeRequests", requireAuth, getMyPlanChangeRequests);
+router.post("/cancelPlanChangeRequest", requireAuth, cancelPlanChangeRequest);
+
+// Admin-only review flow. The price and coupon snapshot are visible only here.
+router.post("/getPlanChangeRequests", requireAdmin, getPlanChangeRequestsForAdmin);
+router.post("/approvePlanChangeRequest", requireAdmin, approvePlanChangeRequest);
+router.post("/rejectPlanChangeRequest", requireAdmin, rejectPlanChangeRequest);
 router.post("/deletePersonalData", requireAuth, deletePersonalData);
 
 module.exports = router;
