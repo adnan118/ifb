@@ -65,35 +65,23 @@ async function changeUserPlan(req, res) {
       });
     }
 
-    const requiresPayment = Number(offers[0].offers_price) > 0;
-    const pendingExpirationDate = new Date(Date.now() - 24 * 60 * 60 * 1000)
-      .toISOString()
-      .split("T")[0];
-
     await connection.execute(
       `UPDATE personaldataregister
-       SET personalData_offers_id = ?,
-           personalData_isPaidOffer = ?,
-           personalData_expOffer = ?
+       SET personalData_offers_id = ?
        WHERE personalData_users_id = ?`,
-      [
-        offerId,
-        0,
-        requiresPayment ? pendingExpirationDate : null,
-        userId,
-      ]
+      [offerId, userId]
     );
     await connection.commit();
 
     return res.status(200).json({
       status: "success",
-      message: "Plan changed successfully.",
+      message: "Plan changed successfully without changing payment status or expiry date.",
       data: {
         personalData_users_id: userId,
         personalData_offers_id: offerId,
         offers_titleAr: offers[0].offers_titleAr,
         offers_titleEn: offers[0].offers_titleEn,
-        requiresPayment,
+        requiresPayment: Number(offers[0].offers_price) > 0,
       },
     });
   } catch (error) {
