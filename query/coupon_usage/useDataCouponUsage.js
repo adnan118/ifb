@@ -59,6 +59,7 @@ async function useDataCouponUsage(req, res) {
 
     // 3. تسجيل استخدام الكوبون
     const usageData = {
+      coupon_id: coupon.coupon_id,
       coupon_name,
       user_id,
       used_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
