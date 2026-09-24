@@ -1,4 +1,5 @@
 const express = require("express");
+const { requireAdmin } = require("../../../middleware/auth");
 
 const {
   insertDataOffers,
@@ -19,9 +20,9 @@ const {
 
 const router = express.Router();
 
-router.post("/insertDataOffers", insertDataOffers);
-router.post("/updateDataOffers", updateDataOffers);
-router.post("/deleteDataOffers", deleteDataOffers);
+router.post("/insertDataOffers", requireAdmin, insertDataOffers);
+router.post("/updateDataOffers", requireAdmin, updateDataOffers);
+router.post("/deleteDataOffers", requireAdmin, deleteDataOffers);
 router.post("/getDataOffers", getDataOffers);
 
 
