@@ -25,23 +25,36 @@ const {
   
   async function updateUserData(req, res) {
     try {
-       
-  
-        const user_img_file = req.files["users_img"]
-  ? req.files["users_img"][0]
-  : req.files["file"]
-    ? req.files["file"][0]
-    : null;
+      const authenticatedUserId = Number(req.authUser?.id);
+      const requestedUserId = Number(req.body?.users_id);
+      if (!Number.isInteger(authenticatedUserId) || authenticatedUserId <= 0) {
+        return res.status(401).json({
+          status: "failure",
+          message: "Authentication is required.",
+        });
+      }
+      if (!Number.isInteger(requestedUserId) || requestedUserId !== authenticatedUserId) {
+        return res.status(403).json({
+          status: "failure",
+          message: "You can update only your own profile.",
+        });
+      }
+
+      const uploadedFiles = req.files || {};
+      const user_img_file = uploadedFiles["users_img"]
+        ? uploadedFiles["users_img"][0]
+        : uploadedFiles["file"]
+          ? uploadedFiles["file"][0]
+          : null;
 
       const {
-        users_id,
         users_name,
         users_phone,
         users_password,
       } = req.body;
   
       // استعلام للحصول على الصورة القديمة
-      const oldUserData = await getData("users", "users_id = ?", [users_id]);
+      const oldUserData = await getData("users", "users_id = ?", [requestedUserId]);
   
       const old_users_img =
         oldUserData &&
@@ -53,31 +66,19 @@ const {
       let users_img_path = old_users_img || "img.png"; // الافتراضي
   
       if (user_img_file) {
-        const newFileName = user_img_file.filename;
-        // حذف الصورة القديمة دائماً إذا لم تكن الافتراضية
-        if (old_users_img && old_users_img !== "img.png") {
-          const oldImagePath = path.join(
-            process.cwd(),
-            "query/auth/userImages/images",
-            old_users_img
-          );
-          if (fs.existsSync(oldImagePath)) {
-            fs.unlinkSync(oldImagePath);
-          }
-        }
-        users_img_path = newFileName;
+        users_img_path = user_img_file.filename;
       }
   
       // إعدادات التحديث
       const updateFields = {};
   
-      if (users_name !== undefined) {
-        updateFields.users_name = users_name;
+      if (typeof users_name === "string" && users_name.trim()) {
+        updateFields.users_name = users_name.trim();
       }
   
       if (users_phone !== undefined) {
         // تحقق إذا كان الرقم الجديد مستخدم من قبل مستخدم آخر
-        const checkPhone = await getData("users", "users_phone = ? AND users_id != ?", [users_phone, users_id]);
+        const checkPhone = await getData("users", "users_phone = ? AND users_id != ?", [users_phone, requestedUserId]);
         if (checkPhone.status === "success" && checkPhone.data) {
           return res.status(400).json({
             status: "failure",
@@ -87,7 +88,7 @@ const {
         updateFields.users_phone = users_phone;
       }
   
-      if (users_password !== undefined) {
+      if (typeof users_password === "string" && users_password.trim()) {
         // تشفير كلمة المرور قبل الحفظ
         const hashedPassword = await bcrypt.hash(users_password, 10);
         updateFields.users_password = hashedPassword;
@@ -100,13 +101,30 @@ const {
         "users",
         updateFields,
         "users_id = ?",
-        [users_id]
+        [requestedUserId]
       );
   
       if (result.status === "success") {
+        // Delete the previous image only after the database update succeeds.
+        if (user_img_file && old_users_img && old_users_img !== "img.png") {
+          const oldImagePath = path.join(
+            process.cwd(),
+            "query/auth/userImages/images",
+            old_users_img
+          );
+          if (fs.existsSync(oldImagePath)) {
+            fs.unlinkSync(oldImagePath);
+          }
+        }
         res.json({
           status: "success",
           message: "User data updated successfully.",
+          data: {
+            users_id: requestedUserId,
+            users_name: updateFields.users_name ?? oldUserData.data.users_name,
+            users_phone: updateFields.users_phone ?? oldUserData.data.users_phone,
+            users_img: users_img_path,
+          },
         });
       } else {
         res.status(500).json({
